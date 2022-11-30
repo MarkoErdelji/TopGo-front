@@ -1,4 +1,21 @@
 /* You can add global styles to this file, and also import other style files */
 
+
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+*{ font-family: 'Chakra Petch'; }
+
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+}
+
+.shadow 
+{
+  -webkit-box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.75);
+  -moz-box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.75);
+}
