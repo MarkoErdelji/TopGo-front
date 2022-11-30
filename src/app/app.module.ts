@@ -7,6 +7,10 @@ import { MaterialModule } from 'src/infrastructure/material.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NavbarComponent } from './components/navbar/navbar.component';
+import { UnregisteredUserComponent } from './components/unregistered-user/unregistered-user.component';
+import { UnregisteredUserModule } from './components/unregistered-user/unregistered-user.module';
+import { RegisteredUserModule } from './components/registered-user/registered-user.module';
 
 
 
@@ -20,7 +24,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    UnregisteredUserModule,
+    RegisteredUserModule
   ],
   providers: [],
   bootstrap: [AppComponent]

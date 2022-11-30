@@ -1,0 +1,15 @@
+<mat-sidenav-container class="navigation">
+    <mat-sidenav id="navbar-side" mode="side" role="navigation" opened>
+        <div id="navbar-header">
+            <img id = "login-logo" src = "assets/images/topgologo.png" [routerLink]="['']">
+        </div>
+        <hr id = "navbar-line-break">
+        <div id="navbar-menu">
+            <ng-content select="[menu-content]"></ng-content>
+        </div>
+    </mat-sidenav>
+    <mat-sidenav-content id="navbar-main-content">
+        <ng-content select="[main-content]"></ng-content>
+    </mat-sidenav-content>
+</mat-sidenav-container>
+
