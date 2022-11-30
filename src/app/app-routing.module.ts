@@ -6,9 +6,12 @@ import { RegisteredUserComponent } from './components/registered-user/registered
 import { UnregisteredUserComponent } from './components/unregistered-user/unregistered-user.component';
 import { UnregisteredUserModule } from './components/unregistered-user/unregistered-user.module';
 
-const routes: Routes = [{ path: 'login', component: LoginComponent },
+const routes: Routes = [
+                        { path: 'login', component: LoginComponent },
                         { path: 'unregistered', component: UnregisteredUserComponent},
-                        { path: 'registered' , component: RegisteredUserComponent}];
+                        { path: 'registered' , component: RegisteredUserComponent},
+                        { path: '', redirectTo: '**', pathMatch: 'full' },
+                        { path: '**', component: UnregisteredUserComponent }];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
