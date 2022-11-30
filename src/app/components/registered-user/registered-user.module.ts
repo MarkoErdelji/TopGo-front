@@ -15,6 +15,9 @@ import { NavbarModule } from '../navbar/navbar.module';
   imports: [
     CommonModule,
     NavbarModule
+  ],
+  exports: [
+    RegisteredUserComponent
   ]
 })
 export class RegisteredUserModule { }

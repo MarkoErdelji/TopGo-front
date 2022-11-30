@@ -21,6 +21,9 @@ import { NavbarModule } from '../navbar/navbar.module';
     ReactiveFormsModule,
     UnregisteredUserRoutingModule,
     NavbarModule
+  ],
+  exports:[
+    UnregisteredUserComponent
   ]
 })
 export class UnregisteredUserModule { }

@@ -7,9 +7,9 @@
     right: 0;
     background: #eee;
   }
-
 #navbar-side{
-    width: 180px;
+    width: 10%;
+    min-width:100px;
     height:100%;
     background: #d2d2d2;
 }
@@ -31,4 +31,7 @@
 #login-logo {
     width: 95%;
     height:70%;
+}
+hr{
+    margin-bottom:20px;
 }

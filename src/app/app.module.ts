@@ -26,7 +26,7 @@ import { RegisteredUserModule } from './components/registered-user/registered-us
     FormsModule,
     ReactiveFormsModule,
     UnregisteredUserModule,
-    RegisteredUserModule
+    RegisteredUserModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
