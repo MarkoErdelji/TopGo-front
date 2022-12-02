@@ -13,6 +13,7 @@ import { UnregisteredUserModule } from '../unregistered-user/unregistered-user.m
 import { RegisteredUserModule } from '../registered-user/registered-user.module';
 import { AdminComponent } from '../admin/admin.component';
 import { AdminModule } from 'src/admin/admin.module';
+import { DriverModule } from 'src/driver/driver.module';
 
 
 
@@ -30,6 +31,7 @@ import { AdminModule } from 'src/admin/admin.module';
     AdminModule,
     UnregisteredUserModule,
     RegisteredUserModule,
+    DriverModule
   ],
   providers: [],
   bootstrap: [AppComponent]

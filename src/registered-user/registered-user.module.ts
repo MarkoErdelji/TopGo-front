@@ -5,6 +5,7 @@ import { RegisteredUserMenuComponent } from './components/registered-user-menu/r
 import { NavbarComponent } from '../app/components/navbar/navbar.component';
 import { NavbarModule } from '../app/components/navbar/navbar.module';
 import { MaterialModule } from 'src/infrastructure/material.module';
+import { AppRoutingModule } from 'src/app/app-routing.module';
 
 
 
@@ -14,6 +15,7 @@ import { MaterialModule } from 'src/infrastructure/material.module';
     RegisteredUserMenuComponent
   ],
   imports: [
+    AppRoutingModule,
     MaterialModule,
     CommonModule,
     NavbarModule

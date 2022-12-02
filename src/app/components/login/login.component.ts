@@ -21,7 +21,7 @@ export class LoginComponent implements OnInit {
   create() 
   {
     if (this.loginForm.valid) {
-      alert("kida");
+      this.router.navigate(['registered']);
     }
   }
 

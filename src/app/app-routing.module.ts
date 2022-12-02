@@ -6,12 +6,14 @@ import { RegisteredUserComponent } from '../registered-user/registered-user.comp
 import { UnregisteredUserComponent } from '../unregistered-user/unregistered-user.component';
 import { UnregisteredUserModule } from '../unregistered-user/unregistered-user.module';
 import { AdminComponent } from 'src/admin/admin.component';
+import { DriverComponent } from 'src/driver/driver.component';
 
 const routes: Routes = [
                         { path: 'login', component: LoginComponent },
                         { path: 'unregistered', component: UnregisteredUserComponent},
                         { path: 'registered' , component: RegisteredUserComponent},
                         { path: 'admin', component:AdminComponent},
+                        { path: 'driver', component:DriverComponent},
                         { path: '', redirectTo: '**', pathMatch: 'full' },
                         { path: '**', component: UnregisteredUserComponent }];
 
