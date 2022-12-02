@@ -2,14 +2,16 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { RegisteredUserComponent } from './components/registered-user/registered-user.component';
-import { UnregisteredUserComponent } from './components/unregistered-user/unregistered-user.component';
-import { UnregisteredUserModule } from './components/unregistered-user/unregistered-user.module';
+import { RegisteredUserComponent } from '../registered-user/registered-user.component';
+import { UnregisteredUserComponent } from '../unregistered-user/unregistered-user.component';
+import { UnregisteredUserModule } from '../unregistered-user/unregistered-user.module';
+import { AdminComponent } from 'src/admin/admin.component';
 
 const routes: Routes = [
                         { path: 'login', component: LoginComponent },
                         { path: 'unregistered', component: UnregisteredUserComponent},
                         { path: 'registered' , component: RegisteredUserComponent},
+                        { path: 'admin', component:AdminComponent},
                         { path: '', redirectTo: '**', pathMatch: 'full' },
                         { path: '**', component: UnregisteredUserComponent }];
 

@@ -8,16 +8,18 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './components/login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { UnregisteredUserComponent } from './components/unregistered-user/unregistered-user.component';
-import { UnregisteredUserModule } from './components/unregistered-user/unregistered-user.module';
-import { RegisteredUserModule } from './components/registered-user/registered-user.module';
+import { UnregisteredUserComponent } from '../unregistered-user/unregistered-user.component';
+import { UnregisteredUserModule } from '../unregistered-user/unregistered-user.module';
+import { RegisteredUserModule } from '../registered-user/registered-user.module';
+import { AdminComponent } from '../admin/admin.component';
+import { AdminModule } from 'src/admin/admin.module';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
+    LoginComponent
   ],
   imports: [
     AppRoutingModule,
@@ -25,6 +27,7 @@ import { RegisteredUserModule } from './components/registered-user/registered-us
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    AdminModule,
     UnregisteredUserModule,
     RegisteredUserModule,
   ],
