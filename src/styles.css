@@ -3,7 +3,7 @@
 
 html, body { height: 100%; }
 
-*{ font-family: 'Chakra Petch'; }
+*{ font-family: 'Chakra Petch' !important; }
 
 .center {
   position: absolute;

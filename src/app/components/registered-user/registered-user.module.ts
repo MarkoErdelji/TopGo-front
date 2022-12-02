@@ -4,6 +4,7 @@ import { RegisteredUserComponent } from './registered-user.component';
 import { RegisteredUserMenuComponent } from './registered-user-menu/registered-user-menu.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { NavbarModule } from '../navbar/navbar.module';
+import { MaterialModule } from 'src/infrastructure/material.module';
 
 
 
@@ -13,6 +14,7 @@ import { NavbarModule } from '../navbar/navbar.module';
     RegisteredUserMenuComponent
   ],
   imports: [
+    MaterialModule,
     CommonModule,
     NavbarModule
   ],
