@@ -33,6 +33,9 @@ button{
     bottom:0;
     right:0;
 }
+#navbar-side{
+min-width:200px;
+}
 #logout{
     border:0;
     font-size:28px;
