@@ -14,13 +14,15 @@ import { RegisteredUserModule } from '../registered-user/registered-user.module'
 import { AdminComponent } from '../admin/admin.component';
 import { AdminModule } from 'src/admin/admin.module';
 import { DriverModule } from 'src/driver/driver.module';
+import { RegisterComponent } from './components/register/register.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     AppRoutingModule,

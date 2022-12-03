@@ -7,8 +7,9 @@ import { UnregisteredUserComponent } from '../unregistered-user/unregistered-use
 import { UnregisteredUserModule } from '../unregistered-user/unregistered-user.module';
 import { AdminComponent } from 'src/admin/admin.component';
 import { DriverComponent } from 'src/driver/driver.component';
+import { RegisterComponent } from './components/register/register.component';
 
-const routes: Routes = [
+const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
                         { path: 'unregistered', component: UnregisteredUserComponent},
                         { path: 'registered' , component: RegisteredUserComponent},

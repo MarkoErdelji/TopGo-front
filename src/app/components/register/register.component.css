@@ -1,0 +1,146 @@
+:host {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+* {
+    font-family: 'Chakra Petch';
+}
+mat-form-field  {margin: 5px;}
+#register-logo
+{
+    display: inline-block;
+    height: 10%;
+    max-width: 400px;
+    margin-top: 1%;
+    cursor: pointer;
+           
+}
+#Name{
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#first-name-form{
+    float: left;
+
+}
+
+#last-name-form{
+    float: right;
+}
+
+#register-main-div
+{
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+}
+#register-button {
+    background-color: #FF9642;
+    color: white;
+    margin-top: 10px;
+    width: 25%;
+    text-align: center;
+    min-width: 80px;
+}
+#register-header {
+    background-color: #FF9642;
+    border-radius: 5px 5px 0px 0px;
+    height: 10%;
+    text-align: center;
+    display:table;
+    width:100%;
+    
+}
+#register-header-h1
+{
+    color: white;
+    display:table-cell;
+    vertical-align: middle;
+    font-size: 30px;
+    
+}
+#register-form-div 
+{
+    margin: 0;
+    width: 30%;
+    height: 75%;
+    background-color: #E7E7E7;
+    border-radius: 5px;
+    text-align: center;
+    min-height: 400px;
+    min-width: 250px;
+    
+}
+
+#create-accout
+{
+    color: #FF9642;
+    cursor: pointer;
+}
+#registernForm {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    align-items: center;
+    
+    
+  }
+
+
+
+#other-forms{
+    margin-left: 5%;
+    margin-right: 5%;
+    display: flex;
+    flex-direction: column;
+}
+
+@media(max-width: 1621px){
+    #Name{
+        position: relative;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    #first-name-form{
+        float: left;
+        position: relative;
+        width: 95%;
+    }
+    
+    #last-name-form{
+        float: left;
+        position: relative;
+        width: 95%;
+    }
+    
+    #usnm-pass{
+        display: block;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    #username-form{
+        float: left;
+        width: 95%;
+    }
+    
+    #password-form{
+        float: left;
+        width: 95%;
+    }
+    #registerFogo{
+        margin-top: 15px;
+        margin-bottom: 10px;
+    }
+    .mat-form-field{
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+    #register-button{
+        margin: 1px
+    }
+}
