@@ -15,7 +15,6 @@ import { AdminMenuComponent } from './components/admin-menu/admin-menu.component
   declarations: [AdminComponent, AdminMenuComponent],
   imports: [
     AppRoutingModule,
-    BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,

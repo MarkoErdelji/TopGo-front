@@ -17,7 +17,6 @@ import { DriverMenuComponent } from './components/driver-menu/driver-menu.compon
   ],
   imports: [
     AppRoutingModule,
-    BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
