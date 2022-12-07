@@ -14,12 +14,20 @@ button{
     justify-content: center;
 }
 
+#driver-creation{
+    font-size:23px !important;
+}
+
 #menu-buttons button{
     border:0;
+    width:83%;
+    height:45px;
+    border-radius: 20px;
     font-size: 28px;
     color: white;
     background-color: #ff9642;
 }
+
 
 #logout-container{
     display: flex;

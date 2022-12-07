@@ -25,6 +25,9 @@ button{
 
 #menu-buttons button{
     border:0;
+    width:80%;
+    height:45px;
+    border-radius: 20px;
     font-size: 28px;
     color: white;
     background-color: #ff9642;

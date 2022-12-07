@@ -15,7 +15,6 @@ import { NavbarModule } from '../app/components/navbar/navbar.module';
   declarations: [UnregisteredUserComponent,],
   imports: [
     AppRoutingModule,
-    BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
