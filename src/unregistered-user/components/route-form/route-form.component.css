@@ -1,0 +1,23 @@
+#route-form{
+    background-color: black;
+    opacity: 50%;
+    width: 35%;
+    height: 10%;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 5%;
+
+}
+
+#go-button {
+    background-color: #FF9642;
+    color: white;
+    margin-top: 10px;
+    width: 100px
+}
+
+.route-form-field{
+    margin: 10px;
+    background-color: white;
+}
