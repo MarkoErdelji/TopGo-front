@@ -31,28 +31,39 @@ export class MapComponent implements AfterViewInit {
     tiles.addTo(this.map);
   }
 
-  route() {
-    L.Routing.control({
-      waypoints: [L.latLng(57.74, 11.94), L.latLng(57.6792, 11.949)],
-    }).addTo(this.map);
-  }
+  createRoute() {
 
-  getCoordinates(street: String) {
-    return this.mapService.search(street);
+    this.mapService.search(this.location.location).subscribe({
+      next: (departure) =>{
+        console.log(location)
+        this.mapService.search(this.location.destination).subscribe({
+          next:(destination) => {
+            console.log(destination)
+            L.Routing.control({
+              router: L.Routing.osrmv1({
+                serviceUrl: `http://router.project-osrm.org/route/v1/`
+              }),
+              show: false,
+              routeWhileDragging: true,
+              waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
+            }).addTo(this.map);
+          }
+        })
+      }
+    });
   }
 
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.routeFormService.selectLocation$.subscribe((location)=>{
-      this.location = location;
-      console.log(this.location.location + " " + this.location.destination)
-      let departure: any = this.getCoordinates("Strazilovska 19");
-      let destination: any = this.getCoordinates("Strazilovska 30")
-      L.Routing.control({
-        waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
-      }).addTo(this.map);
+    this.routeFormService.selectLocation$.subscribe({next:(location)=>{
 
-    })
+      this.location = location;
+        if(this.location.location && this.location.destination) {
+          console.log(this.location.location)
+          console.log(this.location.destination)
+          this.createRoute();
+        }
+   } })
   }
 }

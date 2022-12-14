@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { LocationDTO } from './LocationDTO';
 import { RouteFormService } from './route-form.service';
 
@@ -10,8 +10,8 @@ import { RouteFormService } from './route-form.service';
 })
 export class RouteFormComponent implements OnInit {
   routeForm = new FormGroup({
-    location: new FormControl(""),
-    destination: new FormControl("")
+    location: new FormControl("", [Validators.required]),
+    destination: new FormControl("", [Validators.required])
 
   });
   constructor(private routeFormService: RouteFormService) {
@@ -21,8 +21,8 @@ export class RouteFormComponent implements OnInit {
   }
   submit() {
     let locationDTO: LocationDTO=<LocationDTO>{
-      location: this.routeForm.value.location,
-      destination: this.routeForm.value.destination
+      location: this.routeForm.get("location")?.value!,
+      destination: this.routeForm.get("destination")?.value!
     }
     this.routeFormService.setLocation(locationDTO)
   }
