@@ -1,8 +1,7 @@
 #route-form{
-    background-color: black;
-    opacity: 50%;
+    background-color: rgba(0,0,0, 0.7);
     width: 35%;
-    height: 10%;
+    height: 7%;
     position: fixed;
     bottom: 0;
     right: 0;
@@ -13,11 +12,16 @@
 #go-button {
     background-color: #FF9642;
     color: white;
-    margin-top: 10px;
     width: 100px
 }
 
-.route-form-field{
-    margin: 10px;
-    background-color: white;
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  border-radius: 5px;
+  margin: 7px;
 }
+#form-container{
+
+
+}
+

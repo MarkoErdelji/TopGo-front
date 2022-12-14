@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 export class MapService {
   constructor(private http: HttpClient) {}
 
-  search(street: string): Observable<any> {
+  search(street: String): Observable<any> {
     return this.http.get(
       'https://nominatim.openstreetmap.org/search?format=json&q=' + street
     );

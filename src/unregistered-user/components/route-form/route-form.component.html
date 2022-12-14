@@ -1,5 +1,6 @@
 <div id="route-form">
     <form  id = "routeForm" [formGroup]="routeForm" (ngSubmit) = "submit()">
+        <div id = "form-container">
         <mat-form-field appearance="outline" class="route-form-field" id="location">
             <mat-label>Location</mat-label>
             <input matInput name="location" formControlName="location">
@@ -8,7 +9,8 @@
             <mat-label>Destination</mat-label>
             <input matInput name="destination" formControlName="destination">
           </mat-form-field>
-          <button  id="go-button" type="submit" mat-raised-button>Go</button>   
+          <button  id="go-button" type="submit" mat-raised-button>Go</button>
+        </div>
     </form>
 </div>
 

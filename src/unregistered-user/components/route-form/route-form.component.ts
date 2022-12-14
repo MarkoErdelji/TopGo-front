@@ -11,10 +11,10 @@ import { RouteFormService } from './route-form.service';
 export class RouteFormComponent implements OnInit {
   routeForm = new FormGroup({
     location: new FormControl(""),
-    destination: new FormGroup("")
+    destination: new FormControl("")
 
   });
-  constructor(private routeFormService: RouteFormService) { 
+  constructor(private routeFormService: RouteFormService) {
   }
 
   ngOnInit(): void {
