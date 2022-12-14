@@ -5,5 +5,5 @@
 </div>
 
 <div id="logout-container">
-    <button mat-raised-button shadow id="logout">Logout</button>
+    <button mat-raised-button (click) = "logout()" shadow id="logout" [routerLink]="['']">Logout</button>
 </div>

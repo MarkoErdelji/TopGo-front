@@ -16,15 +16,15 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router,public authService: AuthService,) { }
 
   ngOnInit(): void {
+    this.authService.checkForToken();
   }
 
 
-  create() 
+  async create() 
   {
     if (this.loginForm.valid) {
-      const res = this.authService.signIn(this.loginForm.controls.username.value,this.loginForm.controls.password.value);
+      const res = await this.authService.signIn(this.loginForm.controls.username.value,this.loginForm.controls.password.value);
       
-      this.router.navigate(['registered']);
     }
   }
 

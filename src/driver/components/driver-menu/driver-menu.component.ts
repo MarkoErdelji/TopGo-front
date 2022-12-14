@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthService } from 'src/app/_service/auth.service';
 
 @Component({
   selector: 'app-driver-menu',
@@ -12,4 +13,7 @@ export class DriverMenuComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  logout(){
+    AuthService.doLogout();
+  }
 }
