@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/_service/auth.service';
 
@@ -8,9 +9,10 @@ import { AuthService } from 'src/app/_service/auth.service';
 })
 export class DriverMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
+
   }
 
   logout(){

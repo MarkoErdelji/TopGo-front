@@ -8,13 +8,16 @@ import { UnregisteredUserModule } from '../unregistered-user/unregistered-user.m
 import { AdminComponent } from 'src/admin/admin.component';
 import { DriverComponent } from 'src/driver/driver.component';
 import { RegisterComponent } from './components/register/register.component';
+import { UserGuard } from './_guards/user.guard';
+import { AdminGuard } from './_guards/admin.guard';
+import { DriverGuard } from './_guards/driver.guard';
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
                         { path: 'unregistered', component: UnregisteredUserComponent},
-                        { path: 'registered' , component: RegisteredUserComponent},
-                        { path: 'admin', component:AdminComponent},
-                        { path: 'driver', component:DriverComponent},
+                        { path: 'registered' , component: RegisteredUserComponent,canActivate: [UserGuard]},
+                        { path: 'admin', component:AdminComponent,canActivate: [AdminGuard]},
+                        { path: 'driver', component:DriverComponent,canActivate: [DriverGuard]},
                         { path: '', redirectTo: '**', pathMatch: 'full' },
                         { path: '**', component: UnregisteredUserComponent }];
 
