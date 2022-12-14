@@ -15,6 +15,8 @@ import { AdminComponent } from '../admin/admin.component';
 import { AdminModule } from 'src/admin/admin.module';
 import { DriverModule } from 'src/driver/driver.module';
 import { RegisterComponent } from './components/register/register.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AuthInterceptor } from './_service/authconfig.interceptor';
 
 
 
@@ -33,9 +35,14 @@ import { RegisterComponent } from './components/register/register.component';
     AdminModule,
     UnregisteredUserModule,
     RegisteredUserModule,
-    DriverModule
+    DriverModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS,
+    useClass: AuthInterceptor,
+    multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

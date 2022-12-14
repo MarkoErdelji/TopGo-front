@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthService } from './_service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +10,11 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'TopGo-front';
+
+
+  constructor(private authService: AuthService) { }
+
+  ngOnInit(): void {
+    this.authService.checkForToken()
+  }
 }
