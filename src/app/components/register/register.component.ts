@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { RegisterService } from './register.service';
+import { RegisterData } from './RegisterDTO';
+import { registerLocaleData } from '@angular/common';
 
 @Component({
   selector: 'app-register',
@@ -9,23 +12,33 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 })
 export class RegisterComponent implements OnInit {
   registerForm = new FormGroup({
-    firstName: new FormControl("",[Validators.required]),
-    lastName: new FormControl("",[Validators.required]),
-    email: new FormControl("",[Validators.required]),
-    username: new FormControl("",[Validators.required]),
-    password: new FormControl("",[Validators.required]),
-    phoneNumber: new FormControl("",[Validators.required]),
-    adress: new FormControl("",[Validators.required])
+    firstName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/gu)]),
+    lastName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/gu)]),
+    email: new FormControl("",[Validators.required,Validators.email]),
+    password: new FormControl("",[Validators.required,Validators.minLength(6)]),
+    phoneNumber: new FormControl("",[Validators.required,Validators.pattern('^[0-9].{8,11}$')]),
+    adress: new FormControl("",[Validators.required,Validators.pattern(/[\p{L}\p{N} ,]*/gu)])
   });
 
-  constructor(private router: Router) { }
+  constructor(private router: Router,private registerService:RegisterService) { }
 
   ngOnInit(): void {
   }
 
   create(){
     if (this.registerForm.valid) {
-      this.router.navigate(['registered']);
+      this.registerService.register(
+        {
+          name:this.registerForm.controls.firstName.value,
+          surname:this.registerForm.controls.lastName.value,
+          email:this.registerForm.controls.email.value,
+          profilePicture:null,
+          telephoneNumber:this.registerForm.controls.phoneNumber.value,
+          address:this.registerForm.controls.adress.value,
+          password:this.registerForm.controls.password.value
+        }
+      );
+      this.router.navigate(['login']);
     }
   }
 
