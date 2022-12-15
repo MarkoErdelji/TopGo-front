@@ -15,8 +15,10 @@ import { AdminComponent } from '../admin/admin.component';
 import { AdminModule } from 'src/admin/admin.module';
 import { DriverModule } from 'src/driver/driver.module';
 import { RegisterComponent } from './components/register/register.component';
+import { MapComponent } from './components/map/map.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './_service/authconfig.interceptor';
+
 
 
 
@@ -24,7 +26,7 @@ import { AuthInterceptor } from './_service/authconfig.interceptor';
   declarations: [
     AppComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
   ],
   imports: [
     AppRoutingModule,
