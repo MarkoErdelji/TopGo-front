@@ -13,6 +13,7 @@ import {MapService} from "./map.service";
 export class MapComponent implements AfterViewInit {
   private map: any;
   private location!: LocationDTO;
+  private previouseRouteControl: L.Routing.Control | null = null;
 
   constructor(private routeFormService: RouteFormService, private mapService: MapService) { }
   private initMap(): void {
@@ -33,13 +34,15 @@ export class MapComponent implements AfterViewInit {
 
   createRoute() {
 
+    const map = this.map as L.Map;
+    map.zoomOut(6);
     this.mapService.search(this.location.location).subscribe({
       next: (departure) =>{
         console.log(location)
         this.mapService.search(this.location.destination).subscribe({
           next:(destination) => {
             console.log(destination)
-            L.Routing.control({
+            const routeControl = L.Routing.control({
               router: L.Routing.osrmv1({
                 serviceUrl: `http://router.project-osrm.org/route/v1/`
               }),
@@ -47,10 +50,15 @@ export class MapComponent implements AfterViewInit {
               routeWhileDragging: true,
               waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
             }).addTo(this.map);
+            this.previouseRouteControl = routeControl;
           }
         })
       }
     });
+    if(this.previouseRouteControl != null){
+      const map = this.map as L.Map;
+      map.removeControl(this.previouseRouteControl);
+    }
   }
 
 
