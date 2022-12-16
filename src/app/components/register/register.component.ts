@@ -38,7 +38,6 @@ export class RegisterComponent implements OnInit {
           password:this.registerForm.controls.password.value
         }
       );
-      this.router.navigate(['login']);
     }
   }
 

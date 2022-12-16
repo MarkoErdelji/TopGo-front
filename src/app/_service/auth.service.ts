@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -14,6 +14,7 @@ import { RegisterData } from '../components/register/RegisterDTO';
   providedIn: 'root',
 })
 export class AuthService {
+  errorMsg: string | undefined;
   endpoint: string = 'http://localhost:8000/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
@@ -41,15 +42,27 @@ export class AuthService {
   }
 
   async register(regData:RegisterData){
-    let pass;
     if(regData.password!=null){
-      pass = this.hashData(regData.password)
+      regData.password = this.hashData(regData.password)
     }
-    const res = await this.http
-      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData),{'headers':this.headers})
-      .subscribe((res: any) => {
-        console.log(res);
-      });
+    return this.http
+      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers })
+      .pipe(
+        catchError((error:HttpErrorResponse) => {
+          return of(error);
+        }
+        )
+      ).subscribe(
+        response =>{
+          if(response.status == 409){
+            window.alert("Error: email already exists!");
+          }
+          else{
+            this.router.navigate(['login']);
+          }
+          return response;
+        }
+      )
 
   }
   
