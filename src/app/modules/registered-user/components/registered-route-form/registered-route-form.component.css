@@ -1,0 +1,64 @@
+#test
+{
+  width: fit-content;
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.459);
+  position :fixed;
+  top: 75%;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+
+
+}
+
+#location,#destination
+{
+  margin: 20px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  border-radius: 5px;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline  {
+  background-color: white;
+  border-radius: 5px;
+}
+
+#moreOptions
+{
+  background-color: rgb(255, 255, 255);
+  margin: 10px;
+  padding:15px;
+  border-radius: 5px;
+  height: fit-content;
+  display: none;
+}
+#order-button ,#cancel-button {
+  margin :10px;
+  margin-top: 0;
+  margin-bottom: 30px;
+  background-color: #FF9642;
+  color: white;
+  margin: 10px;
+  font-size: large;
+
+}
+#button-div
+{
+  text-align: center;
+}
+mat-checkbox
+{
+  margin:5px;
+  margin-left: 20px;
+  display: inline-block;
+}
+
+#go-button {
+  background-color: #FF9642;
+  color: white;
+  margin: 10px;
+  font-size: x-large;
+}

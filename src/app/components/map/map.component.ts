@@ -1,8 +1,8 @@
 import { Component, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
-import { LocationDTO } from 'src/unregistered-user/components/route-form/LocationDTO';
-import { RouteFormService } from 'src/unregistered-user/components/route-form/route-form.service';
+import { LocationDTO } from 'src/app/modules/unregistered-user/components/route-form/LocationDTO';
+import { RouteFormService } from 'src/app/modules/service/route-form.service';
 import {MapService} from "./map.service";
 
 @Component({
