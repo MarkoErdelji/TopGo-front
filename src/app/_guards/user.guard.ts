@@ -20,6 +20,9 @@ export class UserGuard implements CanActivate, CanActivateChild {
 
     const decodedToken = helper.decodeToken(token);
 
+    if (decodedToken == null){
+      return false;
+    }
     if(decodedToken.role == "USER"){
       return true;
     }

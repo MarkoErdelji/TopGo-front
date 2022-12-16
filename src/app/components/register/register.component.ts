@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { RegisterService } from './register.service';
 import { RegisterData } from './RegisterDTO';
 import { registerLocaleData } from '@angular/common';
+import { AuthService } from 'src/app/_service/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -20,14 +20,14 @@ export class RegisterComponent implements OnInit {
     adress: new FormControl("",[Validators.required,Validators.pattern(/[\p{L}\p{N} ,]*/gu)])
   });
 
-  constructor(private router: Router,private registerService:RegisterService) { }
+  constructor(private router: Router,private authService:AuthService) { }
 
   ngOnInit(): void {
   }
 
   create(){
     if (this.registerForm.valid) {
-      this.registerService.register(
+      this.authService.register(
         {
           name:this.registerForm.controls.firstName.value,
           surname:this.registerForm.controls.lastName.value,

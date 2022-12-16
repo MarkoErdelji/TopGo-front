@@ -8,6 +8,8 @@ import {
 } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Md5 } from 'ts-md5';
+import { RegisterData } from '../components/register/RegisterDTO';
 @Injectable({
   providedIn: 'root',
 })
@@ -19,6 +21,9 @@ export class AuthService {
   // Sign-in
   async signIn(username:string|null,password:string|null) {
     const email = username;
+    if(password!=null){
+      password = this.hashData(password)
+    }
     const headers = { 'content-type': 'application/json'}  
     const res = await this.http
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers})
@@ -34,6 +39,25 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('access_token');
   }
+
+  async register(regData:RegisterData){
+    let pass;
+    if(regData.password!=null){
+      pass = this.hashData(regData.password)
+    }
+    const res = await this.http
+      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData),{'headers':this.headers})
+      .subscribe((res: any) => {
+        console.log(res);
+      });
+
+  }
+  
+  hashData(data:string){
+    return  Md5.hashStr(data)
+    
+  }
+  
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
     return authToken !== null ? true : false;

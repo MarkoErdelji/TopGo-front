@@ -15,6 +15,8 @@ export class AppComponent {
   constructor(private authService: AuthService) { }
 
   ngOnInit(): void {
+    console.log(this.authService.hashData('test'));
+
     this.authService.checkForToken()
   }
 }
