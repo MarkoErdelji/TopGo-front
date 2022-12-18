@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -8,10 +8,13 @@ import {
 } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { Md5 } from 'ts-md5';
+import { RegisterData } from '../components/register/RegisterDTO';
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  errorMsg: string | undefined;
   endpoint: string = 'http://localhost:8000/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
@@ -19,6 +22,9 @@ export class AuthService {
   // Sign-in
   async signIn(username:string|null,password:string|null) {
     const email = username;
+    if(password!=null){
+      password = this.hashData(password)
+    }
     const headers = { 'content-type': 'application/json'}  
     const res = await this.http
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers})
@@ -34,6 +40,37 @@ export class AuthService {
   getToken() {
     return localStorage.getItem('access_token');
   }
+
+  async register(regData:RegisterData){
+    if(regData.password!=null){
+      regData.password = this.hashData(regData.password)
+    }
+    return this.http
+      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers })
+      .pipe(
+        catchError((error:HttpErrorResponse) => {
+          return of(error);
+        }
+        )
+      ).subscribe(
+        response =>{
+          if(response.status == 409){
+            window.alert("Error: email already exists!");
+          }
+          else{
+            this.router.navigate(['login']);
+          }
+          return response;
+        }
+      )
+
+  }
+  
+  hashData(data:string){
+    return  Md5.hashStr(data)
+    
+  }
+  
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
     return authToken !== null ? true : false;
