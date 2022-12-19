@@ -1,4 +1,5 @@
 import { Component, AfterViewInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
 import { LocationDTO } from 'src/app/modules/unregistered-user/components/route-form/LocationDTO';
@@ -14,6 +15,7 @@ export class MapComponent implements AfterViewInit {
   private map: any;
   private location!: LocationDTO;
   private previouseRouteControl: L.Routing.Control | null = null;
+  
 
   constructor(private routeFormService: RouteFormService, private mapService: MapService) { }
   private initMap(): void {
@@ -21,6 +23,7 @@ export class MapComponent implements AfterViewInit {
       center: [45.2396, 19.8227],
       zoom: 13,
     });
+
 
 
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
