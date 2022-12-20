@@ -6,7 +6,7 @@ import { RegisteredUserComponent } from './modules/registered-user/registered-us
 import { UnregisteredUserComponent } from './modules/unregistered-user/unregistered-user.component';
 import { UnregisteredUserModule } from './modules/unregistered-user/unregistered-user.module';
 import { AdminComponent } from 'src/app/modules/admin/admin.component';
-import { DriverComponent } from 'src/driver/driver.component';
+import { DriverComponent } from 'src/app/modules/driver/driver.component';
 import { RegisterComponent } from './components/register/register.component';
 import { UserGuard } from './_guards/user.guard';
 import { AdminGuard } from './_guards/admin.guard';

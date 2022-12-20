@@ -1,5 +1,5 @@
 <div id="test" #formDiv >
-  <form [formGroup]="goForm" (ngSubmit)="go()">
+  <form [formGroup]="goForm" (ngSubmit)="go($event.submitter.id)">
     <mat-form-field appearance="outline" class="route-form-field" id="location">
       <mat-label>Location</mat-label>
       <input matInput name="location" formControlName="location">

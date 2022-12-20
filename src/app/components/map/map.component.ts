@@ -15,7 +15,7 @@ export class MapComponent implements AfterViewInit {
   private map: any;
   private location!: LocationDTO;
   private previouseRouteControl: L.Routing.Control | null = null;
-  
+
 
   constructor(private routeFormService: RouteFormService, private mapService: MapService) { }
   private initMap(): void {
@@ -76,5 +76,6 @@ export class MapComponent implements AfterViewInit {
           this.createRoute();
         }
    } })
+
   }
 }

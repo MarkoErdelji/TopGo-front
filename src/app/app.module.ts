@@ -13,7 +13,7 @@ import { UnregisteredUserModule } from './modules/unregistered-user/unregistered
 import { RegisteredUserModule } from './modules/registered-user/registered-user.module';
 import { AdminComponent } from './modules/admin/admin.component';
 import { AdminModule } from 'src/app/modules/admin/admin.module';
-import { DriverModule } from 'src/driver/driver.module';
+import { DriverModule } from 'src/app/modules/driver/driver.module';
 import { RegisterComponent } from './components/register/register.component';
 import { MapComponent } from './components/map/map.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
