@@ -2,8 +2,8 @@ import { Component, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
-import { LocationDTO } from 'src/unregistered-user/components/route-form/LocationDTO';
-import { RouteFormService } from 'src/unregistered-user/components/route-form/route-form.service';
+import { LocationDTO } from 'src/app/modules/unregistered-user/components/route-form/LocationDTO';
+import { RouteFormService } from 'src/app/modules/service/route-form.service';
 import {MapService} from "./map.service";
 
 @Component({
@@ -15,7 +15,7 @@ export class MapComponent implements AfterViewInit {
   private map: any;
   private location!: LocationDTO;
   private previouseRouteControl: L.Routing.Control | null = null;
-  
+
 
   constructor(private routeFormService: RouteFormService, private mapService: MapService) { }
   private initMap(): void {
@@ -76,5 +76,6 @@ export class MapComponent implements AfterViewInit {
           this.createRoute();
         }
    } })
+
   }
 }

@@ -14,8 +14,8 @@ mat-form-field  {margin: 5px;}
     max-width: 400px;
     margin-top: 5%;
     cursor: pointer;
-      
-      
+
+
 }
 #login-main-div
 {
@@ -34,7 +34,7 @@ mat-form-field  {margin: 5px;}
     text-align: center;
     display:table;
     width:100%;
-    
+
 }
 #login-header-h1
 {
@@ -42,9 +42,9 @@ mat-form-field  {margin: 5px;}
     display:table-cell;
     vertical-align: middle;
     font-size: 30px;
-    
+
 }
-#login-form-div 
+#login-form-div
 {
     margin: 0;
     width: 30%;
@@ -54,7 +54,7 @@ mat-form-field  {margin: 5px;}
     text-align: center;
     min-height: 400px;
     min-width: 250px;
-    
+
 }
 
 #create-accout
@@ -69,7 +69,7 @@ mat-form-field  {margin: 5px;}
     flex-direction: column;
     align-items: flex-start;
     align-items: center;
-    
+
   }
 
 #forgot-password
@@ -82,7 +82,8 @@ mat-form-field  {margin: 5px;}
     font-size: 12px;
 }
 
-#password-field 
+
+#password-field
 {
     position: relative;
 }

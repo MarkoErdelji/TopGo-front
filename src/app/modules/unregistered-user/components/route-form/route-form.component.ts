@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 import { LocationDTO } from './LocationDTO';
-import { RouteFormService } from './route-form.service';
+import { RouteFormService } from '../../../service/route-form.service';
 
 @Component({
   selector: 'app-route-form',

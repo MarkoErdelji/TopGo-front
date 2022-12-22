@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { LocationDTO } from './LocationDTO';
+import { LocationDTO } from '../unregistered-user/components/route-form/LocationDTO';
 
 @Injectable({
   providedIn: 'root'
