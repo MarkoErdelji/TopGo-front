@@ -3,6 +3,11 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LocationDTO} from "../../../unregistered-user/components/route-form/LocationDTO";
 import {RouteFormService} from "../../../service/route-form.service";
 import {DriverService} from "../../../service/driver.service";
+import {AllDriversDTO} from "../../../DTO/AllDriversDTO";
+import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
+import {BehaviorSubject} from "rxjs";
+import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
+import {MapService} from "../../../../components/map/map.service";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -12,8 +17,9 @@ import {DriverService} from "../../../service/driver.service";
 export class RegisteredRouteFormComponent implements OnInit {
 
 
-    go(id: string) {
-      if(id == "go-button") {
+
+    async go(id: string) {
+      if (id == "go-button") {
         if (this.goForm.valid) {
           console.log((id));
           let locationDTO: LocationDTO = <LocationDTO>{
@@ -24,32 +30,39 @@ export class RegisteredRouteFormComponent implements OnInit {
           // @ts-ignore
           document.getElementById("moreOptions").style.display = "block"
           document.getElementById("test")!.style.top = "60%"
-          this.driverService.getAll().subscribe((result)=> {
-            result.results.forEach(function (value) {
-              console.log(value)
-            });
-          });
-          /*ngOnInit(): void {
-            this.route.params.subscribe((params) => {
-              this.wineService
-                .getWine(+params['wineId'])
-                .subscribe((wine) => (this.wine = wine));
-            });
-          }
-        }*/
+
+         this.driverService.getAll().subscribe(value =>
+         {
+
+           for(let driver of value.results)
+           {
+
+               this.driverService.setLocation(driver);
+
+
+           }
+         })
+
+          /*for(let driver of this.drivers?.results!)
+          {
+            console.log(driver);
+
+          }*/
 
         }
       }
 
 
-  }
+    }
   goForm = new FormGroup({
     location: new FormControl("",[Validators.required]),
     destination: new FormControl("",[Validators.required])
   });
 
-  constructor(private routeFormService:RouteFormService ,private driverService:DriverService) { }
+  constructor(private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService) { }
 
   ngOnInit(): void {
-    console.log("bla");
+    this.mapService.selectLocation$.subscribe({next:(driver)=>{
+        console.log(driver)
+      } })
   }}
