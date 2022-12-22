@@ -4,6 +4,7 @@ import {AllDriversDTO} from "../DTO/AllDriversDTO";
 import {BehaviorSubject, Observable} from "rxjs";
 import {VehicleInfoDTO} from "../DTO/VehicleInfoDTO";
 import {GeoLocationDTO} from "../DTO/GeoLocationDTO";
+import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
 
 
 @Injectable({
@@ -22,7 +23,7 @@ export class DriverService {
   getDriverVehicle(driverId:number): Observable<VehicleInfoDTO> {
     return this.http.get<VehicleInfoDTO>(this.endpoint +"/"+ driverId +"/vehicle");
   }
-  setLocation(Location: GeoLocationDTO) {
+  setLocation(Location: DriverInfoDTO) {
     this.Location$.next(Location);
   }
 

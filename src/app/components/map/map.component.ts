@@ -7,6 +7,7 @@ import { RouteFormService } from 'src/app/modules/service/route-form.service';
 import {MapService} from "./map.service";
 import {DriverService} from "../../modules/service/driver.service";
 import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
+import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
 
 @Component({
   selector: 'app-map',
@@ -17,6 +18,8 @@ export class MapComponent implements AfterViewInit {
   private map: any;
   private location!: LocationDTO;
   private previouseRouteControl: L.Routing.Control | null = null;
+
+  private markerList: L.Marker[] = [];
 
 
   constructor(private routeFormService: RouteFormService, private mapService: MapService,private driverService:DriverService) { }
@@ -66,14 +69,23 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
-  addMarker(geoLocation:GeoLocationDTO) : void {
-    if (geoLocation.longitude) {
-      let marker = new L.Marker([geoLocation.latitude, geoLocation.longitude]);
-      marker.bindPopup(geoLocation.address).openPopup();
-      marker.addTo(this.map);
+  addDriverMarker(driver:DriverInfoDTO) : void {
 
-    }
+    this.driverService.getDriverVehicle(driver.id).subscribe(vehicle =>
+    {
+      let marker = new L.Marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude],{icon: greenIcon});
+      marker.addTo(this.map);
+      marker.bindPopup(driver.name + " " + driver.surname,{autoClose: true});
+      this.markerList.push(marker)
+      let mService :MapService = this.mapService;
+      marker.on('click', function(e) {
+        mService.setDriver(driver);
+      });
+
+    })
+
   }
+
   ngAfterViewInit(): void {
     this.initMap();
     this.routeFormService.selectLocation$.subscribe({next:(location)=>{
@@ -85,12 +97,20 @@ export class MapComponent implements AfterViewInit {
           this.createRoute();
         }
    } })
-    this.driverService.selectLocation$.subscribe({next:(geoLocation)=>{
-        console.log(geoLocation)
-        if(geoLocation) {
-          this.addMarker(geoLocation)
+    this.driverService.selectLocation$.subscribe({next:(driver)=>{
+        console.log(driver)
+        if(driver) {
+          this.addDriverMarker(driver)
         }
       } })
 
   }
 }
+
+let  greenIcon = L.icon({
+  iconUrl: 'assets/images/carIcon.png',
+
+  iconSize:     [75, 75], // size of the icon
+  iconAnchor:   [32, 32], // point of the icon which will correspond to marker's location
+  popupAnchor:  [-3, -35] // point from which the popup should open relative to the iconAnchor
+});

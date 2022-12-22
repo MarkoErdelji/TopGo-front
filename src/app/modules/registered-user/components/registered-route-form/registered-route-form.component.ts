@@ -7,6 +7,7 @@ import {AllDriversDTO} from "../../../DTO/AllDriversDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
 import {BehaviorSubject} from "rxjs";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
+import {MapService} from "../../../../components/map/map.service";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -35,11 +36,10 @@ export class RegisteredRouteFormComponent implements OnInit {
 
            for(let driver of value.results)
            {
-             this.driverService.getDriverVehicle(driver.id).subscribe(vehicle =>
-             {
-               this.driverService.setLocation(vehicle.currentLocation);
-             }
-             )
+
+               this.driverService.setLocation(driver);
+
+
            }
          })
 
@@ -59,8 +59,10 @@ export class RegisteredRouteFormComponent implements OnInit {
     destination: new FormControl("",[Validators.required])
   });
 
-  constructor(private routeFormService:RouteFormService ,private driverService:DriverService) { }
+  constructor(private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService) { }
 
   ngOnInit(): void {
-    console.log("bla");
+    this.mapService.selectLocation$.subscribe({next:(driver)=>{
+        console.log(driver)
+      } })
   }}
