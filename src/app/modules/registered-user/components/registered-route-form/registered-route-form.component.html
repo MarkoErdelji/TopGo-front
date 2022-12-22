@@ -1,0 +1,33 @@
+<div id="test" #formDiv >
+  <form [formGroup]="goForm" (ngSubmit)="go($event.submitter.id)">
+    <mat-form-field appearance="outline" class="route-form-field" id="location">
+      <mat-label>Location</mat-label>
+      <input matInput name="location" formControlName="location">
+    </mat-form-field>
+    <mat-form-field appearance="outline" id = "destination-field" class="route-form-field" id="destination">
+      <mat-label>Destination</mat-label>
+      <input matInput name="destination" formControlName="destination">
+    </mat-form-field>
+    <button  id="go-button" type="submit" mat-raised-button>Go</button>
+    <div id ="moreOptions">
+      <mat-form-field appearance="fill">
+        <mat-label>Car type</mat-label>
+        <mat-select>
+          <mat-option value="one">Standard</mat-option>
+          <mat-option value="two">Luxury</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-checkbox >For Babies</mat-checkbox>
+        <mat-checkbox >For Pets</mat-checkbox>
+      <div id = "button-div">
+      <button  id="order-button" type="submit" mat-raised-button>Order</button>
+        <button  id="cancel-button" type="submit" mat-raised-button>Cancle</button>
+      </div>
+
+
+
+    </div>
+  </form>
+</div>
+

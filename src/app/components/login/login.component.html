@@ -1,0 +1,27 @@
+   <div id = "login-main-div">
+    <img id = "login-logo" src = "assets/images/topgologo.png" [routerLink]="['']">
+    <div id = "login-form-div" class = "center shadow">
+        <div id = "login-header">
+            <h1 id = "login-header-h1">SIGN IN</h1>
+            
+        </div>
+
+        <form [formGroup]="loginForm" (ngSubmit)="create()" id = "loginForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Username</mat-label>
+            <input matInput name="username" formControlName="username">
+          </mat-form-field>
+          <mat-form-field appearance="outline" id = "password-field">
+            <mat-label>Password</mat-label>
+            <input matInput name="password" formControlName="password" type = "password">
+            <p id = "forgot-password">Forgot Password?</p>
+          </mat-form-field>
+          <button  id="login-button" type="submit" mat-raised-button>Login</button>
+        </form>
+        <p>Not Registered?</p>
+        <p id="create-accout" [routerLink]="['/register']"><b>CREATE ACCOUNT HERE</b></p>
+
+    </div>
+
+
+    </div>

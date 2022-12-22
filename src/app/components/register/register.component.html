@@ -1,0 +1,61 @@
+<div id = "register-main-div">
+    <img id = "register-logo" src = "assets/images/topgologo.png" [routerLink]="['']">
+    <div id = "register-form-div" class = "center shadow">
+        <div id = "register-header">
+            <h1 id = "register-header-h1">Register</h1>
+            
+        </div>
+
+        <form [formGroup]="registerForm" (ngSubmit)="create()" id = "registerForm">`
+        
+        <div id="other-forms">
+            <div id="Name">
+                <mat-form-field mat-error appearance="outline" id = "first-name-form">
+                    <mat-label>First name</mat-label>
+                    <input matInput name="firstName" formControlName="firstName">
+                    <mat-error  *ngIf="registerForm.controls.firstName.errors?.['required']">Error: field can not be empty</mat-error>
+                    <mat-error  *ngIf="registerForm.controls.firstName.hasError('pattern')">Error: first letter must be uppercase</mat-error>
+                </mat-form-field>
+                <mat-form-field mat-error appearance="outline" id = "last-name-form">
+                    <mat-label>Last name</mat-label>
+                    <input matInput name="lastName" formControlName="lastName">
+                    <mat-error  *ngIf="registerForm.controls.lastName.errors?.['required']">Error: field can not be empty</mat-error>
+                    <mat-error  *ngIf="registerForm.controls.lastName.hasError('pattern')">Error: first letter must be uppercase</mat-error>
+                </mat-form-field>
+            </div>
+
+                <mat-form-field mat-error appearance="outline" id = "password-form" class = "other-forms">
+                <mat-label>Password</mat-label>
+                <input matInput name="password" formControlName="password" type = "password">
+                <mat-error  *ngIf="registerForm.controls.password.errors?.['required']">Error: field can not be empty</mat-error>
+                <mat-error  *ngIf="registerForm.controls.password.errors?.['minlength']">Error: Password must consist of at least 6 characters</mat-error>
+            </mat-form-field>
+
+
+            <mat-form-field mat-error appearance="outline" class = "other-forms">
+                <mat-label>E-mail</mat-label>
+                <input matInput name="email" formControlName="email">
+                <mat-error  *ngIf="registerForm.controls.email.errors?.['required']">Error: field can not be empty</mat-error>
+                <mat-error  *ngIf="registerForm.controls.email.hasError('email')">Error: Email form is incorrect</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class = "other-forms">
+                <mat-label>Phone Nubmer</mat-label>
+                <input matInput name="phoneNumber" formControlName="phoneNumber" required="">
+                <mat-error  *ngIf="registerForm.controls.phoneNumber.errors?.['required']">Error: field can not be empty</mat-error>
+                <mat-error  *ngIf="registerForm.controls.phoneNumber.hasError('pattern')">Error: Phone number is in incorrect format</mat-error>
+            </mat-form-field>
+            <mat-form-field mat-error appearance="outline" class = "other-forms">
+                <mat-label>Adress</mat-label>
+                <input matInput name="adress" formControlName="adress">
+                <mat-error  *ngIf="registerForm.controls.adress.errors?.['required']">Error: field can not be empty</mat-error>
+                <mat-error  *ngIf="registerForm.controls.adress.hasError('pattern')">Error: address is in incorrect format</mat-error>
+            </mat-form-field>
+            
+        </div>
+        <button  id="register-button" type="submit" mat-raised-button>Register</button>
+        </form>
+
+    </div>
+    
+</div>

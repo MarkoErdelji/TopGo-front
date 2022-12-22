@@ -1,0 +1,37 @@
+
+.navigation {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #eee;
+  }
+#navbar-side{
+    width: 10%;
+    min-width:200px;
+    height:100%;
+    background: #d2d2d2;
+}
+#navbar-header{
+    padding-top: 30px;
+    padding-bottom: 30px;
+    display: flex;
+    justify-content: center;
+}
+
+#navbar-line-break{
+    border: none;
+    width: 80%;
+    border-bottom: 1px solid black;
+}
+#navbar-main-content{
+    background: white;
+}
+#login-logo {
+    width: 95%;
+    height:70%;
+}
+hr{
+    margin-bottom:50px;
+}

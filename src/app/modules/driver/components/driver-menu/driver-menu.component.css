@@ -1,0 +1,55 @@
+img{
+    width:130px;
+    border:1px solid black;
+    border-radius: 100px;
+    height:130px;
+    margin-bottom:50px;
+}
+
+
+button{
+    width:100%;
+    margin-bottom:20px;
+}
+
+#menu-buttons{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    vertical-align: center;
+    justify-content: center;
+}
+
+#menu-buttons button{
+    border:0;
+    width:80%;
+    height:45px;
+    border-radius: 20px;
+    font-size: 28px;
+    color: white;
+    background-color: #ff9642;
+}
+
+#logout-container{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0;
+    align-items: center;
+    vertical-align: center;
+    justify-content: center;
+    position: absolute;
+    bottom:0;
+    right:0;
+}
+#logout{
+    border:0;
+    font-size:28px;
+    background-color: #d2d2d2;
+    border-radius: 100px;
+    width:120px;
+    height:40px;
+    margin-bottom: 50px;
+}
