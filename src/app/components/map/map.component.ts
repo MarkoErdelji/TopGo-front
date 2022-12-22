@@ -5,6 +5,8 @@ import 'leaflet-routing-machine';
 import { LocationDTO } from 'src/app/modules/unregistered-user/components/route-form/LocationDTO';
 import { RouteFormService } from 'src/app/modules/service/route-form.service';
 import {MapService} from "./map.service";
+import {DriverService} from "../../modules/service/driver.service";
+import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
 
 @Component({
   selector: 'app-map',
@@ -17,7 +19,7 @@ export class MapComponent implements AfterViewInit {
   private previouseRouteControl: L.Routing.Control | null = null;
 
 
-  constructor(private routeFormService: RouteFormService, private mapService: MapService) { }
+  constructor(private routeFormService: RouteFormService, private mapService: MapService,private driverService:DriverService) { }
   private initMap(): void {
     this.map = L.map('map', {
       center: [45.2396, 19.8227],
@@ -64,7 +66,14 @@ export class MapComponent implements AfterViewInit {
     }
   }
 
+  addMarker(geoLocation:GeoLocationDTO) : void {
+    if (geoLocation.longitude) {
+      let marker = new L.Marker([geoLocation.latitude, geoLocation.longitude]);
+      marker.bindPopup(geoLocation.address).openPopup();
+      marker.addTo(this.map);
 
+    }
+  }
   ngAfterViewInit(): void {
     this.initMap();
     this.routeFormService.selectLocation$.subscribe({next:(location)=>{
@@ -76,6 +85,12 @@ export class MapComponent implements AfterViewInit {
           this.createRoute();
         }
    } })
+    this.driverService.selectLocation$.subscribe({next:(geoLocation)=>{
+        console.log(geoLocation)
+        if(geoLocation) {
+          this.addMarker(geoLocation)
+        }
+      } })
 
   }
 }

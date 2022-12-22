@@ -5,6 +5,8 @@ import {RouteFormService} from "../../../service/route-form.service";
 import {DriverService} from "../../../service/driver.service";
 import {AllDriversDTO} from "../../../DTO/AllDriversDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
+import {BehaviorSubject} from "rxjs";
+import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -12,6 +14,7 @@ import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
   styleUrls: ['./registered-route-form.component.css']
 })
 export class RegisteredRouteFormComponent implements OnInit {
+
 
 
     async go(id: string) {
@@ -26,25 +29,25 @@ export class RegisteredRouteFormComponent implements OnInit {
           // @ts-ignore
           document.getElementById("moreOptions").style.display = "block"
           document.getElementById("test")!.style.top = "60%"
-          try {
-            let drivers:AllDriversDTO = await this.driverService.getAll();
-            console.log(drivers);
-            for (let driver of drivers.results) {
-              console.log(driver.email)
-            }
-          } catch (error) {
-            console.error(error);
-          }
-          // @ts-ignore
 
-          /*ngOnInit(): void {
-            this.route.params.subscribe((params) => {
-              this.wineService
-                .getWine(+params['wineId'])
-                .subscribe((wine) => (this.wine = wine));
-            });
-          }
-        }*/
+         this.driverService.getAll().subscribe(value =>
+         {
+
+           for(let driver of value.results)
+           {
+             this.driverService.getDriverVehicle(driver.id).subscribe(vehicle =>
+             {
+               this.driverService.setLocation(vehicle.currentLocation);
+             }
+             )
+           }
+         })
+
+          /*for(let driver of this.drivers?.results!)
+          {
+            console.log(driver);
+
+          }*/
 
         }
       }
