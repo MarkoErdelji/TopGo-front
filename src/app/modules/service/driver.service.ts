@@ -20,6 +20,9 @@ export class DriverService {
   getAll(): Observable<AllDriversDTO> {
     return this.http.get<AllDriversDTO>(this.endpoint);
   }
+  getOnlyActive(): Observable<AllDriversDTO>{
+    return this.http.get<AllDriversDTO>(this.endpoint+"/active")
+  }
   getDriverVehicle(driverId:number): Observable<VehicleInfoDTO> {
     return this.http.get<VehicleInfoDTO>(this.endpoint +"/"+ driverId +"/vehicle");
   }
