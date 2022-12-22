@@ -3,6 +3,8 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LocationDTO} from "../../../unregistered-user/components/route-form/LocationDTO";
 import {RouteFormService} from "../../../service/route-form.service";
 import {DriverService} from "../../../service/driver.service";
+import {AllDriversDTO} from "../../../DTO/AllDriversDTO";
+import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -12,8 +14,8 @@ import {DriverService} from "../../../service/driver.service";
 export class RegisteredRouteFormComponent implements OnInit {
 
 
-    go(id: string) {
-      if(id == "go-button") {
+    async go(id: string) {
+      if (id == "go-button") {
         if (this.goForm.valid) {
           console.log((id));
           let locationDTO: LocationDTO = <LocationDTO>{
@@ -24,11 +26,17 @@ export class RegisteredRouteFormComponent implements OnInit {
           // @ts-ignore
           document.getElementById("moreOptions").style.display = "block"
           document.getElementById("test")!.style.top = "60%"
-          this.driverService.getAll().subscribe((result)=> {
-            result.results.forEach(function (value) {
-              console.log(value)
-            });
-          });
+          try {
+            let drivers:AllDriversDTO = await this.driverService.getAll();
+            console.log(drivers);
+            for (let driver of drivers.results) {
+              console.log(driver.email)
+            }
+          } catch (error) {
+            console.error(error);
+          }
+          // @ts-ignore
+
           /*ngOnInit(): void {
             this.route.params.subscribe((params) => {
               this.wineService
@@ -42,7 +50,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       }
 
 
-  }
+    }
   goForm = new FormGroup({
     location: new FormControl("",[Validators.required]),
     destination: new FormControl("",[Validators.required])
