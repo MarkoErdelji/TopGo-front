@@ -8,6 +8,7 @@ import {MapService} from "./map.service";
 import {DriverService} from "../../modules/service/driver.service";
 import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
+import {marker} from "leaflet";
 
 @Component({
   selector: 'app-map',
@@ -84,6 +85,7 @@ export class MapComponent implements AfterViewInit {
 
     })
 
+
   }
 
   ngAfterViewInit(): void {
@@ -98,10 +100,14 @@ export class MapComponent implements AfterViewInit {
         }
    } })
     this.driverService.selectLocation$.subscribe({next:(driver)=>{
-        console.log(driver)
+
         if(driver) {
           this.addDriverMarker(driver)
         }
+      } })
+    this.routeFormService.RemoveMarkers$.subscribe({next:(remove)=>{
+        console.log("remove");
+        this.markerList.forEach(marker => marker.remove());
       } })
 
   }

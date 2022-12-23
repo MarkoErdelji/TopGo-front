@@ -1,3 +1,15 @@
+
+<div id = "driver-div" #popupContent>
+  <div id = "driver-info">
+    <img id = "driver-image" src="assets/images/tate.png">
+    <div id = "info">
+    <p id ="driver-name" #driverName>Pera Peric</p>
+      <p id ="driver-phone" #driverPhone>062333333</p>
+      <p id ="driver-email" #driverEmail>email@gmail.com</p>
+    </div>
+</div>
+</div>
+
 <div id="test" #formDiv >
   <form [formGroup]="goForm" (ngSubmit)="go($event.submitter.id)">
     <mat-form-field appearance="outline" class="route-form-field" id="location">
@@ -12,14 +24,15 @@
     <div id ="moreOptions">
       <mat-form-field appearance="fill">
         <mat-label>Car type</mat-label>
-        <mat-select>
-          <mat-option value="one">Standard</mat-option>
-          <mat-option value="two">Luxury</mat-option>
+        <mat-select formControlName="carType">
+          <mat-option value="0">Standard</mat-option>
+          <mat-option value="1">Luxury</mat-option>
+          <mat-option value="2">Van</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox >For Babies</mat-checkbox>
-        <mat-checkbox >For Pets</mat-checkbox>
+      <mat-checkbox formControlName="forBabies">For Babies</mat-checkbox>
+        <mat-checkbox formControlName="forPets">For Pets</mat-checkbox>
       <div id = "button-div">
       <button  id="order-button" type="submit" mat-raised-button>Order</button>
         <button  id="cancel-button" type="submit" mat-raised-button>Cancle</button>
@@ -30,4 +43,5 @@
     </div>
   </form>
 </div>
+
 

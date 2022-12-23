@@ -65,3 +65,34 @@ mat-checkbox
   margin: 10px;
   font-size: x-large;
 }
+#driver-div {
+  background-color: rgba(0, 0, 0, 0.459);
+  position: fixed;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+  display: none;
+  top: 5%;
+
+
+}
+#driver-image
+{
+
+  border-radius: 100px;
+  width: 100px;
+  stroke: black;
+  margin: 10px;
+  display:inline-block;
+}
+#info{
+  display: inline-block;
+  margin: 15px;
+  vertical-align: top;
+  font-size: large;
+}
+#driver-info
+{
+  border-radius: 5px;
+  background-color: white;
+  margin :10px;
+}
