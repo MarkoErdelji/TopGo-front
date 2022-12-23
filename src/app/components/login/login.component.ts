@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/_service/auth.service';
+import { PasswordResetComponent } from './password-reset/password-reset.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -12,6 +13,8 @@ export class LoginComponent implements OnInit {
     username: new FormControl("",[Validators.required]),
     password: new FormControl("",[Validators.required])
   });
+
+  email?:string;
 
   constructor(private router: Router,public authService: AuthService,) { }
 
@@ -27,6 +30,7 @@ export class LoginComponent implements OnInit {
       
     }
   }
+
 
 
 

@@ -18,6 +18,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { MapComponent } from './components/map/map.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './_service/authconfig.interceptor';
+import { PasswordResetComponent } from './components/login/password-reset/password-reset.component';
 
 
 
@@ -27,6 +28,7 @@ import { AuthInterceptor } from './_service/authconfig.interceptor';
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    PasswordResetComponent,
   ],
   imports: [
     AppRoutingModule,
