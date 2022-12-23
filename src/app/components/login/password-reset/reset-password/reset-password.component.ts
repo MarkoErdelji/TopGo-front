@@ -11,6 +11,7 @@ import { PasswordResetService } from 'src/app/_service/password-reset.service';
 export class ResetPasswordComponent implements OnInit {
 
   token?: string;
+  email?: string;
 
   resetPassForm = new FormGroup({
     passwordControl: new FormControl("",[Validators.required,Validators.minLength(6)]),
@@ -32,6 +33,7 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
+      this.email = params['email'];
     });
 
     this.passwordResetService.getToken(this.token || '').subscribe(
@@ -50,7 +52,19 @@ export class ResetPasswordComponent implements OnInit {
 
   resetPassword(){
     if(this.resetPassForm.valid && this.doPasswordsMatch()){
-      console.log("pozz")
+      this.passwordResetService.resetPassword(this.token || ' ',this.email || ' ',this.resetPassForm.controls.passwordControl.value || ' ').subscribe(
+        response=>{
+          if(response.status == 200){
+            window.alert("Password successfuly reset!")
+            this.router.navigate(['login']);
+          }
+          else{
+            window.alert("Something went wrong while reseting your password,try again later");
+            this.router.navigate(['login']);
+          }
+        }
+
+      )
     }
 
   }

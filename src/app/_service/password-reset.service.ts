@@ -47,8 +47,8 @@ export class PasswordResetService {
     const resetToken = this.generateToken();
 
     this.sendTokenToDatabase(resetToken);
-    email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken);
-    email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken);
+    email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken+"&email="+to);
+    email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken+"&email="+to);
     
     this.http.post<any>('http://localhost:8000/api/email', JSON.stringify(email),{'headers':this.headers}).pipe(
       catchError((error:HttpErrorResponse) => {
@@ -58,13 +58,22 @@ export class PasswordResetService {
     ).subscribe(
       response =>{
         if(response.status == 404){
-          window.alert("Error: Bad request!");
+          window.alert("Error: No such user in database!");
         }
         else if(response.status == 200){
           window.alert("Email successfuly sent");
           this.router.navigate(['login'])
         }
       }
+    )
+  }
+
+  resetPassword(token:string,email:string,newPassword:string){
+    return this.http.put<any>('http://localhost:8000/api/user/reset/'+"\""+token+"\""+"/"+email+"/"+newPassword,null).pipe(
+      catchError((error:HttpErrorResponse) => {
+        return of(error);
+      }
+      )
     )
   }
 
