@@ -22,9 +22,6 @@ export class AuthService {
   // Sign-in
   async signIn(username:string|null,password:string|null) {
     const email = username;
-    if(password!=null){
-      password = this.hashData(password)
-    }
     const headers = { 'content-type': 'application/json'}  
     const res = await this.http
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers})
@@ -42,10 +39,7 @@ export class AuthService {
   }
 
   async register(regData:RegisterData){
-    if(regData.password!=null){
-      regData.password = this.hashData(regData.password)
-    }
-    return this.http
+    this.http
       .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers })
       .pipe(
         catchError((error:HttpErrorResponse) => {
@@ -65,12 +59,6 @@ export class AuthService {
       )
 
   }
-  
-  hashData(data:string){
-    return  Md5.hashStr(data)
-    
-  }
-  
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
     return authToken !== null ? true : false;
