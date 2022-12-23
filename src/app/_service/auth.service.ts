@@ -45,7 +45,7 @@ export class AuthService {
     if(regData.password!=null){
       regData.password = this.hashData(regData.password)
     }
-    return this.http
+    this.http
       .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers })
       .pipe(
         catchError((error:HttpErrorResponse) => {

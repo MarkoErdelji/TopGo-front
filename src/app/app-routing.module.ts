@@ -11,11 +11,11 @@ import { RegisterComponent } from './components/register/register.component';
 import { UserGuard } from './_guards/user.guard';
 import { AdminGuard } from './_guards/admin.guard';
 import { DriverGuard } from './_guards/driver.guard';
-import { PasswordResetComponent } from './components/login/password-reset/password-reset.component';
+import { ForgotPasswordComponent } from './components/login/password-reset/forgot-password/forgot-password.component';
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
-                        { path: 'login/forgotPassword', component:PasswordResetComponent},
+                        { path: 'login/forgotPassword', component:ForgotPasswordComponent},
                         { path: 'unregistered', component: UnregisteredUserComponent},
                         { path: 'registered' , component: RegisteredUserComponent,canActivate: [UserGuard]},
                         { path: 'admin', component:AdminComponent,canActivate: [AdminGuard]},

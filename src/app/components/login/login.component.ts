@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/_service/auth.service';
-import { PasswordResetComponent } from './password-reset/password-reset.component';
+import { ForgotPasswordComponent } from './password-reset/forgot-password/forgot-password.component';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
