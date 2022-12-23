@@ -47,8 +47,8 @@ export class PasswordResetService {
     const resetToken = this.generateToken();
 
     this.sendTokenToDatabase(resetToken);
-    email.message = email.message.replace("{{action_url}}","http://localhost:4200/resetpassword?token="+resetToken);
-    email.message = email.message.replace("{{action_url}}","http://localhost:4200/resetpassword?token="+resetToken);
+    email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken);
+    email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken);
     
     this.http.post<any>('http://localhost:8000/api/email', JSON.stringify(email),{'headers':this.headers}).pipe(
       catchError((error:HttpErrorResponse) => {
@@ -65,6 +65,15 @@ export class PasswordResetService {
           this.router.navigate(['login'])
         }
       }
+    )
+  }
+
+  getToken(token:string){
+    return this.http.get<any>('http://localhost:8000/api/passwordResetToken/'+"\""+token+"\"").pipe(
+      catchError((error:HttpErrorResponse) => {
+        return of(error);
+      }
+      )
     )
   }
 }

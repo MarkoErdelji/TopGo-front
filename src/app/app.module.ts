@@ -19,6 +19,7 @@ import { MapComponent } from './components/map/map.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './_service/authconfig.interceptor';
 import { ForgotPasswordComponent } from './components/login/password-reset/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/login/password-reset/reset-password/reset-password.component';
 
 
 
@@ -29,6 +30,7 @@ import { ForgotPasswordComponent } from './components/login/password-reset/forgo
     LoginComponent,
     RegisterComponent,
     ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     AppRoutingModule,
