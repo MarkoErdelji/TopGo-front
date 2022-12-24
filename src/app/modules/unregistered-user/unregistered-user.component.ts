@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MapComponent } from 'src/app/components/map/map.component';
 
 @Component({
   selector: 'app-unregistered-user',
@@ -13,5 +14,6 @@ export class UnregisteredUserComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
 
 }

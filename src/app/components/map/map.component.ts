@@ -1,4 +1,4 @@
-import { Component, AfterViewInit } from '@angular/core';
+import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
@@ -19,6 +19,8 @@ export class MapComponent implements AfterViewInit {
   private map: any;
   private location!: LocationDTO;
   private previouseRouteControl: L.Routing.Control | null = null;
+
+  @Output() mapDestroyed = new EventEmitter<void>();
 
   private markerList: L.Marker[] = [];
 
@@ -113,6 +115,8 @@ export class MapComponent implements AfterViewInit {
   }
 }
 
+
+
 let  greenIcon = L.icon({
   iconUrl: 'assets/images/carIcon.png',
 
@@ -120,3 +124,4 @@ let  greenIcon = L.icon({
   iconAnchor:   [32, 32], // point of the icon which will correspond to marker's location
   popupAnchor:  [-3, -35] // point from which the popup should open relative to the iconAnchor
 });
+

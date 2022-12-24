@@ -65,7 +65,7 @@ export class AuthService {
   }
   static doLogout() {
     let removeToken = localStorage.removeItem('access_token');
-    let removeRefresh = localStorage.removeItem('refresh_token')
+    let removeRefresh = localStorage.removeItem('refresh_token');
   }
   checkForToken(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';

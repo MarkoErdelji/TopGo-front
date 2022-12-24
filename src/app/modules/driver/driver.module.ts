@@ -7,13 +7,21 @@ import { MaterialModule } from 'src/infrastructure/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarModule } from 'src/app/components/navbar/navbar.module';
 import { DriverMenuComponent } from './components/driver-menu/driver-menu.component';
+import { DriverProfileComponent } from './components/driver-profile/driver-profile.component';
+import { DriverInboxComponent } from './components/driver-inbox/driver-inbox.component';
+import { DriverHistoryComponent } from './components/driver-history/driver-history.component';
+import { DriverReportsComponent } from './components/driver-reports/driver-reports.component';
 
 
 
 @NgModule({
   declarations: [
     DriverComponent,
-    DriverMenuComponent
+    DriverMenuComponent,
+    DriverProfileComponent,
+    DriverInboxComponent,
+    DriverHistoryComponent,
+    DriverReportsComponent
   ],
   imports: [
     AppRoutingModule,
