@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MapComponent} from "../../components/map/map.component";
+
 
 @Component({
   selector: 'app-unregistered-user',
@@ -7,11 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UnregisteredUserComponent implements OnInit {
 
-  
 
+  @ViewChild('map') mapComponent?: MapComponent;
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  destroyMap() {
+    this.mapComponent?.destroyMap()
+  }
 }

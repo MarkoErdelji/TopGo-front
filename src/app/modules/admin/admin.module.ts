@@ -7,11 +7,12 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarModule } from '../../components/navbar/navbar.module';
 import { AdminComponent } from './admin.component';
 import { AdminMenuComponent } from './components/admin-menu/admin-menu.component';
+import { CreateDriverComponent } from './components/create-driver/create-driver.component';
 
 
 
 @NgModule({
-  declarations: [AdminComponent, AdminMenuComponent],
+  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent],
   imports: [
     AppRoutingModule,
     MaterialModule,
