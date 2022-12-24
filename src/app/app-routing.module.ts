@@ -26,17 +26,15 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'registered' , component: RegisteredUserComponent,canActivate: [UserGuard]},
                         { path: 'admin', component:AdminComponent,canActivate: [AdminGuard]},
                         { 
-                          path: 'driver',
-                          component: DriverComponent,
-                          children: [
-                            { path: 'inbox', component: DriverInboxComponent },
-                            { path: 'profile', component: DriverProfileComponent },
-                            { path: 'history', component: DriverHistoryComponent },
-                            { path: 'reports', component:DriverReportsComponent}
-                          ],canActivate: [DriverGuard]},
-                          
-                        { path: '', redirectTo: '**', pathMatch: 'full' },
-                        { path: '**', component: UnregisteredUserComponent }];
+                        path: 'driver',
+                        component: DriverComponent, 
+                        children: [
+                        { path: 'inbox', component: DriverInboxComponent },
+                        { path: 'profile', component: DriverProfileComponent },
+                        { path: 'history', component: DriverHistoryComponent },
+                        { path: 'reports', component:DriverReportsComponent}
+                        ],canActivate: [DriverGuard]},  
+                        { path: '', redirectTo: 'unregistered', pathMatch: 'full' },]
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

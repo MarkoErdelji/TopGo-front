@@ -82,6 +82,8 @@ export class AuthService {
    const isExpired = helper.isTokenExpired(JWTtoken);
 
    if (isExpired){
+    window.alert("Your token has expired,please log in again");
+    this.router.navigate(['login'])
     return;
    }
 
@@ -99,6 +101,13 @@ export class AuthService {
    }
   }
 
+  getEmail(){
+    const JWTtoken: string = localStorage.getItem("access_token") || '';
+    const helper = new JwtHelperService();
+
+    const decodedToken = helper.decodeToken(JWTtoken);
+    return decodedToken.sub;
+  }
   logout(){
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');

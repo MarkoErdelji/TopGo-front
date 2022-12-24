@@ -1,1 +1,45 @@
-<p>driver-profile works!</p>
+<div id="full-content">
+    <div class="shadow" id="profile-content">
+        <div id="profile-img-container">
+            <img [src]="imageUrl" id="profile-image">
+            <div class="vertical-line"></div>
+        </div>
+        <div id="profile-data">
+            <div id="labelContainer">
+                <div id="first-last-name-container">
+                    <p>First Name:</p>
+                    <p>Last Name:</p>
+                </div>
+                <p>Username:</p>
+                <p>Address:</p>
+                <p>Phone:</p>
+                <div id="extensive-detail-container">
+                    <p>Documents:</p>
+                    <p>Vehicle details:</p>
+                </div>
+            </div>
+            <div id="valueContainer">
+                <div id="first-last-name-container">
+                    <p>{{firstName}}</p>
+                    <p>{{lastName}}</p>
+                </div>
+                <p>{{username}}</p>
+                <p>{{address}}</p>
+                <p>{{phone}}</p>
+                <div id="extensive-detail-container-icons">
+                    <div>
+                        <mat-icon> directions_car</mat-icon>
+                    </div>
+                    <div>
+                    <mat-icon> insert_invitation</mat-icon>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <button mat-raised-button shadow id="edit-profile" [routerLink]="['driver/profile']">Edit profile</button>
+    </div>
+    <div id="report-content">
+        <div class="shadow" id="report-box"> </div>
+        <div class="shadow" id="report-box-end"> </div>
+    <div>
+</div>

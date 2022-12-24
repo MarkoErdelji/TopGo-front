@@ -1,5 +1,5 @@
 <div id="menu-buttons">
-    <img src="../../../../../assets/images/tate.png" [routerLink]="['/driver/profile']" id="profile-img">
+    <img [src] = "imageUrl" [routerLink]="['/driver/profile',driverId]" id="profile-img">
     <button mat-raised-button shadow [routerLink]="['/driver/inbox']" id="inbox">Inbox</button>
     <button mat-raised-button shadow [routerLink]="['/driver/history']" id="history">History</button>
     <button mat-raised-button shadow [routerLink]="['/driver/reports']" id="reports">Reports</button>

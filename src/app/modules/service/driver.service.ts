@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AllDriversDTO} from "../DTO/AllDriversDTO";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, catchError, map, mergeMap, Observable, of} from "rxjs";
 import {VehicleInfoDTO} from "../DTO/VehicleInfoDTO";
 import {GeoLocationDTO} from "../DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
+import { Router } from '@angular/router';
 
 
 @Injectable({
@@ -13,7 +14,7 @@ import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
 export class DriverService {
   endpoint: string = 'http://localhost:8000/api/driver';
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,private router:Router) { }
   private Location$ = new BehaviorSubject<any>({});
   selectLocation$ = this.Location$.asObservable();
 
@@ -28,6 +29,25 @@ export class DriverService {
   }
   setLocation(Location: DriverInfoDTO) {
     this.Location$.next(Location);
+  }
+
+
+  getDriverById(id:number){
+    
+      return this.http.get<any>(this.endpoint+"/"+id)
+      .pipe(
+        catchError((error:HttpErrorResponse) => {
+          return of(error);
+        }
+        )
+      ).pipe(
+      map(data => {
+        if (data) {
+          return data as DriverInfoDTO;
+        }
+        return;
+      })
+      )
   }
 
 }
