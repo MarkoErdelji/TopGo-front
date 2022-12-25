@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Md5 } from 'ts-md5';
 import { RegisterData } from '../components/register/RegisterDTO';
+import {DriverInfoDTO} from "../modules/DTO/DriverInfoDTO";
 @Injectable({
   providedIn: 'root',
 })
@@ -18,11 +19,14 @@ export class AuthService {
   endpoint: string = 'http://localhost:8000/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
+
+
   constructor(private http: HttpClient, public router: Router) {}
   // Sign-in
+
   async signIn(username:string|null,password:string|null) {
     const email = username;
-    const headers = { 'content-type': 'application/json'}  
+    const headers = { 'content-type': 'application/json'}
     const res = await this.http
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers})
       .subscribe((res: any) => {
@@ -31,8 +35,8 @@ export class AuthService {
         this.checkForToken();
       });
     return res;
-    
-    
+
+
   }
   getToken() {
     return localStorage.getItem('access_token');
@@ -63,13 +67,15 @@ export class AuthService {
     let authToken = localStorage.getItem('access_token');
     return authToken !== null ? true : false;
   }
+
+
   static doLogout() {
     let removeToken = localStorage.removeItem('access_token');
     let removeRefresh = localStorage.removeItem('refresh_token')
   }
   checkForToken(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
-    
+
    if (JWTtoken == ''){
     return;
    }

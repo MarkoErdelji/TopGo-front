@@ -20,10 +20,10 @@ export class MapService {
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&<params>`
     );
   }
-  private Location$ = new BehaviorSubject<any>({});
-  selectLocation$ = this.Location$.asObservable();
+  private Driver$ = new BehaviorSubject<any>({});
+  selectDriver$ = this.Driver$.asObservable();
   setDriver(Location: DriverInfoDTO) {
-    this.Location$.next(Location);
+    this.Driver$.next(Location);
   }
 
 }

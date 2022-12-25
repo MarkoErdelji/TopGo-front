@@ -3,9 +3,9 @@
   <div id = "driver-info">
     <img id = "driver-image" src="assets/images/tate.png">
     <div id = "info">
-    <p id ="driver-name" #driverName>Pera Peric</p>
-      <p id ="driver-phone" #driverPhone>062333333</p>
-      <p id ="driver-email" #driverEmail>email@gmail.com</p>
+    <p id ="driver-name" >{{driverName}}</p>
+      <p id ="driver-phone" >{{driverPhone}}</p>
+      <p id ="driver-email">{{driverEmail}}</p>
     </div>
 </div>
 </div>
@@ -34,14 +34,50 @@
       <mat-checkbox formControlName="forBabies">For Babies</mat-checkbox>
         <mat-checkbox formControlName="forPets">For Pets</mat-checkbox>
       <div id = "button-div">
-      <button  id="order-button" type="submit" mat-raised-button>Order</button>
-        <button  id="cancel-button" type="submit" mat-raised-button>Cancle</button>
+      <button  id="search-button" type="submit" mat-raised-button >Search</button>
+        <button  id="confirm-button" type="submit" mat-raised-button [disabled]="isDisabled">Confirm</button>
+        <button  id="cancel-button" type="submit" mat-raised-button >Cancle</button>
+
       </div>
 
 
 
     </div>
   </form>
-</div>
 
+</div>
+<div id = 'confirm-ride' #confirmRide>
+  <div id = 'confirm-ride-info' class = 'center' #confirmRideInfo>
+    <div class = 'route-div'>
+      <img src="assets/images/carIcon.png" id = "departure-image">
+      <hr id = "orange-line">
+      <img src="assets/images/destination-marker.png" id = "destination-image">
+    </div>
+    <div class = 'route-div'>
+      <p id = 'departure-text' >{{destinationP}}</p>
+      <p id = 'destination-text' >{{departureP}}</p>
+    </div>
+    <div id = 'driver-info-ride'>
+      <div id ='driver-info-border'>
+      <img src="assets/images/tate.png" id = "driver-image-ride">
+      <div id = driver-info-ride-text>
+      <p id ="driver-name-ride" >{{driverNameRide}}</p>
+      <p id ="driver-phone-ride" >{{driverPhoneRide}}</p>
+      <p id ="driver-email-ride" >{{driverEmailRide}}</p>
+      </div>
+      </div>
+      <div id = vehicle-info-ride-text>
+        <p id ="vehicle-name-ride" >{{vehicleNameRide}}</p>
+        <p id ="vehicle-type-ride" >{{vehicleTypeRide}}</p>
+        <p id ="number-of-seats" >Seats: {{numberOfSeats}}</p>
+        <p id ="for-animals" >For Pets: {{forAnimals}}</p>
+        <p id ="for-babies" >For Babies: {{forBabies}}</p>
+      </div>
+    </div>
+    <div id = 'ride-button-div'>
+    <button  id="order-button"  (click)="orderRide()" mat-raised-button >Order</button>
+    <button  id="cancer-order-button"  (click)="cancelOrder()" mat-raised-button >Cancel</button>
+    </div>
+  </div>
+</div>
 

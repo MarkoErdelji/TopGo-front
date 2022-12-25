@@ -20,7 +20,7 @@ export class RouteFormComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.mapService.selectLocation$.subscribe({next:(driver)=>{
+    this.mapService.selectDriver$.subscribe({next:(driver)=>{
         console.log(driver)
       } })
   }

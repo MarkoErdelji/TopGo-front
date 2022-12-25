@@ -9,6 +9,9 @@ import {DriverService} from "../../modules/service/driver.service";
 import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
 import {marker} from "leaflet";
+import {AuthService} from "../../_service/auth.service";
+
+
 
 @Component({
   selector: 'app-map',
@@ -23,7 +26,7 @@ export class MapComponent implements AfterViewInit {
   private markerList: L.Marker[] = [];
 
 
-  constructor(private routeFormService: RouteFormService, private mapService: MapService,private driverService:DriverService) { }
+  constructor(private routeFormService: RouteFormService, private mapService: MapService,private driverService:DriverService ,private authService:AuthService) { }
   private initMap(): void {
     this.map = L.map('map', {
       center: [45.2396, 19.8227],
@@ -86,6 +89,8 @@ export class MapComponent implements AfterViewInit {
     })
 
 
+
+
   }
 
   ngAfterViewInit(): void {
@@ -105,6 +110,7 @@ export class MapComponent implements AfterViewInit {
           this.addDriverMarker(driver)
         }
       } })
+
     this.routeFormService.RemoveMarkers$.subscribe({next:(remove)=>{
         console.log("remove");
         this.markerList.forEach(marker => marker.remove());
