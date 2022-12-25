@@ -1,9 +1,8 @@
 <div id="menu-buttons">
-    <img src="../../../../../assets/images/tate.png" id="profile-img">
-    <button mat-raised-button shadow id="inbox">Inbox</button>
-    <button mat-raised-button shadow id="history">History</button>
-    <button mat-raised-button shadow id="routes">Routes</button>
-    <button mat-raised-button shadow id="reports">Reports</button>
+    <img [src] = "imageUrl" [routerLink]="['/driver/profile']" id="profile-img">
+    <button mat-raised-button shadow [routerLink]="['/driver/inbox']" id="inbox">Inbox</button>
+    <button mat-raised-button shadow [routerLink]="['/driver/history']" id="history">History</button>
+    <button mat-raised-button shadow [routerLink]="['/driver/reports']" id="reports">Reports</button>
 </div>
 
 <div id="logout-container">

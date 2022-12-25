@@ -50,7 +50,12 @@ export class PasswordResetService {
     email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken+"&email="+to);
     email.message = email.message.replace("{{action_url}}","http://localhost:4200/login/resetPassword?token="+resetToken+"&email="+to);
     
-    this.http.post<any>('http://localhost:8000/api/email', JSON.stringify(email),{'headers':this.headers}).pipe(
+    this.http.post<any>('http://localhost:8000/api/email', JSON.stringify(email),
+    {
+      headers: this.headers,
+      observe: 'response',
+      responseType: 'json'
+    }).pipe(
       catchError((error:HttpErrorResponse) => {
         return of(error);
       }
@@ -60,7 +65,7 @@ export class PasswordResetService {
         if(response.status == 404){
           window.alert("Error: No such user in database!");
         }
-        else if(response.status == 200){
+        else if(response. status == 200){
           window.alert("Email successfuly sent");
           this.router.navigate(['login'])
         }

@@ -7,23 +7,40 @@ import { MaterialModule } from 'src/infrastructure/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarModule } from 'src/app/components/navbar/navbar.module';
 import { DriverMenuComponent } from './components/driver-menu/driver-menu.component';
+import { DriverProfileComponent } from './components/driver-profile/driver-profile.component';
+import { DriverInboxComponent } from './components/driver-inbox/driver-inbox.component';
+import { DriverHistoryComponent } from './components/driver-history/driver-history.component';
+import { DriverReportsComponent } from './components/driver-reports/driver-reports.component';
+import { DriverVehicleDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-vehicle-dialog/driver-vehicle-dialog.component';
+import { DriverDocumentsDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-documents-dialog/driver-documents-dialog.component';
+import { DriverProfileEditComponent } from './components/driver-profile/driver-profile-edit/driver-profile-edit.component';
+import { DriverChangePasswordDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-change-password-dialog/driver-change-password-dialog.component';
 
 
 
 @NgModule({
   declarations: [
     DriverComponent,
-    DriverMenuComponent
+    DriverMenuComponent,
+    DriverProfileComponent,
+    DriverInboxComponent,
+    DriverHistoryComponent,
+    DriverReportsComponent,
+    DriverVehicleDialogComponent,
+    DriverDocumentsDialogComponent,
+    DriverProfileEditComponent,
+    DriverChangePasswordDialogComponent
   ],
   imports: [
     AppRoutingModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    NavbarModule
+    NavbarModule,
+    CommonModule
   ],
   exports: [
-    DriverComponent
+    DriverComponent,DriverMenuComponent,DriverProfileComponent,DriverInboxComponent,DriverHistoryComponent,DriverReportsComponent,DriverProfileEditComponent,DriverChangePasswordDialogComponent
   ]
 })
 export class DriverModule { }

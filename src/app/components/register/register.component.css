@@ -16,6 +16,10 @@ mat-form-field  {margin: 5px;}
     cursor: pointer;
 
 }
+mat-form-field >>> .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
 #Name{
     display: inline-block;
     overflow: hidden;

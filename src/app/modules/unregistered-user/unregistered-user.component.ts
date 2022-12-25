@@ -1,3 +1,4 @@
+import { DriverService } from '../service/driver.service';
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {MapComponent} from "../../components/map/map.component";
 
@@ -14,7 +15,9 @@ export class UnregisteredUserComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+
   }
+
 
   destroyMap() {
     this.mapComponent?.destroyMap()

@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {AllDriversDTO} from "../DTO/AllDriversDTO";
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, catchError, map, mergeMap, Observable, of} from "rxjs";
 import {VehicleInfoDTO} from "../DTO/VehicleInfoDTO";
 import {GeoLocationDTO} from "../DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
+import { Router } from '@angular/router';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class DriverService {
+  id?:number;
+
   endpoint: string = 'http://localhost:8000/api/driver';
 
-  constructor(private http: HttpClient) { }
+  private base64Subject = new BehaviorSubject<string>('initial value');
+  base64Observable$ = this.base64Subject.asObservable();
+
+
+  constructor(private http: HttpClient,private router:Router) { }
+
   private Location$ = new BehaviorSubject<any>({});
   selectLocation$ = this.Location$.asObservable();
 
@@ -31,6 +39,20 @@ export class DriverService {
   }
   setLocation(Location: DriverInfoDTO) {
     this.Location$.next(Location);
+  }
+  getDriverById(id:number){
+     return this.http.get<any>(this.endpoint+"/"+id)
+  }
+  getDriversDocumentsByDriverId(id:number){
+    return this.http.get<any>(this.endpoint+"/"+id+"/documents");
+  }
+
+  setImageUrl(url: string) {
+    this.base64Subject.next(url);
+  }
+
+  getImageUrl() {
+    return this.base64Subject.asObservable();
   }
 
 
