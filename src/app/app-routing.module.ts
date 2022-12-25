@@ -13,6 +13,9 @@ import { AdminGuard } from './_guards/admin.guard';
 import { DriverGuard } from './_guards/driver.guard';
 import { ForgotPasswordComponent } from './components/login/password-reset/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/login/password-reset/reset-password/reset-password.component';
+import {CreateDriverComponent} from "./modules/admin/components/create-driver/create-driver.component";
+import {AdminHistoryComponent} from "./modules/admin/components/admin-history/admin-history.component";
+import {AdminInboxComponent} from "./modules/admin/components/admin-inbox/admin-inbox.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -20,7 +23,12 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login/resetPassword',component:ResetPasswordComponent},
                         { path: 'unregistered', component: UnregisteredUserComponent},
                         { path: 'registered' , component: RegisteredUserComponent,canActivate: [UserGuard]},
-                        { path: 'admin', component:AdminComponent,canActivate: [AdminGuard]},
+                        { path: 'admin', component:AdminComponent,
+                          children:[
+                            {path: 'createDriver', component: CreateDriverComponent},
+                            {path: 'history', component: AdminHistoryComponent},
+                            {path: 'inbox', component: AdminInboxComponent}],
+                          canActivate: [AdminGuard]},
                         { path: 'driver', component:DriverComponent,canActivate: [DriverGuard]},
                         { path: '', redirectTo: '**', pathMatch: 'full' },
                         { path: '**', component: UnregisteredUserComponent }];
