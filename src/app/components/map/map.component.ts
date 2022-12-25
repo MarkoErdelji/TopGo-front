@@ -26,7 +26,6 @@ export class MapComponent implements AfterViewInit {
   private location!: LocationDTO;
   private previouseRouteControl: L.Routing.Control | null = null;
 
-  @Output() mapDestroyed = new EventEmitter<void>();
 
   private markerList: L.Marker[] = [];
 

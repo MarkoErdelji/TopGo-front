@@ -28,23 +28,23 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login/resetPassword',component:ResetPasswordComponent},
                         { path: 'unregistered', component: UnregisteredUserComponent},
                         { path: 'registered' , component: RegisteredUserComponent,canActivate: [UserGuard]},
-                        { 
+                        {
                         path: 'driver',
-                        component: DriverComponent, 
+                        component: DriverComponent,
                         children: [
                         { path: 'inbox', component: DriverInboxComponent },
                         { path: 'profile', component: DriverProfileComponent },
                         { path: 'profile/edit',component:DriverProfileEditComponent},
                         { path: 'history', component: DriverHistoryComponent },
                         { path: 'reports', component:DriverReportsComponent}
-                        ],canActivate: [DriverGuard]},  
-                        { path: '', redirectTo: 'unregistered', pathMatch: 'full' },]
+                        ],canActivate: [DriverGuard]},
+                        { path: '', redirectTo: 'unregistered', pathMatch: 'full' },
                         { path: 'admin', component:AdminComponent,
                           children:[
                             {path: 'createDriver', component: CreateDriverComponent},
                             {path: 'history', component: AdminHistoryComponent},
                             {path: 'inbox', component: AdminInboxComponent}],
-                          canActivate: [AdminGuard]},];
+                          canActivate: [AdminGuard]}];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
