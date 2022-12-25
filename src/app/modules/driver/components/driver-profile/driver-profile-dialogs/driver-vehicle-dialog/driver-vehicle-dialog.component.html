@@ -1,0 +1,21 @@
+<div class="shadow" id="vehicle-content">
+    <div class="centered">
+        <mat-icon> directions_car</mat-icon>
+    </div>
+    <div id='vehicle-value-content'>
+        <div id="labelContainer">
+            <p>Model:</p>
+            <p>License plate:</p>
+            <p>Number of seats:</p>
+            <p>Type:</p>
+            <mat-checkbox [disabled]="true" [checked] = "vehicleInfo?.petTransport || true">Pets</mat-checkbox>
+        </div>
+        <div id="valueContainer">
+            <p>{{vehicleInfo?.model}}</p>
+            <p>{{vehicleInfo?.licenseNumber}}</p>
+            <p>{{vehicleInfo?.passengerSeats}}</p>
+            <p>{{vehicleInfo?.vehicleType}}</p>
+            <mat-checkbox [disabled]="true" [checked] = "vehicleInfo?.babyTransport || true">Baby</mat-checkbox>
+        </div>
+    </div>
+</div>

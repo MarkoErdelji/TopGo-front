@@ -1,0 +1,23 @@
+#document-content{
+    border-radius: 10px;
+    background-color: #F4F4F4;
+    height:80vh;
+    width:45vw;
+    padding:0px;
+    overflow-y: scroll;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+.show-document-img{
+    margin-top:50px;
+    width:25vw;
+    height:30vh;
+}
+
+.show-document-div{
+    display:flex;
+    align-items: center;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+}

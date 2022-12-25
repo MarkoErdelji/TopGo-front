@@ -1,0 +1,54 @@
+<div class="shadow" id='form-content'>
+    <div class = "shadow" id="middle-content">
+    <form [formGroup]="editForm" (ngSubmit)="sendEditRequest()" id = "editForm">
+        <div id="image-container">
+            <img src="{{imageUrl}}"id="profile-image">
+        </div>
+        <div id="other-forms">
+            <div id="Name">
+                <mat-form-field mat-error appearance="outline" id = "first-name-form" class = "custom-mat-form-field">
+                    <mat-label>First name</mat-label>
+                    <input matInput name="firstName" formControlName="firstName">
+                    <mat-error  *ngIf="editForm.controls.firstName.errors?.['required']">Error: field can not be empty</mat-error>
+                    <mat-error  *ngIf="editForm.controls.firstName.hasError('pattern')">Error: first letter must be uppercase</mat-error>
+                </mat-form-field>
+                <mat-form-field mat-error appearance="outline" id = "last-name-form" class = "custom-mat-form-field">
+                    <mat-label>Last name</mat-label>
+                    <input matInput name="lastName" formControlName="lastName">
+                    <mat-error  *ngIf="editForm.controls.lastName.errors?.['required']">Error: field can not be empty</mat-error>
+                    <mat-error  *ngIf="editForm.controls.lastName.hasError('pattern')">Error: first letter must be uppercase</mat-error>
+                </mat-form-field>
+            </div>
+
+            <mat-form-field mat-error appearance="outline" class = "custom-mat-form-field">
+                <mat-label>E-mail</mat-label>
+                <input matInput name="email" formControlName="email">
+                <mat-error  *ngIf="editForm.controls.email.errors?.['required']">Error: field can not be empty</mat-error>
+                <mat-error  *ngIf="editForm.controls.email.hasError('email')">Error: Email form is incorrect</mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class = "custom-mat-form-field">
+                <mat-label>Phone Nubmer</mat-label>
+                <input matInput name="phoneNumber" formControlName="phoneNumber" required="">
+                <mat-error  *ngIf="editForm.controls.phoneNumber.errors?.['required']">Error: field can not be empty</mat-error>
+                <mat-error  *ngIf="editForm.controls.phoneNumber.hasError('pattern')">Error: Phone number is in incorrect format</mat-error>
+            </mat-form-field>
+            <mat-form-field mat-error appearance="outline" class = "custom-mat-form-field">
+                <mat-label>Adress</mat-label>
+                <input matInput name="adress" formControlName="adress">
+                <mat-error  *ngIf="editForm.controls.adress.errors?.['required']">Error: field can not be empty</mat-error>
+                <mat-error  *ngIf="editForm.controls.adress.hasError('pattern')">Error: address is in incorrect format</mat-error>
+            </mat-form-field>
+        </div>
+        <mat-divider></mat-divider>
+        <div id="change-password-div">
+            <p class="bold-text">Password</p>
+            <p id="change-password" (click)="changePassword()">Change Password</p>
+        </div>
+        <div id="edit-buttons">
+            <button mat-raised-button shadow id="cancel" routerLink="/driver/profile" type="button">Cancel</button>
+            <button mat-raised-button shadow id="edit-profile" >Save changes</button>
+        </div>
+    </form>
+    </div>
+</div>

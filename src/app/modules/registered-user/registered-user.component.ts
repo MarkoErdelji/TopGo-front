@@ -11,7 +11,7 @@ export class RegisteredUserComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-
+    
   }
 
 }

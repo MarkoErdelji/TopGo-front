@@ -1,6 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, ContentChild, ElementRef, Input, OnInit, Output } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
+import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
+import { DriverService } from 'src/app/modules/service/driver.service';
 import { AuthService } from 'src/app/_service/auth.service';
+
 
 @Component({
   selector: 'app-driver-menu',
@@ -9,13 +13,15 @@ import { AuthService } from 'src/app/_service/auth.service';
 })
 export class DriverMenuComponent implements OnInit {
 
-  constructor() {}
+  imageUrl?:string
+  constructor(private driverService: DriverService) {}
 
   ngOnInit(): void {
-
+    this.driverService.getImageUrl().subscribe(url => this.imageUrl = url)
   }
 
   logout(){
     AuthService.doLogout();
   }
+
 }
