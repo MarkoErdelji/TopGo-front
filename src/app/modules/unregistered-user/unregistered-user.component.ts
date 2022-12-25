@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { MapComponent } from 'src/app/components/map/map.component';
 import { DriverService } from '../service/driver.service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {MapComponent} from "../../components/map/map.component";
+
 
 @Component({
   selector: 'app-unregistered-user',
@@ -9,8 +10,8 @@ import { DriverService } from '../service/driver.service';
 })
 export class UnregisteredUserComponent implements OnInit {
 
-  
 
+  @ViewChild('map') mapComponent?: MapComponent;
   constructor() { }
 
   ngOnInit(): void {
@@ -18,4 +19,7 @@ export class UnregisteredUserComponent implements OnInit {
   }
 
 
+  destroyMap() {
+    this.mapComponent?.destroyMap()
+  }
 }

@@ -14,7 +14,7 @@ mat-form-field  {margin: 5px;}
     max-width: 400px;
     margin-top: 1%;
     cursor: pointer;
-           
+
 }
 mat-form-field >>> .mat-form-field-outline {
     background-color: white;
@@ -55,7 +55,7 @@ mat-form-field >>> .mat-form-field-outline {
     text-align: center;
     display:table;
     width:100%;
-    
+
 }
 #register-header-h1
 {
@@ -63,9 +63,9 @@ mat-form-field >>> .mat-form-field-outline {
     display:table-cell;
     vertical-align: middle;
     font-size: 30px;
-    
+
 }
-#register-form-div 
+#register-form-div
 {
     margin: 0;
     width: 30%;
@@ -75,7 +75,7 @@ mat-form-field >>> .mat-form-field-outline {
     text-align: center;
     min-height: 400px;
     min-width: 250px;
-    
+
 }
 
 #create-accout
@@ -91,10 +91,9 @@ mat-form-field >>> .mat-form-field-outline {
     flex-direction: column;
     align-items: flex-start;
     align-items: center;
-    
-    
-  }
 
+
+  }
 
 
 #other-forms{
@@ -115,13 +114,13 @@ mat-form-field >>> .mat-form-field-outline {
         position: relative;
         width: 95%;
     }
-    
+
     #last-name-form{
         float: left;
         position: relative;
         width: 95%;
     }
-    
+
     #usnm-pass{
         display: block;
         overflow: hidden;
@@ -131,7 +130,7 @@ mat-form-field >>> .mat-form-field-outline {
         float: left;
         width: 95%;
     }
-    
+
     #password-form{
         float: left;
         width: 95%;

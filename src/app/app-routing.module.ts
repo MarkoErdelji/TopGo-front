@@ -18,6 +18,9 @@ import { DriverProfileComponent } from './modules/driver/components/driver-profi
 import { DriverHistoryComponent } from './modules/driver/components/driver-history/driver-history.component';
 import { DriverReportsComponent } from './modules/driver/components/driver-reports/driver-reports.component';
 import { DriverProfileEditComponent } from './modules/driver/components/driver-profile/driver-profile-edit/driver-profile-edit.component';
+import {CreateDriverComponent} from "./modules/admin/components/create-driver/create-driver.component";
+import {AdminHistoryComponent} from "./modules/admin/components/admin-history/admin-history.component";
+import {AdminInboxComponent} from "./modules/admin/components/admin-inbox/admin-inbox.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -25,7 +28,6 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login/resetPassword',component:ResetPasswordComponent},
                         { path: 'unregistered', component: UnregisteredUserComponent},
                         { path: 'registered' , component: RegisteredUserComponent,canActivate: [UserGuard]},
-                        { path: 'admin', component:AdminComponent,canActivate: [AdminGuard]},
                         { 
                         path: 'driver',
                         component: DriverComponent, 
@@ -37,6 +39,12 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'reports', component:DriverReportsComponent}
                         ],canActivate: [DriverGuard]},  
                         { path: '', redirectTo: 'unregistered', pathMatch: 'full' },]
+                        { path: 'admin', component:AdminComponent,
+                          children:[
+                            {path: 'createDriver', component: CreateDriverComponent},
+                            {path: 'history', component: AdminHistoryComponent},
+                            {path: 'inbox', component: AdminInboxComponent}],
+                          canActivate: [AdminGuard]},];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

@@ -1,4 +1,6 @@
-import { Component, AfterViewInit, EventEmitter, Output } from '@angular/core';
+
+import {Component, AfterViewInit, OnDestroy} from '@angular/core';
+
 import { MatDialog } from '@angular/material/dialog';
 import * as L from 'leaflet';
 import 'leaflet-routing-machine';
@@ -32,8 +34,6 @@ export class MapComponent implements AfterViewInit {
       zoom: 13,
     });
 
-
-
     const tiles = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 18,
       minZoom: 3,
@@ -41,6 +41,12 @@ export class MapComponent implements AfterViewInit {
     });
 
     tiles.addTo(this.map);
+  }
+
+  destroyMap() {
+    this.map.eachLayer((layer: L.Layer) => {
+      layer.remove();
+    });
   }
 
   createRoute() {
@@ -113,6 +119,8 @@ export class MapComponent implements AfterViewInit {
       } })
 
   }
+
+
 }
 
 
