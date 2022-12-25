@@ -1,12 +1,12 @@
-<div class = "main-backgroud">
+<div class = "main-backgroud shadow">
 
-  <form id = "createDriverForm" [formGroup] = "createDriverForm">
+  <form id = "createDriverForm" [formGroup] = "createDriverForm" (ngSubmit)="create()" >
     <div id="other-forms">
       <div class ="separators">
         <p>Personal information</p>
         <hr>
       </div>
-      <div id="Name">
+      <div class="Name">
         <mat-form-field appearance="outline" id = "first-name-form">
           <mat-label>First name</mat-label>
           <input matInput name="firstName" formControlName="firstName">
@@ -41,31 +41,42 @@
         <p>Car details</p>
         <hr>
       </div>
-      <mat-form-field appearance="outline" class = "other-forms">
-        <mat-label>Model</mat-label>
-        <input matInput name="model" formControlName="model">
-      </mat-form-field>
 
-      <mat-form-field appearance="outline" class = "other-forms">
-        <mat-label>Licence Plate</mat-label>
-        <input matInput name="licencePlate" formControlName="licencePlate">
-      </mat-form-field>
+      <div class = "Name">
+        <mat-form-field appearance="outline" class = "other-forms">
+          <mat-label>Model</mat-label>
+          <input matInput name="model" formControlName="model">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class = "other-forms">
+          <mat-label>Licence Plate</mat-label>
+          <input matInput name="licencePlate" formControlName="licencePlate">
+        </mat-form-field>
+      </div>
+
       <div id="vehicleInfo">
         <mat-form-field appearance="outline" id = "seats-form">
           <mat-label>Seats</mat-label>
-          <input matInput name="seats" formControlName="seats">
+          <input matInput name="seats" formControlName="seats" type="number">
         </mat-form-field>
-        <mat-select placeholder="Vehicle Type" id = "vehicle-type">
 
-          <mat-option>Luxury</mat-option>
-          <mat-option>Standard</mat-option>
-          <mat-option>Van</mat-option>
-<!--          <input matInput name="vehicleType" formControlName="vehicleType">-->
-        </mat-select>
+        <mat-form-field appearance="outline" id = "vehicle-type">
+          <mat-label >Vehicle type</mat-label>
+          <mat-select formControlName="vehicleType">
+            <mat-option value = "STANDARD">Standard</mat-option>
+            <mat-option value = "LUXURY">Luxury</mat-option>
+            <mat-option value = "VAN">Van</mat-option>
+          </mat-select>
+        </mat-form-field>
+
       </div>
+      <mat-form-field appearance="outline" id = "current-location-form">
+        <mat-label>Vehicle location address</mat-label>
+        <input matInput name="vehicleLocation" formControlName="vehicleLocation">
+      </mat-form-field>
       <div id = "checkboxes">
-        <mat-checkbox>Babies</mat-checkbox>
-        <mat-checkbox>Babies</mat-checkbox>
+        <mat-checkbox formControlName = "forBabies">Babies</mat-checkbox>
+        <mat-checkbox formControlName = "forAnimals">Animals</mat-checkbox>
       </div>
       <div class ="separators">
         <p>Documents</p>
