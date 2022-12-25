@@ -9,6 +9,7 @@ import {BehaviorSubject} from "rxjs";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {MapService} from "../../../../components/map/map.service";
 import {Location} from "@angular/common";
+import {DistanceAndAverageDTO} from "../../../DTO/DistanceAndAverageDTO";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -16,6 +17,9 @@ import {Location} from "@angular/common";
   styleUrls: ['./registered-route-form.component.css']
 })
 export class RegisteredRouteFormComponent implements OnInit {
+  distance?:number;
+  average?:number;
+  ridePrice?:number;
   @ViewChild('popupContent') popupContent?: ElementRef;
   @ViewChild('confirmRide') confirmRide?: ElementRef;
   driverName?:string;
@@ -29,6 +33,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   vehicleNameRide?:string;
   vehicleTypeRide?:string;
   numberOfSeats?:number;
+  driverImage?:string;
 
   forAnimals?:boolean;
 
@@ -96,7 +101,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   private searchPressed() {
     this.routeFormService.RemoveAllMarkers();
-    this.driverService.getAll().subscribe(value => {
+    this.driverService.getOnlyActive().subscribe(value => {
 
       for (let driver of value.results) {
         this.driverService.getDriverVehicle(driver.id).subscribe(vehicle => {
@@ -155,17 +160,24 @@ export class RegisteredRouteFormComponent implements OnInit {
     {
 
       this.vehicleNameRide = vehicle.model;
-      let vehType :string = "STANDARD";
-      if(vehicle.vehicleType == "0")
-      vehType = "STANDARD"
-      if(vehicle.vehicleType == "1")
-        vehType = "LUXURY"
-      if(vehicle.vehicleType == "2")
-        vehType = "VAN"
-      this.vehicleTypeRide = vehType;
+      this.vehicleTypeRide = vehicle.vehicleType;
       this.numberOfSeats = vehicle.passengerSeats;
       this.forAnimals= vehicle.petTransport;
       this.forBabies = vehicle.babyTransport;
+      let vehType:string = "1"
+      if(vehicle.vehicleType == "STANDARD")
+        vehType ="1"
+      if(vehicle.vehicleType == "LUXURY")
+        vehType ="2"
+      if(vehicle.vehicleType == "VAN")
+        vehType ="3"
+
+      this.driverService.getVehiclePrice(vehType).subscribe(price  =>
+    {
+        console.log(price)
+        this.ridePrice = price * this.distance!;
+    })
+
     })
   }
 
@@ -188,8 +200,16 @@ export class RegisteredRouteFormComponent implements OnInit {
           this.driverName = driver.name + " " + driver.surname;
           this.driverPhone= driver.telephoneNumber;
           this.driverEmail = driver.email;
+          this.driverImage = driver.profilePicture;
           this.isDisabled = false;
         }
+
+
+      } })
+    this.mapService.selectDistanceAndAverage$.subscribe({next:(distance:DistanceAndAverageDTO)=>{
+      this.distance = distance.distance;
+      this.average = distance.average;
+
 
 
       } })

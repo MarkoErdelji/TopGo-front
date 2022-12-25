@@ -10,6 +10,7 @@ import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
 import {marker} from "leaflet";
 import {AuthService} from "../../_service/auth.service";
+import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
 
 
 
@@ -24,6 +25,7 @@ export class MapComponent implements AfterViewInit {
   private previouseRouteControl: L.Routing.Control | null = null;
 
   private markerList: L.Marker[] = [];
+
 
 
   constructor(private routeFormService: RouteFormService, private mapService: MapService,private driverService:DriverService ,private authService:AuthService) { }
@@ -66,6 +68,17 @@ export class MapComponent implements AfterViewInit {
               routeWhileDragging: true,
               waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
             }).addTo(this.map);
+            routeControl.on('routesfound', (e) => {
+              let routes = e.routes;
+              let distanceAndAverage:DistanceAndAverageDTO =
+                {
+                  distance:routes[0].summary.totalDistance/1000,
+                  average:Math.round(routes[0].summary.totalTime % 3600 / 60)
+                }
+                this.mapService.setDistanceAndAverage(distanceAndAverage);
+              // alert distance and time in km and minutes
+            });
+
             this.previouseRouteControl = routeControl;
           }
         })

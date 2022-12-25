@@ -20,6 +20,9 @@ export class DriverService {
   getAll(): Observable<AllDriversDTO> {
     return this.http.get<AllDriversDTO>(this.endpoint);
   }
+  getVehiclePrice(vehicleTypeId:string): Observable<number> {
+    return this.http.get<number>('http://localhost:8000/api/vehicle/type/' + vehicleTypeId);
+  }
   getOnlyActive(): Observable<AllDriversDTO>{
     return this.http.get<AllDriversDTO>(this.endpoint+"/active")
   }
@@ -29,6 +32,7 @@ export class DriverService {
   setLocation(Location: DriverInfoDTO) {
     this.Location$.next(Location);
   }
+
 
 }
 

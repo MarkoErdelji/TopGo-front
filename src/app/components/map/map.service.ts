@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
+import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
 
 @Injectable({
   providedIn: 'root',
@@ -24,6 +25,12 @@ export class MapService {
   selectDriver$ = this.Driver$.asObservable();
   setDriver(Location: DriverInfoDTO) {
     this.Driver$.next(Location);
+  }
+
+  private DistanceAndAverage$ = new BehaviorSubject<any>({});
+  selectDistanceAndAverage$ = this.DistanceAndAverage$.asObservable();
+  setDistanceAndAverage(DaA: DistanceAndAverageDTO) {
+    this.DistanceAndAverage$.next(DaA);
   }
 
 }

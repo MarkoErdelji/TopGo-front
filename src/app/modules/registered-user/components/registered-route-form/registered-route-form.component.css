@@ -84,6 +84,7 @@ mat-checkbox
 
   border-radius: 100px;
   width: 100px;
+  height: 100px;
   stroke: black;
   margin: 10px;
   display:inline-block;
