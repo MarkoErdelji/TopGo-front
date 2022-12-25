@@ -14,6 +14,7 @@ import { DriverReportsComponent } from './components/driver-reports/driver-repor
 import { DriverVehicleDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-vehicle-dialog/driver-vehicle-dialog.component';
 import { DriverDocumentsDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-documents-dialog/driver-documents-dialog.component';
 import { DriverProfileEditComponent } from './components/driver-profile/driver-profile-edit/driver-profile-edit.component';
+import { DriverChangePasswordDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-change-password-dialog/driver-change-password-dialog.component';
 
 
 
@@ -27,7 +28,8 @@ import { DriverProfileEditComponent } from './components/driver-profile/driver-p
     DriverReportsComponent,
     DriverVehicleDialogComponent,
     DriverDocumentsDialogComponent,
-    DriverProfileEditComponent
+    DriverProfileEditComponent,
+    DriverChangePasswordDialogComponent
   ],
   imports: [
     AppRoutingModule,
@@ -38,7 +40,7 @@ import { DriverProfileEditComponent } from './components/driver-profile/driver-p
     CommonModule
   ],
   exports: [
-    DriverComponent,DriverMenuComponent,DriverProfileComponent,DriverInboxComponent,DriverHistoryComponent,DriverReportsComponent,DriverProfileEditComponent
+    DriverComponent,DriverMenuComponent,DriverProfileComponent,DriverInboxComponent,DriverHistoryComponent,DriverReportsComponent,DriverProfileEditComponent,DriverChangePasswordDialogComponent
   ]
 })
 export class DriverModule { }

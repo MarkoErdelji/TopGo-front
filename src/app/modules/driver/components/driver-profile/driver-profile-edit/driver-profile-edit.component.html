@@ -1,8 +1,8 @@
 <div class="shadow" id='form-content'>
     <div class = "shadow" id="middle-content">
-    <form [formGroup]="editForm" (ngSubmit)="create()" id = "editForm">
+    <form [formGroup]="editForm" (ngSubmit)="sendEditRequest()" id = "editForm">
         <div id="image-container">
-            <img id="profile-image">
+            <img src="{{imageUrl}}"id="profile-image">
         </div>
         <div id="other-forms">
             <div id="Name">
@@ -43,11 +43,11 @@
         <mat-divider></mat-divider>
         <div id="change-password-div">
             <p class="bold-text">Password</p>
-            <p id="change-password">Change Password</p>
+            <p id="change-password" (click)="changePassword()">Change Password</p>
         </div>
         <div id="edit-buttons">
-            <button mat-raised-button shadow id="cancel" routerLink="['driver/profile']">Cancel</button>
-            <button mat-raised-button shadow id="edit-profile">Save changes</button>
+            <button mat-raised-button shadow id="cancel" routerLink="/driver/profile" type="button">Cancel</button>
+            <button mat-raised-button shadow id="edit-profile" >Save changes</button>
         </div>
     </form>
     </div>

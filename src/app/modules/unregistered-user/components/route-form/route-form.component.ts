@@ -32,7 +32,7 @@ export class RouteFormComponent implements OnInit {
       }
       this.routeFormService.setLocation(locationDTO)
 
-      this.driverService.getOnlyActive().subscribe(value =>
+      this.driverService.getAll().subscribe(value =>
       {
 
         for(let driver of value.results)

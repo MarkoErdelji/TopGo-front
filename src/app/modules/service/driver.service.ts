@@ -19,6 +19,7 @@ export class DriverService {
   private base64Subject = new BehaviorSubject<string>('initial value');
   base64Observable$ = this.base64Subject.asObservable();
 
+
   constructor(private http: HttpClient,private router:Router) { }
 
   private Location$ = new BehaviorSubject<any>({});

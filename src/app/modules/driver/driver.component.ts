@@ -14,6 +14,7 @@ import { DriverService } from '../service/driver.service';
 export class DriverComponent implements OnInit {
 
   private driverInfo?:DriverInfoDTO;
+  private newPassword!:string|null;
 
 
 
@@ -39,7 +40,7 @@ export class DriverComponent implements OnInit {
           subscribe(driverResponse=>
             {
               this.driverInfo = driverResponse
-              this.sendBase64('data:image/png;base64,'+this.driverInfo?.profilePicture || '')
+              this.sendBase64(this.driverInfo?.profilePicture || '')
               this.driverService.id = driverResponse?.id;
               console.log(driverResponse);
             })

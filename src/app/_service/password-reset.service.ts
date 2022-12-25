@@ -65,7 +65,7 @@ export class PasswordResetService {
         if(response.status == 404){
           window.alert("Error: No such user in database!");
         }
-        else if(response.status == 200){
+        else if(response. status == 200){
           window.alert("Email successfuly sent");
           this.router.navigate(['login'])
         }

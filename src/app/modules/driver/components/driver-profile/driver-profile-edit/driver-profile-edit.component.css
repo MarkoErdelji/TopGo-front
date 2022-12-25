@@ -69,7 +69,11 @@ div >>> .mat-divider {
 }
 #change-password{
     margin-right:15%;
-    color:orange;
+    color:#FF9642;
+}
+
+#change-password:hover{
+    cursor:pointer
 }
 #change-password-div{
     display:flex;
@@ -83,21 +87,23 @@ div >>> .mat-divider {
 }
 
 #edit-profile{
-    background-color:orange;
+    background-color:#FF9642;
     color:white;
-    margin-right:20px;
+    margin-left:2%;
     border-radius: 10px;
 }
 
 #edit-buttons{
     display:flex;
     width:100%;
+    margin-top:20px;
     justify-content: center;
 }
 
 #cancel{
     background-color:#D2D2D2;
     color:black;
+    margin-right:2%;
     border-radius: 10px;
 }
 
