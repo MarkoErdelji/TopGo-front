@@ -11,6 +11,9 @@ import { DriverProfileComponent } from './components/driver-profile/driver-profi
 import { DriverInboxComponent } from './components/driver-inbox/driver-inbox.component';
 import { DriverHistoryComponent } from './components/driver-history/driver-history.component';
 import { DriverReportsComponent } from './components/driver-reports/driver-reports.component';
+import { DriverVehicleDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-vehicle-dialog/driver-vehicle-dialog.component';
+import { DriverDocumentsDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-documents-dialog/driver-documents-dialog.component';
+import { DriverProfileEditComponent } from './components/driver-profile/driver-profile-edit/driver-profile-edit.component';
 
 
 
@@ -21,17 +24,21 @@ import { DriverReportsComponent } from './components/driver-reports/driver-repor
     DriverProfileComponent,
     DriverInboxComponent,
     DriverHistoryComponent,
-    DriverReportsComponent
+    DriverReportsComponent,
+    DriverVehicleDialogComponent,
+    DriverDocumentsDialogComponent,
+    DriverProfileEditComponent
   ],
   imports: [
     AppRoutingModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
-    NavbarModule
+    NavbarModule,
+    CommonModule
   ],
   exports: [
-    DriverComponent
+    DriverComponent,DriverMenuComponent,DriverProfileComponent,DriverInboxComponent,DriverHistoryComponent,DriverReportsComponent,DriverProfileEditComponent
   ]
 })
 export class DriverModule { }

@@ -12,9 +12,15 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class DriverService {
+  id?:number;
+
   endpoint: string = 'http://localhost:8000/api/driver';
 
+  private base64Subject = new BehaviorSubject<string>('initial value');
+  base64Observable$ = this.base64Subject.asObservable();
+
   constructor(private http: HttpClient,private router:Router) { }
+
   private Location$ = new BehaviorSubject<any>({});
   selectLocation$ = this.Location$.asObservable();
 
@@ -30,24 +36,19 @@ export class DriverService {
   setLocation(Location: DriverInfoDTO) {
     this.Location$.next(Location);
   }
-
-
   getDriverById(id:number){
-    
-      return this.http.get<any>(this.endpoint+"/"+id)
-      .pipe(
-        catchError((error:HttpErrorResponse) => {
-          return of(error);
-        }
-        )
-      ).pipe(
-      map(data => {
-        if (data) {
-          return data as DriverInfoDTO;
-        }
-        return;
-      })
-      )
+     return this.http.get<any>(this.endpoint+"/"+id)
+  }
+  getDriversDocumentsByDriverId(id:number){
+    return this.http.get<any>(this.endpoint+"/"+id+"/documents");
+  }
+
+  setImageUrl(url: string) {
+    this.base64Subject.next(url);
+  }
+
+  getImageUrl() {
+    return this.base64Subject.asObservable();
   }
 
 }

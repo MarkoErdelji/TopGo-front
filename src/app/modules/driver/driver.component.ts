@@ -1,6 +1,7 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, Input, OnInit } from '@angular/core';
+import { catchError, map, of } from 'rxjs';
 import { AuthService } from 'src/app/_service/auth.service';
-import { ImageService } from 'src/app/_service/image.service';
 import { UserService } from 'src/app/_service/user.service';
 import { DriverInfoDTO } from '../DTO/DriverInfoDTO';
 import { DriverService } from '../service/driver.service';
@@ -14,20 +15,32 @@ export class DriverComponent implements OnInit {
 
   private driverInfo?:DriverInfoDTO;
 
-  driverId?:DriverInfoDTO;
 
 
-  constructor(private userService:UserService,private driverService:DriverService,private authService:AuthService,private imageService:ImageService) { }
+  constructor(private userService:UserService,private driverService:DriverService,private authService:AuthService) { }
 
   ngOnInit(): void {
     this.userService.getUserByEmail(this.authService.getEmail()).subscribe(
       response=>{
         if(response.status == 200){
-          this.driverService.getDriverById(response.body.id).subscribe(driverResponse=>
+          this.driverService.getDriverById(response.body.id).pipe(
+            catchError((error:HttpErrorResponse) => {
+              return of(error);
+            }
+            )
+          ).pipe(
+          map(data => {
+            if (data) {
+              return data as DriverInfoDTO;
+            }
+            return;
+          })
+          ).
+          subscribe(driverResponse=>
             {
               this.driverInfo = driverResponse
               this.sendBase64('data:image/png;base64,'+this.driverInfo?.profilePicture || '')
-              this.driverId = driverResponse as DriverInfoDTO;
+              this.driverService.id = driverResponse?.id;
               console.log(driverResponse);
             })
         }
@@ -42,6 +55,6 @@ export class DriverComponent implements OnInit {
 
   sendBase64(data:string) {
     const base64Data = data;
-    this.imageService.setImageUrl(base64Data);
+    this.driverService.setImageUrl(base64Data);
   }
 }

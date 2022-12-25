@@ -1,0 +1,42 @@
+#vehicle-content{
+    border-radius: 10px;
+    background-color: #F4F4F4;
+    height:50vh;
+    width:25vw;
+    padding:0px;
+}
+
+#vehicle-value-content{
+    margin-top:20px;
+    display:flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+#labelContainer p,#valueContainer p{
+    margin-bottom:40px;
+}
+mat-checkbox{
+    margin-top:30px;
+}
+.centered{
+    padding-top:10px;
+    display:flex;
+    justify-content: center;
+    
+}
+
+mat-icon{
+    margin-bottom:10px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    flex-direction: column;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    font-size: 80px;
+    vertical-align: middle;
+    font-family: 'Material Icons' !important;
+    
+}

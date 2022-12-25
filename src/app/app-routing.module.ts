@@ -17,6 +17,7 @@ import { DriverInboxComponent } from './modules/driver/components/driver-inbox/d
 import { DriverProfileComponent } from './modules/driver/components/driver-profile/driver-profile.component';
 import { DriverHistoryComponent } from './modules/driver/components/driver-history/driver-history.component';
 import { DriverReportsComponent } from './modules/driver/components/driver-reports/driver-reports.component';
+import { DriverProfileEditComponent } from './modules/driver/components/driver-profile/driver-profile-edit/driver-profile-edit.component';
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -31,6 +32,7 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         children: [
                         { path: 'inbox', component: DriverInboxComponent },
                         { path: 'profile', component: DriverProfileComponent },
+                        { path: 'profile/edit',component:DriverProfileEditComponent},
                         { path: 'history', component: DriverHistoryComponent },
                         { path: 'reports', component:DriverReportsComponent}
                         ],canActivate: [DriverGuard]},  

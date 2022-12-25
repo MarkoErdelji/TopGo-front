@@ -28,15 +28,15 @@
                 <p>{{phone}}</p>
                 <div id="extensive-detail-container-icons">
                     <div>
-                        <mat-icon> directions_car</mat-icon>
+                        <mat-icon (click) = "openDocuments()"> insert_invitation</mat-icon>
                     </div>
                     <div>
-                    <mat-icon> insert_invitation</mat-icon>
+                        <mat-icon (click) = "openVehicle()"> directions_car</mat-icon>
                     </div>
                 </div>
             </div>
         </div>
-        <button mat-raised-button shadow id="edit-profile" [routerLink]="['driver/profile']">Edit profile</button>
+        <button mat-raised-button shadow id="edit-profile" [routerLink]="['/driver/profile/edit']">Edit profile</button>
     </div>
     <div id="report-content">
         <div class="shadow" id="report-box"> </div>

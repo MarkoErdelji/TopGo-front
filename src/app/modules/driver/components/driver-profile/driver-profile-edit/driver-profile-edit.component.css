@@ -6,29 +6,101 @@
 * {
     font-family: 'Chakra Petch';
 }
-mat-form-field  {margin: 5px;}
-#register-logo
-{
-    display: inline-block;
-    height: 10%;
-    max-width: 400px;
-    margin-top: 1%;
-    cursor: pointer;
-           
+#form-content{
+    height:100vh;
+    width:100vw; 
+    padding:0px;
+    overflow-y: scroll;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
-mat-form-field >>> .mat-form-field-outline {
+#middle-content{
+    border-radius: 10px;
+    margin-right:10vw;
+    width:30%;
+    height:80%;
+    background-color: #F4F4F4;
+}
+#image-container{
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    height: 150px;
+    width:80%;
+    margin-top:20px;
+}
+
+img{
+    width:130px;
+    border:1px solid black;
+    border-radius: 100px;
+    margin-bottom:20px;
+    height:130px;
+}
+
+
+
+mat-form-field  {margin: 5px;}
+
+mat-form-field >>> .mat-form-field-outline  {
     background-color: white;
     border-radius: 5px;
+    height: 40px;
+  }
+  
+  #horizontal-seperator{
+    border: 1px solid black;
   }
 #Name{
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
 }
+div >>> .mat-divider {
+    width:70%;
+    border-top: 1px solid black;
+    margin-bottom:5px;
+  }
 #first-name-form{
     float: left;
 
 }
+#change-password{
+    margin-right:15%;
+    color:orange;
+}
+#change-password-div{
+    display:flex;
+    width:100%;
+    justify-content: space-between;
+}
+#change-password-div p.bold-text{
+    font-size: larger;
+    font-weight: bolder;
+    margin-left:15%
+}
+
+#edit-profile{
+    background-color:orange;
+    color:white;
+    margin-right:20px;
+    border-radius: 10px;
+}
+
+#edit-buttons{
+    display:flex;
+    width:100%;
+    justify-content: center;
+}
+
+#cancel{
+    background-color:#D2D2D2;
+    color:black;
+    border-radius: 10px;
+}
+
 
 #last-name-form{
     float: right;
@@ -40,50 +112,13 @@ mat-form-field >>> .mat-form-field-outline {
     text-align: center;
     overflow: hidden;
 }
-#register-button {
-    background-color: #FF9642;
-    color: white;
-    margin-top: 10px;
-    width: 25%;
-    text-align: center;
-    min-width: 80px;
-}
-#register-header {
-    background-color: #FF9642;
-    border-radius: 5px 5px 0px 0px;
-    height: 10%;
-    text-align: center;
-    display:table;
-    width:100%;
-    
-}
-#register-header-h1
-{
-    color: white;
-    display:table-cell;
-    vertical-align: middle;
-    font-size: 30px;
-    
-}
-#register-form-div 
-{
-    margin: 0;
-    width: 30%;
-    height: 75%;
-    background-color: #E7E7E7;
-    border-radius: 5px;
-    text-align: center;
-    min-height: 400px;
-    min-width: 250px;
-    
-}
 
 #create-accout
 {
     color: #FF9642;
     cursor: pointer;
 }
-#registernForm {
+#editForm {
     margin-top: 30px;
     margin-bottom: 20px;
     display: flex;
