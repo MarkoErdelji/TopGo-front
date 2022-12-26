@@ -107,6 +107,14 @@ export class AuthService {
    }
   }
 
+  changeUserPassword(userId,newPassword,oldPassword){
+    let passwordObject = {new_password:newPassword,old_password:oldPassword}
+    return this.http
+      .put<any>(`http://localhost:8000/api/user/`+userId+'/changePassword', JSON.stringify(passwordObject), { 'headers': this.headers,
+      observe: 'response',
+      responseType: 'json'})
+  }
+
   getEmail(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
     const helper = new JwtHelperService();
