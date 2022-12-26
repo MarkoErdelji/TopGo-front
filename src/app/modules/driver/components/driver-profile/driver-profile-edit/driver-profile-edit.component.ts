@@ -7,6 +7,7 @@ import { catchError, first, map, of } from 'rxjs';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { ProfileChangesRequestService } from 'src/app/modules/service/profile-changes-request.service';
+import { AuthService } from 'src/app/_service/auth.service';
 import { DriverChangePasswordDialogComponent } from '../driver-profile-dialogs/driver-change-password-dialog/driver-change-password-dialog.component';
 
 @Component({
@@ -27,7 +28,7 @@ export class DriverProfileEditComponent implements OnInit {
   newPassword!:string | null
 
   imageUrl?:string
-  constructor(private driverService:DriverService,private dialog:MatDialog,private profileRequestService:ProfileChangesRequestService,private router:Router) { }
+  constructor(private driverService:DriverService,private dialog:MatDialog,private profileRequestService:ProfileChangesRequestService,private router:Router,private authService:AuthService) { }
 
   ngOnInit(): void {
     this.driverService.getImageUrl().subscribe(url => this.imageUrl = url)
