@@ -12,15 +12,18 @@
 
 <div id="test" #formDiv >
   <form [formGroup]="goForm" (ngSubmit)="go($event.submitter.id)">
+    <div id = "route-div">
     <mat-form-field appearance="outline" class="route-form-field" id="location">
       <mat-label>Location</mat-label>
-      <input matInput name="location" formControlName="location">
+      <input matInput name="location" formControlName="location" (focus)="departureInFocus()">
     </mat-form-field>
     <mat-form-field appearance="outline" id = "destination-field" class="route-form-field" id="destination">
       <mat-label>Destination</mat-label>
-      <input matInput name="destination" formControlName="destination">
+      <input matInput name="destination" formControlName="destination" (focus)="destinaionInFocus()">
     </mat-form-field>
+
     <button  id="go-button" type="submit" mat-raised-button>Go</button>
+    </div>
     <div id ="moreOptions">
       <mat-form-field appearance="fill">
         <mat-label>Car type</mat-label>
@@ -33,6 +36,9 @@
 
       <mat-checkbox formControlName="forBabies">For Babies</mat-checkbox>
         <mat-checkbox formControlName="forPets">For Pets</mat-checkbox>
+      <mat-form-field id = 'number-input-field'>
+        <input matInput id = "number-input" type="number" min="2" max="10" step="2" value = "4" placeholder="Seats">
+      </mat-form-field>
       <div id = "button-div">
       <button  id="search-button" type="submit" mat-raised-button >Search</button>
         <button  id="confirm-button" type="submit" mat-raised-button [disabled]="isDisabled">Confirm</button>

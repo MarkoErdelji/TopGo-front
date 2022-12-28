@@ -21,13 +21,25 @@ import { DriverProfileEditComponent } from './modules/driver/components/driver-p
 import {CreateDriverComponent} from "./modules/admin/components/create-driver/create-driver.component";
 import {AdminHistoryComponent} from "./modules/admin/components/admin-history/admin-history.component";
 import {AdminInboxComponent} from "./modules/admin/components/admin-inbox/admin-inbox.component";
+import {
+  RegisteredProfileComponent
+} from "./modules/registered-user/components/registered-profile/registered-profile.component";
+import {RegisteredHomeComponent} from "./modules/registered-user/components/registered-home/registered-home.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
                         { path: 'login/forgotPassword', component:ForgotPasswordComponent},
                         { path: 'login/resetPassword',component:ResetPasswordComponent},
                         { path: 'unregistered', component: UnregisteredUserComponent},
-                        { path: 'registered' , component: RegisteredUserComponent,canActivate: [UserGuard]},
+                        { path: 'registered' ,
+                          component: RegisteredUserComponent,
+                          children:
+                            [
+                              { path: 'profile', component: RegisteredProfileComponent},
+                              { path: 'home', component: RegisteredHomeComponent},
+                              { path: '', redirectTo: 'home', pathMatch: 'full' }
+                            ],
+                          canActivate: [UserGuard]},
                         {
                         path: 'driver',
                         component: DriverComponent,

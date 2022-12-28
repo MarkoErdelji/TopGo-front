@@ -29,6 +29,8 @@ export class MapComponent implements AfterViewInit {
 
   private markerList: L.Marker[] = [];
 
+  private selectedLocation!:L.Marker;
+
 
 
   constructor(private routeFormService: RouteFormService, private mapService: MapService,private driverService:DriverService ,private authService:AuthService) { }
@@ -115,6 +117,7 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
+    this.registerOnClick();
     this.routeFormService.selectLocation$.subscribe({next:(location)=>{
 
       this.location = location;
@@ -138,6 +141,24 @@ export class MapComponent implements AfterViewInit {
 
   }
 
+  registerOnClick(): void {
+    this.map.on('contextmenu', (e: any) => {
+      const coord = e.latlng;
+      const lat = coord.lat;
+      const lng = coord.lng;
+      this.mapService.reverseSearch(lat, lng).subscribe((res) => {
+        console.log(res.display_name);
+        this.mapService.setMapClick(res.display_name)
+      });
+      console.log(
+        'You clicked the map at latitude: ' + lat + ' and longitude: ' + lng
+      );
+      if (this.selectedLocation != undefined)
+      this.selectedLocation.remove();
+      this.selectedLocation = new L.Marker([lat, lng],{icon: arrowIcon}).addTo(this.map);
+    });
+  }
+
 
 }
 
@@ -149,5 +170,11 @@ let  greenIcon = L.icon({
   iconSize:     [75, 75], // size of the icon
   iconAnchor:   [32, 32], // point of the icon which will correspond to marker's location
   popupAnchor:  [-3, -35] // point from which the popup should open relative to the iconAnchor
+});
+let  arrowIcon = L.icon({
+  iconUrl: 'assets/images/arrowIcon.png',
+
+  iconSize:     [30, 30], // size of the icon
+  iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
 });
 
