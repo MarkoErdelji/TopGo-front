@@ -33,4 +33,10 @@ export class MapService {
     this.DistanceAndAverage$.next(DaA);
   }
 
+  private MapClick$ = new BehaviorSubject<any>({});
+  selectMapClick$ = this.MapClick$.asObservable();
+  setMapClick(address: string) {
+    this.MapClick$.next(address);
+  }
+
 }

@@ -10,14 +10,14 @@
 
 
 }
-mat-form-field{
-  margin-bottom: 0px !important;
-  margin-top: 10px !important;
-}
+
 #location,#destination
 {
-  margin: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
+
+
 
 mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
   background-color: white;
@@ -27,6 +27,15 @@ mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
 mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
   background-color: white;
   border-radius: 5px;
+}
+
+#route-div {
+  background-color: white;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 20px 5px 5px;
 }
 
 #moreOptions
@@ -90,6 +99,8 @@ mat-checkbox
   display:inline-block;
   border: 2px solid black;
 }
+
+
 #info{
   display: inline-block;
   margin: 15px;
@@ -125,7 +136,10 @@ mat-checkbox
   background-color: white;
   border-radius: 10px;
 
+
 }
+
+
 #orange-line
 {
   width: 50%;
@@ -214,6 +228,11 @@ mat-checkbox
 #cancer-order-button
 {
   background-color: gray !important;
+}
+#number-input ,#number-input-field
+{
+  width: 70px;
+  margin-left: 10px;
 }
 #ride-button-div
 {

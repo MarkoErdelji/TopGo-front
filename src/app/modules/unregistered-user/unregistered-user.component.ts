@@ -19,7 +19,4 @@ export class UnregisteredUserComponent implements OnInit {
   }
 
 
-  destroyMap() {
-    this.mapComponent?.destroyMap()
-  }
 }

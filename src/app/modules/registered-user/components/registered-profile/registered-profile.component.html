@@ -1,0 +1,33 @@
+<div id="full-content">
+  <div class="shadow" id="profile-content">
+    <div id="profile-img-container">
+      <img src="{{pfp}}}" id="profile-image">
+      <div class = "vertical-line"></div>
+    </div>
+    <div id="profile-data">
+      <div id="labelContainer">
+        <div class="first-last-name-container">
+          <p>First Name:</p>
+          <p>Last Name:</p>
+        </div>
+        <p>Username:</p>
+        <p>Address:</p>
+        <p>Phone:</p>
+      </div>
+      <div id="valueContainer">
+        <div class="first-last-name-container">
+          <p>{{firstName}}</p>
+          <p>{{lastName}}</p>
+        </div>
+        <p>{{username}}</p>
+        <p>{{address}}</p>
+        <p>{{phone}}</p>
+      </div>
+    </div>
+    <button mat-raised-button shadow id="edit-profile" [routerLink]="['']">Edit profile</button>
+  </div>
+  <div id="report-content">
+    <div class="shadow" id="report-box"> </div>
+    <div class="shadow" id="report-box-end"> </div>
+    <div>
+    </div>

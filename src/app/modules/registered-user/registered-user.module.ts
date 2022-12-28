@@ -10,6 +10,8 @@ import { MapModule } from 'src/app/components/map/map.module';
 import { MapComponent } from 'src/app/components/map/map.component';
 import {RegisteredRouteFormComponent} from "./components/registered-route-form/registered-route-form.component";
 import {ReactiveFormsModule} from "@angular/forms";
+import { RegisteredProfileComponent } from './components/registered-profile/registered-profile.component';
+import { RegisteredHomeComponent } from './components/registered-home/registered-home.component';
 
 
 
@@ -17,7 +19,9 @@ import {ReactiveFormsModule} from "@angular/forms";
     declarations: [
         RegisteredUserComponent,
         RegisteredUserMenuComponent,
-        RegisteredRouteFormComponent
+        RegisteredRouteFormComponent,
+        RegisteredProfileComponent,
+        RegisteredHomeComponent
     ],
   imports: [
     AppRoutingModule,

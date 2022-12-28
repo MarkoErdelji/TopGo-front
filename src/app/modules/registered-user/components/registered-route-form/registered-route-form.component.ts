@@ -20,6 +20,8 @@ export class RegisteredRouteFormComponent implements OnInit {
   distance?:number;
   average?:number;
   ridePrice?:number;
+  @ViewChild('departure') departure?: ElementRef;
+  @ViewChild('destination') destination?: ElementRef;
   @ViewChild('popupContent') popupContent?: ElementRef;
   @ViewChild('confirmRide') confirmRide?: ElementRef;
   driverName?:string;
@@ -45,6 +47,9 @@ export class RegisteredRouteFormComponent implements OnInit {
    selectedDriver? :DriverInfoDTO;
 
    currentLocation?:LocationDTO;
+
+   selectedFormInput: any;
+   notSelectedFormInput: any;
 
 
     async go(id: string) {
@@ -192,6 +197,8 @@ export class RegisteredRouteFormComponent implements OnInit {
   constructor(private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService) { }
 
   ngOnInit(): void {
+    this.selectedFormInput = this.goForm.get("location")
+    this.notSelectedFormInput = this.goForm.get("destination")
     this.mapService.selectDriver$.subscribe({next:(driver:DriverInfoDTO)=>{
         if (driver.id) {
           this.selectedDriver = driver;
@@ -213,6 +220,18 @@ export class RegisteredRouteFormComponent implements OnInit {
 
 
       } })
+
+    this.mapService.selectMapClick$.subscribe({next:(adress:string)=>{
+      if(adress != "[object Object]") {
+        this.selectedFormInput.setValue(adress);
+        [this.selectedFormInput,this.notSelectedFormInput] = [this.notSelectedFormInput,this.selectedFormInput];
+
+      }
+
+
+
+
+      } })
   }
 
   orderRide() {
@@ -225,6 +244,19 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.CancelPressed()
     // @ts-ignore
     this.confirmRide.nativeElement.style.display = 'none';
+
+  }
+
+
+  destinaionInFocus() {
+    this.selectedFormInput = this.goForm.get("destination")
+    this.notSelectedFormInput =  this.goForm.get("location")
+
+  }
+
+  departureInFocus() {
+    this.selectedFormInput = this.goForm.get("location")
+    this.notSelectedFormInput = this.goForm.get("destination")
 
   }
 }

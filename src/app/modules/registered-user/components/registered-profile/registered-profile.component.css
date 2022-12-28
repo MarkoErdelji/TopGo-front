@@ -1,0 +1,138 @@
+
+#full-content{
+  width: 100%;
+  height:100%;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+#profile-content{
+  border-radius:10px;
+  width:20%;
+  max-width: 400px;
+  min-width: 300px;
+  display:flex;
+  flex-direction: column;
+  margin:30px;
+  padding:30px;
+  margin-right: 100px;
+  height:fit-content;
+  background-color: #F4F4F4;
+
+}
+#profile-img-container{
+  margin-top:20px;
+  display:flex;
+  height: 150px;
+  width:80%;
+
+
+}
+
+
+#edit-profile{
+  border:0;
+  width:100px;
+  height:45px;
+  font-size: 14px;
+  margin-top:5%;
+  margin-left: 12%;
+  color: white;
+  background-color: #ff9642;
+
+}
+.vertical-line {
+  width: 1px;
+  margin: 10px;
+  height: 260%;
+  background-color: black;
+}
+#extensive-detail-container p{
+  margin-top:50px;
+}
+#extensive-detail-container-icons{
+  margin-top:35px;
+}
+#extensive-detail-container-icons{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#report-content{
+  margin:30px;
+  height:80%;
+  width:30%;
+  display:flex;
+  flex-direction: column;
+
+}
+#report-box-end{
+  width:100%;
+  border-radius:10px;
+  flex-basis:45%;
+  margin-top:10%;
+  background-color: #F4F4F4;
+  justify-self:flex-end;
+}
+#report-box{
+  width:100%;
+  border-radius:10px;
+  margin-bottom:10%;
+  flex-basis:45%;
+  justify-self:flex-start;
+  background-color: #F4F4F4;
+}
+mat-icon:hover{
+  cursor:pointer;
+}
+mat-icon{
+  background-color: #cacaca;
+  border: 1px solid black;
+  margin-bottom:10px;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  flex-direction: column;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  font-family: 'Material Icons' !important;
+
+}
+img{
+  margin-left:10%;
+  width:130px;
+  border:1px solid black;
+  border-radius: 100px;
+  height:130px;
+  margin-bottom:50px;
+}
+
+#valueContainer{
+  margin-right:20%;
+  text-align: center;
+}
+
+#valueContainer p{
+  font-weight: bolder;
+}
+#labelContainer{
+  margin-left:14%;
+}
+
+#profile-data{
+  display:flex;
+  justify-content: space-between;
+}
+
+.first-last-name-container{
+  margin-top:20px;
+  margin-bottom: 50px;
+}
+
+#labelContainer p,#valueContainer p{
+  margin-bottom:20px;
+}
+
