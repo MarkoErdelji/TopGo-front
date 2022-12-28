@@ -8,6 +8,7 @@ import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { ProfileChangesRequestService } from 'src/app/modules/service/profile-changes-request.service';
 import { AuthService } from 'src/app/_service/auth.service';
+import { DriverChangeImageDialogComponent } from '../driver-profile-dialogs/driver-change-image-dialog/driver-change-image-dialog.component';
 import { DriverChangePasswordDialogComponent } from '../driver-profile-dialogs/driver-change-password-dialog/driver-change-password-dialog.component';
 
 @Component({
@@ -31,7 +32,6 @@ export class DriverProfileEditComponent implements OnInit {
   constructor(private driverService:DriverService,private dialog:MatDialog,private profileRequestService:ProfileChangesRequestService,private router:Router,private authService:AuthService) { }
 
   ngOnInit(): void {
-    this.driverService.getImageUrl().subscribe(url => this.imageUrl = url)
 
     this.driverService.getDriverById(this.driverService.id!).pipe(
       map(data => {
@@ -41,6 +41,7 @@ export class DriverProfileEditComponent implements OnInit {
         return;
       })
       ).subscribe(response=>{
+        this.imageUrl = response?.profilePicture;
         this.editForm.patchValue({
           firstName:response!.name,
           lastName:response!.surname,
@@ -87,4 +88,18 @@ export class DriverProfileEditComponent implements OnInit {
       }
     )
   }}
+
+  updateImage(imageUrl: string) {
+    this.imageUrl = imageUrl;
+  }
+  changeImage(){
+    let dialogRef = this.dialog.open(DriverChangeImageDialogComponent,{ panelClass: 'custom-dialog-container' });
+    dialogRef?.afterClosed().subscribe(result=>{
+      console.log(result);
+      if (result != undefined) {
+        this.updateImage(result);
+      }
+    })
+  }
+
 }

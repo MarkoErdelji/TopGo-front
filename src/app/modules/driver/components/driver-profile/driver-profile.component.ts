@@ -52,6 +52,6 @@ export class DriverProfileComponent implements OnInit {
 
 
   openVehicle(){
-    this.dialog.open(DriverVehicleDialogComponent,{ panelClass: 'custom-dialog-container' });
-  }
+    this.dialog.open(DriverVehicleDialogComponent,{ panelClass: 'custom-dialog-container'});
+}
 }
