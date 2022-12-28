@@ -2,7 +2,11 @@
     <div class = "shadow" id="middle-content">
     <form [formGroup]="editForm" (ngSubmit)="sendEditRequest()" id = "editForm">
         <div id="image-container">
-            <img src="{{imageUrl}}"id="profile-image">
+            <a id="edit-image" (click) = changeImage()>
+                <div id="edit-image-div">
+                    <img src="{{imageUrl}}"id="profile-image">
+                </div>
+            </a>
         </div>
         <div id="other-forms">
             <div id="Name">
