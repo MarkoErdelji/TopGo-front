@@ -19,7 +19,7 @@
   margin-right: 100px;
   height:fit-content;
   background-color: #F4F4F4;
-  
+
 }
 #profile-img-container{
   margin-top:20px;
@@ -43,6 +43,10 @@
 
 }
 .vertical-line {
+  width: 1px;
+  margin: 10px;
+  height: 260%;
+  background-color: black;
 }
 #extensive-detail-container p{
   margin-top:50px;

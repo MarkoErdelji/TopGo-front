@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import {RegisteredService} from "../../../service/registered.service";
+import {DistanceAndAverageDTO} from "../../../DTO/DistanceAndAverageDTO";
+import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
 
 @Component({
   selector: 'app-registered-profile',
@@ -11,15 +14,22 @@ export class RegisteredProfileComponent implements OnInit {
   username: any;
   address: any;
   phone: any;
+  pfp: any;
 
-  constructor() { }
+  constructor(private passengerService:RegisteredService) { }
 
   ngOnInit(): void {
-    this.firstName ="dejan"
-    this.lastName = "kalas"
-    this.username = "car"
-    this.address = "sranja 5"
-    this.phone = "123123231"
+    this.passengerService.getPassengerById(this.passengerService.id || 0).subscribe(passenger =>
+    {
+      console.log(passenger)
+      this.firstName =passenger.name;
+      this.lastName = passenger.surname;
+      this.username = passenger.email;
+      this.address = passenger.address;
+      this.pfp = passenger.profilePicture;
+      this.phone = passenger.telephoneNumber;
+    });
+
   }
 
 }

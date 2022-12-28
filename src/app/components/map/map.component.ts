@@ -49,11 +49,6 @@ export class MapComponent implements AfterViewInit {
     tiles.addTo(this.map);
   }
 
-  destroyMap() {
-    this.map.eachLayer((layer: L.Layer) => {
-      layer.remove();
-    });
-  }
 
   createRoute() {
 
