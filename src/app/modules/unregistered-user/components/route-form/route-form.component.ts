@@ -16,6 +16,9 @@ export class RouteFormComponent implements OnInit {
     destination: new FormControl("", [Validators.required])
 
   });
+
+  selectedFormInput: any;
+  notSelectedFormInput: any;
   constructor(private routeFormService: RouteFormService, private driverService: DriverService, private mapService:MapService) {
   }
 
@@ -23,7 +26,11 @@ export class RouteFormComponent implements OnInit {
     this.mapService.selectDriver$.subscribe({next:(driver)=>{
         console.log(driver)
       } })
+    this.selectedFormInput = this.routeForm.get("location")
+    this.notSelectedFormInput = this.routeForm.get("destination")
+
   }
+
   submit() {
     if(this.routeForm.valid){
       let locationDTO: LocationDTO=<LocationDTO>{
@@ -47,5 +54,7 @@ export class RouteFormComponent implements OnInit {
 
 
   }
+
+
 
 }

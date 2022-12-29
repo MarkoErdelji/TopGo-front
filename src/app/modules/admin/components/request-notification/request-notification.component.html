@@ -1,0 +1,89 @@
+<!--<p>request-notification works!</p>-->
+<div id="everything">
+   <div [ngClass]="'container-column'">
+     <ng-template  ngFor let-item [ngForOf]="lista" let-i="index">
+        <div id="reques-containter">
+          <div id="person">
+            <div id="img">
+              <img [src]="imageUrl" id="profile-image">
+            </div>
+              <div id="first-name-last-name">
+                <p>{{item.firstName}}</p>
+                <p>{{item.lastName}}</p>
+              </div>
+          </div>
+          <div id="button">
+            <button (click)="onViewChangesBtnClick(i)" mat-raised-button id="view-changes-btn">View changes</button>
+          </div>
+        </div>
+
+    </ng-template>
+  </div>
+
+  <div id="main-content-request">
+    <div class="shadow" id="profile-content">
+      <div id="profile-img-container">
+        <img [src]="mainImageUrl" id="main-image">
+        <div class="vertical-line"></div>
+      </div>
+      <hr>
+      <div id="all-together">
+        <div id="profile-data">
+          <div id="labelContainer">
+            <div id="first-last-name-container">
+              <p>First Name:</p>
+              <p>Last Name:</p>
+            </div>
+            <p>Username:</p>
+            <p>Address:</p>
+            <p>Phone:</p>
+          </div>
+          <div id="valueContainer">
+            <div id="first-and-last-name-container">
+              <p>{{firstName}}</p>
+              <p>{{lastName}}</p>
+            </div>
+            <p>{{username}}</p>
+            <p>{{address}}</p>
+            <p>{{phone}}</p>
+          </div>
+        </div>
+      </div>
+      <div id="request-btns">
+      <button mat-raised-button (click)="acceptChanges()" id="edit-profile">accept</button>
+      <button mat-raised-button (click)="declineChanges()" id="decline-btn">Decline</button>
+      </div>
+    </div>
+  </div>
+  <div id="main-content-request">
+    <div class="shadow" id="profile-content">
+      <div id="profile-img-container">
+        <img [src]="mainImageUrl" id="main-image">
+        <div class="vertical-line"></div>
+      </div>
+      <hr>
+      <div id="all-together">
+        <div id="profile-data">
+          <div id="labelContainer">
+            <div id="first-last-name-container">
+              <p>First Name:</p>
+              <p>Last Name:</p>
+            </div>
+            <p>Username:</p>
+            <p>Address:</p>
+            <p>Phone:</p>
+          </div>
+          <div id="valueContainer">
+            <div id="first-and-last-name-container">
+              <p>pera</p>
+              <p>peric</p>
+            </div>
+            <p>sername</p>
+            <p>address</p>
+            <p>phone</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
