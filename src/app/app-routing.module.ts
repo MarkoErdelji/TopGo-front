@@ -25,6 +25,9 @@ import {
   RegisteredProfileComponent
 } from "./modules/registered-user/components/registered-profile/registered-profile.component";
 import {RegisteredHomeComponent} from "./modules/registered-user/components/registered-home/registered-home.component";
+import {
+  RequestNotificationComponent
+} from "./modules/admin/components/request-notification/request-notification.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -55,7 +58,8 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                           children:[
                             {path: 'createDriver', component: CreateDriverComponent},
                             {path: 'history', component: AdminHistoryComponent},
-                            {path: 'inbox', component: AdminInboxComponent}],
+                            {path: 'inbox', component: AdminInboxComponent},
+                            {path: 'requests', component: RequestNotificationComponent}],
                           canActivate: [AdminGuard]}];
 
 @NgModule({

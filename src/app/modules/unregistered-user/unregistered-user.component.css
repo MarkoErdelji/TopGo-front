@@ -12,10 +12,12 @@ button{
     color:black;
     margin-right:20px;
     border-radius: 40px;
+    z-index: 1;
 }
 #signup-button {
     border-radius: 40px;
     margin-right:100px;
     background-color: #FF9642;
     color: white;
+  z-index: 1;
 }
