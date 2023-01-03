@@ -28,11 +28,21 @@ export class AuthService {
     const email = username;
     const headers = { 'content-type': 'application/json'}
     const res = await this.http
-      .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers})
+      .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers}).pipe(
+        catchError((error:HttpErrorResponse) => {
+          return of(error);
+        }
+        )
+      )
       .subscribe((res: any) => {
-        localStorage.setItem('access_token', res.accessToken);
-        localStorage.setItem('refresh_token',res.refreshToken);
-        this.checkForToken();
+        if(res.status == 200){
+          localStorage.setItem('access_token', res.accessToken);
+          localStorage.setItem('refresh_token',res.refreshToken);
+          this.checkForToken();
+        }
+        if(res.status == 400){
+          window.alert(res.error);
+        }
       });
     return res;
 
