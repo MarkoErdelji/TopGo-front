@@ -29,14 +29,20 @@ export class AuthService {
     const headers = { 'content-type': 'application/json'}
     const res = await this.http
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers,observe: 'response',
-      responseType: 'json'}).subscribe((res: any) => {
+      responseType: 'json'}).pipe(
+        catchError((error:HttpErrorResponse) => {
+          return of(error);
+        }
+        )
+      ).subscribe((res: any) => {
         if(res.status == 200){
           localStorage.setItem('access_token', res.body.accessToken);
           localStorage.setItem('refresh_token',res.body.refreshToken);
           this.checkForToken();
         }
         if(res.status == 400){
-          window.alert(res.error);
+          window.alert(res.error.message);
+
         }
       });
     return res;

@@ -13,6 +13,18 @@
     width:60%;
 }
 
+mat-icon{
+  margin:10px;
+  font-family: 'Material Icons' !important;
+}
+mat-icon:hover{
+  cursor: pointer;
+}
+#iconDiv{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
 #usersTable{
   display:flex;
   align-items: center;
@@ -62,12 +74,12 @@ mat-table {
     color:black;
     background-color: white;
   }
+
   
   tr:nth-child(odd) {
     color:black;
     background-color: white;
   }
-  
   th {
     background-color: #ff9642;
     color: white;

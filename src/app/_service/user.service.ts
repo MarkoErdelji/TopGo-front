@@ -21,6 +21,24 @@ export class UserService {
         
   }
 
+  blockUser(userId){
+    return this.http
+      .put<any>(`http://localhost:8000/api/user/`+userId+"/block",{
+
+        observe: 'response',
+        responseType: 'json'
+      })
+  }
+
+  unblockUser(userId){
+    return this.http
+      .put<any>(`http://localhost:8000/api/user/`+userId+"/unblock",{
+
+        observe: 'response',
+        responseType: 'json'
+      })
+  }
+
   getUsers(page,size){
     return this.http.get<UserListDTO>('http://localhost:8000/api/user', { params: { page: page, size: size },   observe: 'response',
     responseType: 'json' },)

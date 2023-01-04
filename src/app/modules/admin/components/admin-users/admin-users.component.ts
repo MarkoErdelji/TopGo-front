@@ -1,6 +1,8 @@
+import { HttpErrorResponse, HttpResponseBase } from '@angular/common/http';
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { catchError, of } from 'rxjs';
 import { UserListDTO } from 'src/app/modules/DTO/UserListDTO';
 import { UserService } from 'src/app/_service/user.service';
 
@@ -11,9 +13,10 @@ import { UserService } from 'src/app/_service/user.service';
 })
 export class AdminUsersComponent implements OnInit {
 
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   
-  displayedColumns: string[] = ['id', 'name', 'surname', 'telephoneNumber','address', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'surname','email', 'telephoneNumber','address', 'actions'];
   users:any = [];
   dataSource = new MatTableDataSource<UserListDTO>(this.users);
   page = 0;
@@ -43,6 +46,39 @@ export class AdminUsersComponent implements OnInit {
         alert(response.statusText)
       }
     });
+  }
+
+  block(userId) {
+    this.userService.blockUser(userId).pipe(
+      catchError((error:HttpErrorResponse) => {
+        if(error.status!=204){
+          alert(error.error.message)
+        }
+        return of(error);
+      }
+      )
+    ).subscribe((res:any)=>{
+      if(!res){
+      alert("User successfuly blocked!");
+      }
+    })
+  }
+
+
+  unblock(userId) {
+    this.userService.unblockUser(userId).pipe(
+      catchError((error:HttpErrorResponse) => {
+        if(error.status!=204){
+          alert(error.error.message)
+        }
+        return of(error);
+      }
+      )
+    ).subscribe((res:any)=>{
+      if(!res){
+      alert("User successfuly unblocked!");
+      }
+    })
   }
   
 }
