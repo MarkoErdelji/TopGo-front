@@ -28,16 +28,11 @@ export class AuthService {
     const email = username;
     const headers = { 'content-type': 'application/json'}
     const res = await this.http
-      .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers}).pipe(
-        catchError((error:HttpErrorResponse) => {
-          return of(error);
-        }
-        )
-      )
-      .subscribe((res: any) => {
+      .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers,observe: 'response',
+      responseType: 'json'}).subscribe((res: any) => {
         if(res.status == 200){
-          localStorage.setItem('access_token', res.accessToken);
-          localStorage.setItem('refresh_token',res.refreshToken);
+          localStorage.setItem('access_token', res.body.accessToken);
+          localStorage.setItem('refresh_token',res.body.refreshToken);
           this.checkForToken();
         }
         if(res.status == 400){
@@ -54,7 +49,8 @@ export class AuthService {
 
   async register(regData:RegisterData){
     this.http
-      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers })
+      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers,observe: 'response',
+      responseType: 'json'})
       .pipe(
         catchError((error:HttpErrorResponse) => {
           return of(error);
@@ -80,8 +76,8 @@ export class AuthService {
 
 
   static doLogout() {
-    let removeToken = localStorage.removeItem('access_token');
-    let removeRefresh = localStorage.removeItem('refresh_token');
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   }
   checkForToken(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
