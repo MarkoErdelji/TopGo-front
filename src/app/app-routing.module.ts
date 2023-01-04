@@ -28,6 +28,7 @@ import {RegisteredHomeComponent} from "./modules/registered-user/components/regi
 import {
   RequestNotificationComponent
 } from "./modules/admin/components/request-notification/request-notification.component";
+import { AdminUsersComponent } from './modules/admin/components/admin-users/admin-users.component';
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -56,6 +57,7 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: '', redirectTo: 'unregistered', pathMatch: 'full' },
                         { path: 'admin', component:AdminComponent,
                           children:[
+                            {path: 'users',component:AdminUsersComponent},
                             {path: 'createDriver', component: CreateDriverComponent},
                             {path: 'history', component: AdminHistoryComponent},
                             {path: 'inbox', component: AdminInboxComponent},
