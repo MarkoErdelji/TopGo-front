@@ -41,7 +41,7 @@
                     <td mat-cell *matCellDef="let user" class="centered-text">
                         <div id="iconDiv">
                             <mat-icon class="unblockBtn" (click)="unblock(user.id)">done</mat-icon>
-                            <mat-icon color="warn" class="unblockBtn" (click)="block(user.id)">not_interested</mat-icon>
+                            <mat-icon color="warn" class="blockBtn" (click)="block(user.id)">not_interested</mat-icon>
                         </div>
                     </td>
                 </ng-container>
