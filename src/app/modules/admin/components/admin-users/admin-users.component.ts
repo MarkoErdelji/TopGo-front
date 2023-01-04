@@ -1,4 +1,5 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { UserListDTO } from 'src/app/modules/DTO/UserListDTO';
 import { UserService } from 'src/app/_service/user.service';
@@ -10,44 +11,38 @@ import { UserService } from 'src/app/_service/user.service';
 })
 export class AdminUsersComponent implements OnInit {
 
-  displayedColumns: string[] = ['id', 'name', 'surname', 'profilePicture', 'telephoneNumber','address'];
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+  
+  displayedColumns: string[] = ['id', 'name', 'surname', 'telephoneNumber','address', 'actions'];
   users:any = [];
   dataSource = new MatTableDataSource<UserListDTO>(this.users);
   page = 0;
-  size = 3;
+  size = 10;
   totalCount = 0;
-  loading = false;
 
   constructor(private userService:UserService) {}
 
   ngOnInit() {
+    this.dataSource.paginator = this.paginator;
     this.fetchUsers();
   }
 
 
-  @HostListener('window:scroll', ['$event'])
-  onScroll(event) {
-    if (this.totalCount > this.users.length && !this.loading) {
-      const offset = event.srcElement.scrollTop + window.innerHeight;
-      const height = event.srcElement.offsetHeight;
-      if (offset >= height) {
-        this.page++;
-        this.fetchUsers();
-      }
+  fetchUsers(event?: PageEvent) {
+    if(event){
+      this.size = event.pageSize;
+      this.page = event.pageIndex;
     }
-  }
-
-  fetchUsers() {
-    this.loading = true;
     this.userService.getUsers(this.page, this.size).subscribe((response) => {
       if(response.status == 200){
-        this.users = [...this.users, ...response.body!.results];
+        this.users = response.body!.results;
+        this.dataSource.data = this.users;
         this.totalCount = response.body!.totalCount;
-        this.loading = false;
       }
       else{
         alert(response.statusText)
       }
     });
   }
+  
 }
