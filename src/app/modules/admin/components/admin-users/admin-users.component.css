@@ -1,0 +1,90 @@
+#centerDiv{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+#tableDiv{
+    height:70%;
+    width:60%;
+}
+
+mat-icon{
+  margin:10px;
+  font-family: 'Material Icons' !important;
+}
+mat-icon:hover{
+  cursor: pointer;
+}
+#iconDiv{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#usersTable{
+  display:flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+  width:100%;
+  
+  height:80%;
+  margin-bottom:50px;
+}
+
+h1{
+  font-size: xx-large;
+  margin-bottom:50px;
+}
+
+.unblockBtn{
+  color: #00ff00;
+}
+
+
+mat-table {
+    background-color: #d2d2d2;
+    border-radius: 2%;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    text-align: center;
+  }
+
+  th, td {
+    max-height:150px;
+    min-height:50px;
+    max-width:200px;
+    min-width:50px;
+    width:10%;
+    overflow-y: hidden;
+    text-align: center;
+    vertical-align:middle;
+    font-size: 1.2em;
+    padding: 15px;
+    border-bottom: 1px solid #d2d2d2;
+  }
+
+  .centered-text{
+    text-align: center;
+    vertical-align:middle;
+  }
+  tr:nth-child(even) {
+    color:black;
+    background-color: white;
+  }
+
+  
+  tr:nth-child(odd) {
+    color:black;
+    background-color: white;
+  }
+  th {
+    background-color: #ff9642;
+    color: white;
+  }
