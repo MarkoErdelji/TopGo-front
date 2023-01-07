@@ -107,7 +107,8 @@
       </div>
     </div>
     <div id = 'ride-button-div'>
-    <img id = 'loading-gif'src="assets/images/loadingGif.gif">
+      <button id = 'close-button'  [hidden]="!isVisible" (click)="closeOrder()" >Close</button>
+    <img [hidden]="isVisible" id = 'loading-gif'src="assets/images/loadingGif.gif">
     </div>
   </div>
 </div>

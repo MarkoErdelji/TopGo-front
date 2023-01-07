@@ -16,6 +16,8 @@ import {RideService} from "../../../service/ride.service";
 import {UserRef} from "../../../DTO/UserRef";
 import {RouteForCreateRideDTO} from "../../../DTO/RouteForCreateRideDTO";
 import {catchError} from "rxjs/operators";
+import {PassengerSocketService} from "../../../service/passenger-socket.service";
+import {RideDTO} from "../../../DTO/RideDTO";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -43,6 +45,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   numberOfSeats?:number;
   driverImage?:string;
   forAnimals?:boolean;
+  isVisible: boolean = false;
 
   forBabies?:boolean;
 
@@ -182,6 +185,18 @@ export class RegisteredRouteFormComponent implements OnInit {
                   this.showDriverInfo(this.selectedDriver!);
                   this.driverService.setLocation(this.selectedDriver!);
                   this.InitConfirmRide();
+                  this.passengerSocketService.initializeWebSocketConnection(this.passengerService.id);
+
+                  this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
+                    if(ride.id) {
+                      this.isVisible = true;
+                      console.log("bla");
+                    }
+
+
+
+                    }
+                  })
                 });
 
 
@@ -257,7 +272,8 @@ export class RegisteredRouteFormComponent implements OnInit {
     forPets: new FormControl()
   });
 
-  constructor(private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
+
+  constructor(private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
   ngOnInit(): void {
     this.selectedFormInput = this.goForm.get("location")
@@ -277,11 +293,9 @@ export class RegisteredRouteFormComponent implements OnInit {
         [this.selectedFormInput,this.notSelectedFormInput] = [this.notSelectedFormInput,this.selectedFormInput];
 
       }
+      }
+    })
 
-
-
-
-      } })
   }
 
   private showDriverInfo(driver: DriverInfoDTO) {
