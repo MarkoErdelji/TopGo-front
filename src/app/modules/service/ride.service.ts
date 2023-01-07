@@ -18,4 +18,9 @@ export class RideService {
     return this.http.post<any>(this.endpoint,ride,{'headers':this.headers,observe: 'response',
       responseType: 'json'});
   }
+
+  acceptRide(rideId){
+    return this.http.put<any>(this.endpoint+"/"+rideId+"/accept",{'headers':this.headers,observe: 'response',
+    responseType: 'json'});
+  }
 }
