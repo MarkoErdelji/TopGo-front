@@ -5,6 +5,9 @@ import { AuthService } from 'src/app/_service/auth.service';
 import { UserService } from 'src/app/_service/user.service';
 import { DriverInfoDTO } from '../DTO/DriverInfoDTO';
 import { DriverService } from '../service/driver.service';
+import {Stomp} from '@stomp/stompjs';
+import * as SockJS from 'sockjs-client';
+import { DriverSocketService } from '../service/driver-socket.service';
 
 @Component({
   selector: 'app-driver',
@@ -18,9 +21,11 @@ export class DriverComponent implements OnInit {
 
 
 
-  constructor(private userService:UserService,private driverService:DriverService,private authService:AuthService) { }
+  constructor(private userService:UserService,private driverService:DriverService,private authService:AuthService,private driverSocketService:DriverSocketService) { }
+
 
   ngOnInit(): void {
+  
     this.userService.getUserByEmail(this.authService.getEmail()).subscribe(
       response=>{
         if(response.status == 200){
@@ -42,6 +47,7 @@ export class DriverComponent implements OnInit {
               this.driverInfo = driverResponse
               this.sendBase64(this.driverInfo?.profilePicture || '')
               this.driverService.id = driverResponse?.id;
+              this.driverSocketService.initializeWebSocketConnection(this.driverService.id);
               console.log(driverResponse);
             })
         }
@@ -50,6 +56,7 @@ export class DriverComponent implements OnInit {
         }
       }
     )
+
     
   }
 
