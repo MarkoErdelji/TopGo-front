@@ -24,17 +24,20 @@
         </div>
         <div class="detail">
             <div class="label">Passengers:</div>
-                <div class="value">
+                <div class="passenger-values">
                 <ul>
-                    <li *ngFor="let passenger of ride.passengers">{{ passenger.email }}</li>
+                    <li *ngFor="let passenger of passengerUsernameProfile">
+                      <img [src]="passenger.profilePicture" [title] = "passenger.email">
+                    </li>
                 </ul>
                 </div>
             </div>
       </div>
     </div>
+    <hr>
     <div class="timer">{{ secondsLeft }} seconds left</div>
     <div class="actions">
-      <button mat-button (click)="onAccept()">Accept</button>
-      <button mat-button (click)="onDecline()">Decline</button>
+      <button mat-raised-button class="accept"(click)="onAccept()">Accept</button>
+      <button mat-raised-button class="decline"(click)="onDecline()">Decline</button>
     </div>
   </div>

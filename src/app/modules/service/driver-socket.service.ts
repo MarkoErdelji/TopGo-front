@@ -44,7 +44,9 @@ displayNotification(ride: RideDTO) {
   this.notificationDisplayed = true;
   this.snackBar.openFromComponent(DriverNotificationsComponent, {
     data: {ride,
-    duration: 60000,snackBarRef: this.snackBar}
+    duration: 60000,snackBarRef: this.snackBar},
+    verticalPosition: 'top',
+    panelClass:".custom-snack-bar"
 
     }).afterDismissed().subscribe(() => {
     // Check if there are any notifications in the queue when the current one is dismissed
