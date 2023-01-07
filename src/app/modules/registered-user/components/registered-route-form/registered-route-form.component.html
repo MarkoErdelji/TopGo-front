@@ -34,14 +34,13 @@
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox formControlName="forBabies">For Babies</mat-checkbox>
-        <mat-checkbox formControlName="forPets">For Pets</mat-checkbox>
+      <mat-checkbox  formControlName="forBabies">For Babies</mat-checkbox>
+        <mat-checkbox  formControlName="forPets">For Pets</mat-checkbox>
       <mat-form-field id = 'number-input-field'>
         <input matInput id = "number-input" type="number" min="2" max="10" step="2" value = "4" placeholder="Seats">
       </mat-form-field>
       <div id = "button-div">
-      <button  id="search-button" type="submit" mat-raised-button >Search</button>
-        <button  id="confirm-button" type="submit" mat-raised-button [disabled]="isDisabled">Confirm</button>
+      <button  id="order-button" type="submit" mat-raised-button >Order</button>
         <button  id="cancel-button" type="submit" mat-raised-button >Cancle</button>
 
       </div>
@@ -73,19 +72,42 @@
       </div>
       </div>
       <div id = vehicle-info-ride-text>
-        <p id ="vehicle-name-ride" >{{vehicleNameRide}}</p>
-        <p id ="vehicle-type-ride" >{{vehicleTypeRide}}</p>
-        <p id ="number-of-seats" >Seats: {{numberOfSeats}}</p>
-        <p id ="for-animals" >For Pets: {{forAnimals}}</p>
-        <p id ="for-babies" >For Babies: {{forBabies}}</p>
-        <p >{{distance}}</p>
-        <p >{{average}}</p>
-        <p >{{ridePrice}}</p>
+        <div id = 'ride-only-vehicle-info'>
+        <div class="icon-text">
+          <img src="assets/images/modelIcon.png" class="icon" />
+          {{vehicleNameRide}}
+        </div>
+        <div class="icon-text">
+          <img src="assets/images/modelIcon.png" class="icon" />
+          {{vehicleTypeRide}}
+        </div>
+        <div class="icon-text">
+          <img src="assets/images/petIcon.png" class="icon" />
+          {{forAnimals}}
+        </div>
+        <div class="icon-text">
+          <img src="assets/images/babyIcon.png" class="icon" />
+          {{forBabies}}
+          </div>
+          </div>
+        <div id = 'payment-ride-info'>
+          <div class="icon-text">
+            <img src="assets/images/distanceIcon.png" class="icon" />
+            {{distance}} Km
+          </div>
+          <div class="icon-text">
+            <img src="assets/images/timeIcon.png" class="icon" />
+            {{average}} Min
+          </div>
+          <div class="icon-text">
+            <img src="assets/images/moneyIcon.png" class="icon" />
+            {{ridePrice}} RSD
+          </div>
+        </div>
       </div>
     </div>
     <div id = 'ride-button-div'>
-    <button  id="order-button"  (click)="orderRide()" mat-raised-button >Order</button>
-    <button  id="cancer-order-button"  (click)="cancelOrder()" mat-raised-button >Cancel</button>
+    <img id = 'loading-gif'src="assets/images/loadingGif.gif">
     </div>
   </div>
 </div>
