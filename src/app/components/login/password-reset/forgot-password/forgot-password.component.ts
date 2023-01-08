@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EmailValidator, FormControl, FormGroup, Validators } from '@angular/forms';
-import { htmlEmail } from '.././email-template';
 import { PasswordResetService } from '../../../../_service/password-reset.service';
 import { UserService } from 'src/app/_service/user.service';
 import { catchError, of } from 'rxjs';
