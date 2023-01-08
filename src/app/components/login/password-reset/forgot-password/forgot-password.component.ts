@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EmailValidator, FormControl, FormGroup, Validators } from '@angular/forms';
-import { htmlEmail } from '.././email-template';
 import { PasswordResetService } from '../../../../_service/password-reset.service';
+import { UserService } from 'src/app/_service/user.service';
+import { catchError, of } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -16,7 +19,7 @@ export class ForgotPasswordComponent implements OnInit {
   }
   );
   
-  constructor(private passwordResetService:PasswordResetService) { }
+  constructor(private passwordResetService:PasswordResetService,private userService:UserService,private router:Router) { }
 
   ngOnInit(): void {
   
@@ -24,10 +27,32 @@ export class ForgotPasswordComponent implements OnInit {
 
   resetPassword(){
     if (this.resetPassForm.valid){
-      let to = this.resetPassForm.controls.emailControl.value;
-      let from = "topGoAppRS@gmail.com";
-      let body = htmlEmail;
-      this.passwordResetService.sendEmail(to || '',from,body);
+      this.userService.getUserByEmail(this.resetPassForm.controls.emailControl.value!).pipe(
+        catchError((error:HttpErrorResponse) => {
+          if(error.status == 404){
+            window.alert("User does not exist!")
+          }
+          return of(null);
+        }
+        )
+      ).subscribe(res=>{
+        if(res != null){
+          this.passwordResetService.sendEmail(res.body.id).pipe(
+            catchError((error:HttpErrorResponse) => {
+              if(error.status == 404){
+                window.alert("User does not exist!")
+              }
+              return of(null);
+            }
+            )
+          ).subscribe(response=>{
+            if(response!.status == 204){
+              window.alert(	'Email with reset code has been sent!')
+              this.router.navigate(['login']);
+            }
+          });
+        }
+      })
     
     }
   }

@@ -5,7 +5,7 @@ import {RouteFormService} from "../../../service/route-form.service";
 import {DriverService} from "../../../service/driver.service";
 import {AllDriversDTO} from "../../../DTO/AllDriversDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, EMPTY, of} from "rxjs";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {MapService} from "../../../../components/map/map.service";
 import {Location} from "@angular/common";
@@ -15,6 +15,9 @@ import {RegisteredService} from "../../../service/registered.service";
 import {RideService} from "../../../service/ride.service";
 import {UserRef} from "../../../DTO/UserRef";
 import {RouteForCreateRideDTO} from "../../../DTO/RouteForCreateRideDTO";
+import {catchError} from "rxjs/operators";
+import {PassengerSocketService} from "../../../service/passenger-socket.service";
+import {RideDTO} from "../../../DTO/RideDTO";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -42,6 +45,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   numberOfSeats?:number;
   driverImage?:string;
   forAnimals?:boolean;
+  isVisible: boolean = false;
 
   forBabies?:boolean;
 
@@ -61,28 +65,22 @@ export class RegisteredRouteFormComponent implements OnInit {
       if (id == "go-button") {
         this.GoPressed(id);
       }
-      if (id == "search-button")
+      if (id == "order-button")
       {
-        this.searchPressed();
+        this.orderPressed();
       }
 
       if (id == "cancel-button")
       {
-        this.CancelPressed();
+        this.cancelPressed();
       }
-      if (id == "confirm-button")
-      {
-        this.InitConfirmRide();
 
-
-      }
 
 
     }
 
-  private CancelPressed() {
+  public cancelPressed() {
     this.routeFormService.RemoveAllMarkers();
-    this.isDisabled = true;
     // @ts-ignore
     this.popupContent.nativeElement.style.display = 'none';
   }
@@ -108,7 +106,7 @@ export class RegisteredRouteFormComponent implements OnInit {
     }
   }
 
-  private searchPressed() {
+  private orderPressed() {
       let ride:CreateRideDTO = <CreateRideDTO>
         {
           locations: [],
@@ -117,8 +115,14 @@ export class RegisteredRouteFormComponent implements OnInit {
           babyTransport: false,
           petTransport: false
         };
-      ride!.babyTransport = this.goForm.get("forBabies")?.value;
-      ride!.petTransport = this.goForm.get("forPets")?.value;
+      let forBabies :boolean = this.goForm.get("forBabies")?.value
+      let forPets:boolean = this.goForm.get("forPets")?.value
+      if (this.goForm.get("forBabies")?.value == undefined)
+        forBabies = false;
+      if (this.goForm.get("forPets")?.value == undefined)
+        forPets = false;
+      ride!.babyTransport = forBabies;
+      ride!.petTransport = forPets;
       let carType:string;
       if(this.goForm.get("carType")?.value == "1")
       {
@@ -162,10 +166,40 @@ export class RegisteredRouteFormComponent implements OnInit {
 
                 }
               ride!.passengers.push(userRef);
-              console.log(ride!);
-              this.rideService.createRide(ride!).subscribe(response =>
+
+
+              this.rideService.createRide(ride!).pipe(
+                catchError((error) => {
+                  if (error.status === 404) {
+                    console.log("no drivers")
+                    return EMPTY;
+                  }
+                  return of(null);
+                })
+              ).subscribe(response =>
               {
                 console.log(response)
+                this.driverService.getDriverById(response.body.driver.id).subscribe(driver=>
+                {
+                  this.selectedDriver = driver;
+                  this.showDriverInfo(this.selectedDriver!);
+                  this.driverService.setLocation(this.selectedDriver!);
+                  this.InitConfirmRide();
+                  this.passengerSocketService.initializeWebSocketConnection(this.passengerService.id);
+
+                  this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
+                    if(ride.id) {
+                      this.isVisible = true;
+                      console.log("bla");
+                    }
+
+
+
+                    }
+                  })
+                });
+
+
               });
             });
           }
@@ -238,25 +272,13 @@ export class RegisteredRouteFormComponent implements OnInit {
     forPets: new FormControl()
   });
 
-  constructor(private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
+
+  constructor(private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
   ngOnInit(): void {
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")
-    this.mapService.selectDriver$.subscribe({next:(driver:DriverInfoDTO)=>{
-        if (driver.id) {
-          this.selectedDriver = driver;
-          // @ts-ignore
-          this.popupContent.nativeElement.style.display = 'block';
-          this.driverName = driver.name + " " + driver.surname;
-          this.driverPhone= driver.telephoneNumber;
-          this.driverEmail = driver.email;
-          this.driverImage = driver.profilePicture;
-          this.isDisabled = false;
-        }
 
-
-      } })
     this.mapService.selectDistanceAndAverage$.subscribe({next:(distance:DistanceAndAverageDTO)=>{
       this.distance = distance.distance;
       this.average = distance.average;
@@ -271,11 +293,20 @@ export class RegisteredRouteFormComponent implements OnInit {
         [this.selectedFormInput,this.notSelectedFormInput] = [this.notSelectedFormInput,this.selectedFormInput];
 
       }
+      }
+    })
 
+  }
 
-
-
-      } })
+  private showDriverInfo(driver: DriverInfoDTO) {
+    this.selectedDriver = driver;
+    // @ts-ignore
+    this.popupContent.nativeElement.style.display = 'block';
+    this.driverName = driver.name + " " + driver.surname;
+    this.driverPhone = driver.telephoneNumber;
+    this.driverEmail = driver.email;
+    this.driverImage = driver.profilePicture;
+    this.isDisabled = false;
   }
 
   orderRide() {
@@ -283,9 +314,8 @@ export class RegisteredRouteFormComponent implements OnInit {
 
 
   }
-
-  cancelOrder() {
-    this.CancelPressed()
+  public closeOrder() {
+    this.cancelPressed()
     // @ts-ignore
     this.confirmRide.nativeElement.style.display = 'none';
 

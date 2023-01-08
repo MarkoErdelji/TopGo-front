@@ -125,6 +125,7 @@ export class MapComponent implements AfterViewInit {
     this.driverService.selectLocation$.subscribe({next:(driver)=>{
 
         if(driver) {
+          console.log(driver);
           this.addDriverMarker(driver)
         }
       } })

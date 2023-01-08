@@ -1,6 +1,8 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { catchError, of } from 'rxjs';
 import { PasswordResetService } from 'src/app/_service/password-reset.service';
 
 @Component({
@@ -10,8 +12,8 @@ import { PasswordResetService } from 'src/app/_service/password-reset.service';
 })
 export class ResetPasswordComponent implements OnInit {
 
-  token?: string;
-  email?: string;
+  token!: string;
+  userId!:string;
 
   resetPassForm = new FormGroup({
     passwordControl: new FormControl("",[Validators.required,Validators.minLength(6)]),
@@ -33,33 +35,31 @@ export class ResetPasswordComponent implements OnInit {
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
       this.token = params['token'];
-      this.email = params['email'];
+      this.userId = params['id'];
     });
 
-    this.passwordResetService.getToken(this.token || '').subscribe(
-      (responseToken)=>{
-        if(responseToken.status == 404){
-          window.alert("Token is invalid");
-          this.router.navigate(['login']);
-        }
-        else if(responseToken.status == 417){
-          window.alert("Token has expired please send another email!");
-          this.router.navigate(['login']);
-        }
-      }
-    )
   }
 
   resetPassword(){
     if(this.resetPassForm.valid && this.doPasswordsMatch()){
-      this.passwordResetService.resetPassword(this.token || ' ',this.email || ' ',this.resetPassForm.controls.passwordControl.value || ' ').subscribe(
-        response=>{
-          if(response.status == 200){
-            window.alert("Password successfuly reset!")
+      this.passwordResetService.resetPassword(this.token,this.userId,this.resetPassForm.controls.passwordControl.value!)
+      .pipe(
+        catchError((error:HttpErrorResponse) => {
+          if(error.status == 400){
+            window.alert(error.message);
             this.router.navigate(['login']);
           }
-          else{
-            window.alert("Something went wrong while reseting your password,try again later");
+          if(error.status == 404){
+            window.alert(error.message);
+            this.router.navigate(['login']);
+          }
+          return of(null);
+        }
+        )
+      ).subscribe(
+        response=>{
+          if(response?.status == 204){
+            window.alert("Password successfuly reset!")
             this.router.navigate(['login']);
           }
         }

@@ -11,11 +11,16 @@ export class DriverVehicleDialogComponent implements OnInit {
 
   vehicleInfo?:VehicleInfoDTO
 
+  isForBabies:boolean = false;
+  isForPets:boolean = false;
+
   constructor(private driverService:DriverService) { }
 
   ngOnInit(): void {
     this.driverService.getDriverVehicle(this.driverService.id!).subscribe(response=>{
       this.vehicleInfo = response;
+      this.isForBabies = this.vehicleInfo.babyTransport;
+      this.isForPets = this.vehicleInfo.petTransport;
     })
   }
 
