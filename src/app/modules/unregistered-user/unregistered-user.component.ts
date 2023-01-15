@@ -12,11 +12,11 @@ export class UnregisteredUserComponent implements OnInit {
 
 
   @ViewChild('map') mapComponent?: MapComponent;
-  constructor() { }
+  constructor(private driverService:DriverService) { }
 
   ngOnInit(): void {
-
-  }
+    this.driverService.getAll().subscribe(res=>console.log(res))
+  } 
 
 
 }
