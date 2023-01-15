@@ -192,7 +192,11 @@ export class RegisteredRouteFormComponent implements OnInit {
                       this.isVisible = true;
                       console.log("bla");
                     }
-
+                    else{
+                      this.isVisible = false;
+                      window.alert("No more drivers!");
+              
+                    }
 
 
                     }

@@ -59,6 +59,8 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
     this.timerSubscription.unsubscribe();
   }
 
+
+
   onAccept() {
   this.rideService.acceptRide(this.ride.id).pipe(
       catchError((error:HttpErrorResponse) => {
@@ -81,6 +83,23 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
     });
   }
   onDecline() {
-    this.data.snackBarRef.dismiss();
-  }
+    this.rideService.declineRide(this.ride.id).pipe(
+      catchError((error:HttpErrorResponse) => {
+        if(error.status == 400){
+          window.alert(error.error.message);
+          this.data.snackBarRef.dismiss();
+        }
+        if(error.status == 404){
+          window.alert(error.error.message);
+          this.data.snackBarRef.dismiss();
+        }
+        return of(null)
+      }
+      )
+    ).subscribe((res: any) => {
+      if(res != null){
+        this.data.snackBarRef.dismiss();
+      }
+    });
+    }
 }
