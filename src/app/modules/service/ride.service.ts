@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {Observable} from "rxjs";
 import {AllDriversDTO} from "../DTO/AllDriversDTO";
 import {CreateRideDTO} from "../DTO/CreateRideDTO";
+import {RejectionTextDTO} from "../DTO/RejectionTextDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -24,8 +25,8 @@ export class RideService {
     responseType: 'json'});
   }
 
-  declineRide(rideId){
-    return this.http.put<any>(this.endpoint+"/"+rideId+"/decline",{'headers':this.headers,observe: 'response',
+  declineRide(rideId, rejectionTextDTO:RejectionTextDTO){
+    return this.http.put<any>(this.endpoint+"/"+rideId+"/decline",JSON.stringify(rejectionTextDTO),{'headers':this.headers,observe: 'response',
     responseType: 'json'});
   }
 }
