@@ -7,6 +7,7 @@ import { RideDTO } from 'src/app/modules/DTO/RideDTO';
 import { RegisteredService } from 'src/app/modules/service/registered.service';
 import { RideService } from 'src/app/modules/service/ride.service';
 import { UserService } from 'src/app/_service/user.service';
+import {RejectionTextDTO} from "../../../DTO/RejectionTextDTO";
 
 @Component({
   selector: 'app-driver-notifications',
@@ -40,7 +41,7 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
         instance.email =result.email
         instance.profilePicture = result.profilePicture
         console.log(instance);
-        this.passengerUsernameProfile!.push(instance) 
+        this.passengerUsernameProfile!.push(instance)
         console.log(this.passengerUsernameProfile)}
       )
     })
@@ -83,7 +84,10 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
     });
   }
   onDecline() {
-    this.rideService.declineRide(this.ride.id).pipe(
+    let rejectionTextDTO:RejectionTextDTO = {
+      reason:"Placeholder"
+    }
+    this.rideService.declineRide(this.ride.id, rejectionTextDTO).pipe(
       catchError((error:HttpErrorResponse) => {
         if(error.status == 400){
           window.alert(error.error.message);
