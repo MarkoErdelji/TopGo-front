@@ -25,6 +25,16 @@ export class RideService {
     responseType: 'json'});
   }
 
+  startRide(rideId){
+    return this.http.put<any>(this.endpoint+"/"+rideId+"/start",{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
+
+  finishRide(rideId){
+    return this.http.put<any>(this.endpoint+"/"+rideId+"/end",{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
+
   declineRide(rideId, rejectionTextDTO:RejectionTextDTO){
     return this.http.put<any>(this.endpoint+"/"+rideId+"/decline",JSON.stringify(rejectionTextDTO),{'headers':this.headers,observe: 'response',
     responseType: 'json'});
