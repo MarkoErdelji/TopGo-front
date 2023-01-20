@@ -1,0 +1,29 @@
+
+#round-wrapper{
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 15px;
+}
+
+#round-wrapper:active{
+    box-shadow: 7px 7px 5px 0px rgba(255,150,66,0.87), 
+    -7px 7px 5px 0px rgba(255,150,66,0.87), 
+    7px -7px 5px 0px rgba(255,150,66,0.87), 
+    -7px -7px 5px 0px rgba(255,150,66,0.87);
+}
+#content-holder{
+    display:flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.title-img-container{
+    display: flex;
+    flex-direction: row;
+}
+.value-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
