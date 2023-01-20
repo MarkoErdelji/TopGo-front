@@ -89,4 +89,7 @@ export class CreateDriverComponent implements OnInit {
 
   }
 
+  openDocuments() {
+    window.alert("Vozaceva dokumenta")
+  }
 }
