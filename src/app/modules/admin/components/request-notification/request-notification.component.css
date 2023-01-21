@@ -1,26 +1,43 @@
-#reques-containter{
-  height: 185px;
+#whole-new-old-data{
+  height: 100%;
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.reques-containter{
+  height: 130px;
   width: 300px;
-  background: #c9c6c6;
+  background: #efeded;;
   border-radius: 10px;
-  margin-right: 1%;
   float: right;
   display: flex;
   flex-direction: column;
   justify-content: center;
   margin-bottom: 10px;
   margin-top: 10px;
+}
+.reques-containter:hover{
+  box-shadow: 0 0px 7px -1px rgba(255, 150, 66, 1);
+}
+
+#requests{
+  background: #d2d2d2;
+  height: 100%;
+  width: 350px;
+  float: right;
 
 }
 .container-column{
-  height: 40%;
-  width: 300px;
-  float: right;
+  width: 90%;
   display:flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-end;
-  /*margin-top: 15px;*/
+  margin: 10px;
+
+
 }
 #person{
   display: flex;
@@ -42,10 +59,6 @@ img{
   font-size: 20px;
 }
 
-#button{
-  display: flex;
-  justify-content: center;
-}
 #view-changes-btn{
   width:110px;
   height:45px;
@@ -84,9 +97,9 @@ p{
   margin-bottom: 20px;
 }
 #profile-content{
-  height: 420px;
+  height: 460px;
   border-radius: 10px;
-  background: #dedede;
+  background: #efeded;
 }
 hr{
   width: 80%;
@@ -109,14 +122,50 @@ hr{
   border-radius: 30px;
 }
 #main-content-request{
+  margin-top: 50px;
   float: left;
-  width: 30%;
+  width: 450px;
   margin-left: 100px;
-  height: 50%;
+  height: 70%;
+  background: #efeded;
+
 
 }
 #everything{
-  margin-top: 30px;
+  height: 100%;
 }
 
+#new-old-data{
+  width: 1000px;
+  height: 600px;
+  display: flex;
+  align-content: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: center;
+  visibility: hidden;
+}
+
+.old-new{
+  padding: 10px;
+}
+#titleDiv{
+  width: 350px;
+  height: 100px;
+  background: #FF9642;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#title{
+  display: flex;
+  width: 100%;
+  height:100%;
+  text-align: center;
+  font-size: xx-large;
+  color: white;
+  justify-content: center;
+  flex-direction: column;
+  margin: 0 !important;
+}
 
