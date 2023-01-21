@@ -1,11 +1,11 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild,OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LocationDTO} from "../../../unregistered-user/components/route-form/LocationDTO";
 import {RouteFormService} from "../../../service/route-form.service";
 import {DriverService} from "../../../service/driver.service";
 import {AllDriversDTO} from "../../../DTO/AllDriversDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
-import {BehaviorSubject, EMPTY, of} from "rxjs";
+import {BehaviorSubject, EMPTY, of, Subscription} from "rxjs";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {MapService} from "../../../../components/map/map.service";
 import {Location} from "@angular/common";
@@ -58,6 +58,8 @@ export class RegisteredRouteFormComponent implements OnInit {
 
    selectedFormInput: any;
    notSelectedFormInput: any;
+
+  private subscriptions: Subscription[] = [];
 
 
     async go(id: string) {
@@ -137,7 +139,7 @@ export class RegisteredRouteFormComponent implements OnInit {
         carType = "VAN"
       }
       ride!.vehicleType = carType!;
-    this.mapService.search(this.currentLocation!.location).subscribe({
+    this.subscriptions.push(this.mapService.search(this.currentLocation!.location).subscribe({
       next: (departure) => {
         let geo:GeoLocationDTO = <GeoLocationDTO>{
           address:  this.currentLocation!.location,
@@ -148,7 +150,7 @@ export class RegisteredRouteFormComponent implements OnInit {
         ride!.locations.push(<RouteForCreateRideDTO>{});
         ride!.locations[0].departure = geo!;
         console.log(location)
-        this.mapService.search(this.currentLocation!.destination).subscribe({
+        this.subscriptions.push(this.mapService.search(this.currentLocation!.destination).subscribe({
           next: (destination) => {
             let geo:GeoLocationDTO = <GeoLocationDTO>
               {
@@ -157,7 +159,7 @@ export class RegisteredRouteFormComponent implements OnInit {
                 latitude : destination[0].lat
               };
             ride!.locations[0].destination = geo;
-            this.passengerService.getPassengerById(this.passengerService.id!).subscribe(passenger =>
+            this.subscriptions.push(this.passengerService.getPassengerById(this.passengerService.id!).subscribe(passenger =>
             {
               let userRef:UserRef = <UserRef>
                 {
@@ -168,7 +170,7 @@ export class RegisteredRouteFormComponent implements OnInit {
               ride!.passengers.push(userRef);
 
 
-              this.rideService.createRide(ride!).pipe(
+              this.subscriptions.push(this.rideService.createRide(ride!).pipe(
                 catchError((error) => {
                   if (error.status === 404) {
                     console.log("no drivers")
@@ -195,7 +197,7 @@ export class RegisteredRouteFormComponent implements OnInit {
                     else{
                       this.isVisible = false;
                       window.alert("No more drivers!");
-              
+
                     }
 
 
@@ -204,11 +206,11 @@ export class RegisteredRouteFormComponent implements OnInit {
                 });
 
 
-              });
-            });
+              }));
+            }));
           }
-        })
-      }});
+        }))
+      }}));
 
 
 
@@ -226,24 +228,24 @@ export class RegisteredRouteFormComponent implements OnInit {
     // @ts-ignore
     this.driverEmailRide = this.selectedDriver.email;
     // @ts-ignore
-    this.mapService.search(this.currentLocation?.location).subscribe(res =>
+    this.subscriptions.push(this.mapService.search(this.currentLocation?.location).subscribe(res =>
     {
 
       let result = (res[0].display_name).split(",");
       // @ts-ignore
       this.departureP = result[1] + " " + result[0];
-    })
+    }))
     // @ts-ignore
-    this.mapService.search(this.currentLocation?.destination).subscribe(res =>
+    this.subscriptions.push(this.mapService.search(this.currentLocation?.destination).subscribe(res =>
     {
 
       let result = (res[0].display_name).split(",");
       // @ts-ignore
       this.destinationP = result[1] + " " + result[0];
-    })
+    }))
 
     // @ts-ignore
-    this.driverService.getDriverVehicle(this.selectedDriver.id).subscribe(vehicle =>
+    this.subscriptions.push(this.driverService.getDriverVehicle(this.selectedDriver.id).subscribe(vehicle =>
     {
 
       this.vehicleNameRide = vehicle.model;
@@ -265,7 +267,7 @@ export class RegisteredRouteFormComponent implements OnInit {
         this.ridePrice = price * this.distance!;
     })
 
-    })
+    }))
   }
 
   goForm = new FormGroup({
@@ -279,6 +281,9 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   constructor(private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
   ngOnInit(): void {
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")
@@ -291,14 +296,14 @@ export class RegisteredRouteFormComponent implements OnInit {
 
       } })
 
-    this.mapService.selectMapClick$.subscribe({next:(adress:string)=>{
+    this.subscriptions.push(this.mapService.selectMapClick$.subscribe({next:(adress:string)=>{
       if(adress != "[object Object]") {
         this.selectedFormInput.setValue(adress);
         [this.selectedFormInput,this.notSelectedFormInput] = [this.notSelectedFormInput,this.selectedFormInput];
 
       }
       }
-    })
+    }))
 
   }
 

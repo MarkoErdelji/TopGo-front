@@ -12,6 +12,7 @@ import {RegisteredRouteFormComponent} from "./components/registered-route-form/r
 import {ReactiveFormsModule} from "@angular/forms";
 import { RegisteredProfileComponent } from './components/registered-profile/registered-profile.component';
 import { RegisteredHomeComponent } from './components/registered-home/registered-home.component';
+import { RegisteredInboxComponent } from './components/registered-inbox/registered-inbox.component';
 
 
 
@@ -21,7 +22,8 @@ import { RegisteredHomeComponent } from './components/registered-home/registered
         RegisteredUserMenuComponent,
         RegisteredRouteFormComponent,
         RegisteredProfileComponent,
-        RegisteredHomeComponent
+        RegisteredHomeComponent,
+        RegisteredInboxComponent
     ],
   imports: [
     AppRoutingModule,

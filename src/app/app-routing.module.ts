@@ -29,6 +29,9 @@ import {
   RequestNotificationComponent
 } from "./modules/admin/components/request-notification/request-notification.component";
 import { AdminUsersComponent } from './modules/admin/components/admin-users/admin-users.component';
+import {
+  RegisteredInboxComponent
+} from "./modules/registered-user/components/registered-inbox/registered-inbox.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -41,6 +44,7 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                             [
                               { path: 'profile', component: RegisteredProfileComponent},
                               { path: 'home', component: RegisteredHomeComponent},
+                              { path: 'inbox', component: RegisteredInboxComponent},
                               { path: '', redirectTo: 'home', pathMatch: 'full' }
                             ],
                           canActivate: [UserGuard]},
