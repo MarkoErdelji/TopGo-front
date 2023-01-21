@@ -4,6 +4,7 @@ import {AllProfileChangesRequestsDTO} from "../../../DTO/AllProfileChangesReques
 import {ProfileChangeRequestDTO} from "../../../DTO/ProfileChangeRequestDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
 import {Router} from "@angular/router";
+import {DriverService} from "../../../service/driver.service";
 
 @Component({
   selector: 'app-request-notification',
@@ -14,7 +15,10 @@ export class RequestNotificationComponent implements OnInit {
   imageUrl?: string;
   profileChangesRequests?: AllProfileChangesRequestsDTO;
 
+  profileRequest?: HTMLElement[]
   lista?:ProfileChangeRequestDTO[]
+  profileChangeDTO?:ProfileChangeRequestDTO;
+  currentRequest?:HTMLElement;
   mainImageUrl?: string;
   driverId?: number;
   firstName?: string;
@@ -22,9 +26,14 @@ export class RequestNotificationComponent implements OnInit {
   username?: string;
   address?: string;
   phone?: string;
+  oldFirstName?: string;
+  oldLastName?: string;
+  oldUsername?: string;
+  oldAddress?: string;
+  oldPhoneNumber?: string;
 
 
-  constructor(private profileChangesRequestServcice:ProfileChangesRequestService, private router: Router) { }
+  constructor(private profileChangesRequestServcice:ProfileChangesRequestService, private router: Router, private driverService:DriverService) { }
 
   getData(){
     this.profileChangesRequestServcice.getAllRequests().subscribe(data=>{
@@ -42,7 +51,27 @@ export class RequestNotificationComponent implements OnInit {
 
   }
 
-  onViewChangesBtnClick(i: number) {
+  onRequestiClick(i: number) {
+    if(this.currentRequest != null){
+      // @ts-ignore
+      this.profileRequest = document.querySelectorAll(".reques-containter")
+      // @ts-ignore
+      this.profileRequest[i].style.boxShadow = '0 0px 7px -1px rgba(255, 150, 66, 1)'
+      this.currentRequest.style.removeProperty("box-shadow")
+    }
+    else{
+      // @ts-ignore
+      this.profileRequest = document.querySelectorAll(".reques-containter")
+      // @ts-ignore
+      this.profileRequest[i].style.boxShadow = '0 0px 7px -1px rgba(255, 150, 66, 1)'
+    }
+    // @ts-ignore
+    this.currentRequest = this.profileRequest[i];
+    // @ts-ignore
+    let mainContent: HTMLElement = document.getElementById("new-old-data");
+    mainContent.style.visibility = "visible";
+    // @ts-ignore
+    this.profileChangeDTO = this.lista[i];
     // @ts-ignore
     this.driverId = this.lista[i].driverId
 
@@ -59,29 +88,47 @@ export class RequestNotificationComponent implements OnInit {
     // @ts-ignore
     this.phone = this.lista[i].phoneNumber
 
+    this.driverService.getDriverById(this.driverId).subscribe(response=>{
+      this.oldFirstName = response.name;
+      this.oldLastName = response.surname;
+      this.oldUsername = response.email;
+      this.oldAddress = response.address;
+      this.oldPhoneNumber = response.telephoneNumber;
+    })
+
   }
 
   acceptChanges() {
     let driverDTO:DriverInfoDTO = {
-        id: this.driverId!,
-        name: this.firstName!,
-        surname: this.lastName!,
-        email: this.username!,
-        telephoneNumber: this.phone!,
-        profilePicture: this.mainImageUrl!,
-        address: this.address!
+      id: this.driverId!,
+      name: this.firstName!,
+      surname: this.lastName!,
+      email: this.username!,
+      telephoneNumber: this.phone!,
+      profilePicture: this.mainImageUrl!,
+      address: this.address!
     }
 
     console.log(driverDTO)
     this.profileChangesRequestServcice.updateDriver(driverDTO).subscribe(response=>{
+      // @ts-ignore
+      this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
+      })
       window.alert("Driver updated succesfully")
       this.router.navigate(['admin'])
+
     })
 
   }
 
   declineChanges() {
+    console.log(this.profileChangeDTO);
+    // @ts-ignore
+    this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
+    })
     window.alert("Edit request declined")
     this.router.navigate(['admin'])
+
   }
+
 }
