@@ -1,15 +1,23 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild,OnDestroy} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {LocationDTO} from "../../../unregistered-user/components/route-form/LocationDTO";
 import {RouteFormService} from "../../../service/route-form.service";
 import {DriverService} from "../../../service/driver.service";
 import {AllDriversDTO} from "../../../DTO/AllDriversDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
-import {BehaviorSubject} from "rxjs";
+import {BehaviorSubject, EMPTY, of, Subscription} from "rxjs";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {MapService} from "../../../../components/map/map.service";
 import {Location} from "@angular/common";
 import {DistanceAndAverageDTO} from "../../../DTO/DistanceAndAverageDTO";
+import {CreateRideDTO} from "../../../DTO/CreateRideDTO";
+import {RegisteredService} from "../../../service/registered.service";
+import {RideService} from "../../../service/ride.service";
+import {UserRef} from "../../../DTO/UserRef";
+import {RouteForCreateRideDTO} from "../../../DTO/RouteForCreateRideDTO";
+import {catchError} from "rxjs/operators";
+import {PassengerSocketService} from "../../../service/passenger-socket.service";
+import {RideDTO} from "../../../DTO/RideDTO";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -36,8 +44,8 @@ export class RegisteredRouteFormComponent implements OnInit {
   vehicleTypeRide?:string;
   numberOfSeats?:number;
   driverImage?:string;
-
   forAnimals?:boolean;
+  isVisible: boolean = false;
 
   forBabies?:boolean;
 
@@ -51,34 +59,30 @@ export class RegisteredRouteFormComponent implements OnInit {
    selectedFormInput: any;
    notSelectedFormInput: any;
 
+  private subscriptions: Subscription[] = [];
+
 
     async go(id: string) {
 
       if (id == "go-button") {
         this.GoPressed(id);
       }
-      if (id == "search-button")
+      if (id == "order-button")
       {
-        this.searchPressed();
+        this.orderPressed();
       }
 
       if (id == "cancel-button")
       {
-        this.CancelPressed();
+        this.cancelPressed();
       }
-      if (id == "confirm-button")
-      {
-        this.InitConfirmRide();
 
-
-      }
 
 
     }
 
-  private CancelPressed() {
+  public cancelPressed() {
     this.routeFormService.RemoveAllMarkers();
-    this.isDisabled = true;
     // @ts-ignore
     this.popupContent.nativeElement.style.display = 'none';
   }
@@ -104,34 +108,114 @@ export class RegisteredRouteFormComponent implements OnInit {
     }
   }
 
-  private searchPressed() {
-    this.routeFormService.RemoveAllMarkers();
-    this.driverService.getOnlyActive().subscribe(value => {
-
-      for (let driver of value.results) {
-        this.driverService.getDriverVehicle(driver.id).subscribe(vehicle => {
-          if (this.goForm.get("carType")?.value == "" || this.goForm.get("carType")?.value == vehicle.vehicleType) {
-            if (!this.goForm.get("forBabies")?.value && !this.goForm.get("forPets")?.value)
-              this.driverService.setLocation(driver);
-
-            if (this.goForm.get("forBabies")?.value) {
-              if (vehicle.babyTransport)
-                if (this.goForm.get("forPets")?.value)
-                  if (vehicle.petTransport)
-                    this.driverService.setLocation(driver);
-            } else if (this.goForm.get("forPets")?.value)
-              if (vehicle.petTransport)
-                if (this.goForm.get("forBabies")?.value)
-                  if (vehicle.babyTransport)
-                    this.driverService.setLocation(driver);
-          }
-
-
-        })
-
-
+  private orderPressed() {
+      let ride:CreateRideDTO = <CreateRideDTO>
+        {
+          locations: [],
+          passengers: [],
+          vehicleType: '',
+          babyTransport: false,
+          petTransport: false
+        };
+      let forBabies :boolean = this.goForm.get("forBabies")?.value
+      let forPets:boolean = this.goForm.get("forPets")?.value
+      if (this.goForm.get("forBabies")?.value == undefined)
+        forBabies = false;
+      if (this.goForm.get("forPets")?.value == undefined)
+        forPets = false;
+      ride!.babyTransport = forBabies;
+      ride!.petTransport = forPets;
+      let carType:string;
+      if(this.goForm.get("carType")?.value == "1")
+      {
+        carType = "STANDARD"
       }
-    })
+      if(this.goForm.get("carType")?.value == "2")
+      {
+        carType = "LUXURY"
+      }
+      if(this.goForm.get("carType")?.value == "3")
+      {
+        carType = "VAN"
+      }
+      ride!.vehicleType = carType!;
+    this.subscriptions.push(this.mapService.search(this.currentLocation!.location).subscribe({
+      next: (departure) => {
+        let geo:GeoLocationDTO = <GeoLocationDTO>{
+          address:  this.currentLocation!.location,
+          longitude : departure[0].lon,
+          latitude: departure[0].lat
+
+        };
+        ride!.locations.push(<RouteForCreateRideDTO>{});
+        ride!.locations[0].departure = geo!;
+        console.log(location)
+        this.subscriptions.push(this.mapService.search(this.currentLocation!.destination).subscribe({
+          next: (destination) => {
+            let geo:GeoLocationDTO = <GeoLocationDTO>
+              {
+                address:this.currentLocation!.destination,
+                longitude : destination[0].lon,
+                latitude : destination[0].lat
+              };
+            ride!.locations[0].destination = geo;
+            this.subscriptions.push(this.passengerService.getPassengerById(this.passengerService.id!).subscribe(passenger =>
+            {
+              let userRef:UserRef = <UserRef>
+                {
+                  id : passenger.id,
+                  email : passenger.email
+
+                }
+              ride!.passengers.push(userRef);
+
+
+              this.subscriptions.push(this.rideService.createRide(ride!).pipe(
+                catchError((error) => {
+                  if (error.status === 404) {
+                    console.log("no drivers")
+                    return EMPTY;
+                  }
+                  return of(null);
+                })
+              ).subscribe(response =>
+              {
+                console.log(response)
+                this.driverService.getDriverById(response.body.driver.id).subscribe(driver=>
+                {
+                  this.selectedDriver = driver;
+                  this.showDriverInfo(this.selectedDriver!);
+                  this.driverService.setLocation(this.selectedDriver!);
+                  this.InitConfirmRide();
+                  this.passengerSocketService.initializeWebSocketConnection(this.passengerService.id);
+
+                  this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
+                    if(ride.id) {
+                      this.isVisible = true;
+                      console.log("bla");
+                    }
+                    else{
+                      this.isVisible = false;
+                      window.alert("No more drivers!");
+
+                    }
+
+
+                    }
+                  })
+                });
+
+
+              }));
+            }));
+          }
+        }))
+      }}));
+
+
+
+
+
   }
 
   private InitConfirmRide() {
@@ -144,24 +228,24 @@ export class RegisteredRouteFormComponent implements OnInit {
     // @ts-ignore
     this.driverEmailRide = this.selectedDriver.email;
     // @ts-ignore
-    this.mapService.search(this.currentLocation?.location).subscribe(res =>
+    this.subscriptions.push(this.mapService.search(this.currentLocation?.location).subscribe(res =>
     {
 
       let result = (res[0].display_name).split(",");
       // @ts-ignore
       this.departureP = result[1] + " " + result[0];
-    })
+    }))
     // @ts-ignore
-    this.mapService.search(this.currentLocation?.destination).subscribe(res =>
+    this.subscriptions.push(this.mapService.search(this.currentLocation?.destination).subscribe(res =>
     {
 
       let result = (res[0].display_name).split(",");
       // @ts-ignore
       this.destinationP = result[1] + " " + result[0];
-    })
+    }))
 
     // @ts-ignore
-    this.driverService.getDriverVehicle(this.selectedDriver.id).subscribe(vehicle =>
+    this.subscriptions.push(this.driverService.getDriverVehicle(this.selectedDriver.id).subscribe(vehicle =>
     {
 
       this.vehicleNameRide = vehicle.model;
@@ -183,7 +267,7 @@ export class RegisteredRouteFormComponent implements OnInit {
         this.ridePrice = price * this.distance!;
     })
 
-    })
+    }))
   }
 
   goForm = new FormGroup({
@@ -194,25 +278,16 @@ export class RegisteredRouteFormComponent implements OnInit {
     forPets: new FormControl()
   });
 
-  constructor(private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService) { }
 
+  constructor(private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  }
   ngOnInit(): void {
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")
-    this.mapService.selectDriver$.subscribe({next:(driver:DriverInfoDTO)=>{
-        if (driver.id) {
-          this.selectedDriver = driver;
-          // @ts-ignore
-          this.popupContent.nativeElement.style.display = 'block';
-          this.driverName = driver.name + " " + driver.surname;
-          this.driverPhone= driver.telephoneNumber;
-          this.driverEmail = driver.email;
-          this.driverImage = driver.profilePicture;
-          this.isDisabled = false;
-        }
 
-
-      } })
     this.mapService.selectDistanceAndAverage$.subscribe({next:(distance:DistanceAndAverageDTO)=>{
       this.distance = distance.distance;
       this.average = distance.average;
@@ -221,17 +296,26 @@ export class RegisteredRouteFormComponent implements OnInit {
 
       } })
 
-    this.mapService.selectMapClick$.subscribe({next:(adress:string)=>{
+    this.subscriptions.push(this.mapService.selectMapClick$.subscribe({next:(adress:string)=>{
       if(adress != "[object Object]") {
         this.selectedFormInput.setValue(adress);
         [this.selectedFormInput,this.notSelectedFormInput] = [this.notSelectedFormInput,this.selectedFormInput];
 
       }
+      }
+    }))
 
+  }
 
-
-
-      } })
+  private showDriverInfo(driver: DriverInfoDTO) {
+    this.selectedDriver = driver;
+    // @ts-ignore
+    this.popupContent.nativeElement.style.display = 'block';
+    this.driverName = driver.name + " " + driver.surname;
+    this.driverPhone = driver.telephoneNumber;
+    this.driverEmail = driver.email;
+    this.driverImage = driver.profilePicture;
+    this.isDisabled = false;
   }
 
   orderRide() {
@@ -239,9 +323,8 @@ export class RegisteredRouteFormComponent implements OnInit {
 
 
   }
-
-  cancelOrder() {
-    this.CancelPressed()
+  public closeOrder() {
+    this.cancelPressed()
     // @ts-ignore
     this.confirmRide.nativeElement.style.display = 'none';
 

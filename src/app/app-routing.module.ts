@@ -28,6 +28,10 @@ import {RegisteredHomeComponent} from "./modules/registered-user/components/regi
 import {
   RequestNotificationComponent
 } from "./modules/admin/components/request-notification/request-notification.component";
+import { AdminUsersComponent } from './modules/admin/components/admin-users/admin-users.component';
+import {
+  RegisteredInboxComponent
+} from "./modules/registered-user/components/registered-inbox/registered-inbox.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -40,6 +44,7 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                             [
                               { path: 'profile', component: RegisteredProfileComponent},
                               { path: 'home', component: RegisteredHomeComponent},
+                              { path: 'inbox', component: RegisteredInboxComponent},
                               { path: '', redirectTo: 'home', pathMatch: 'full' }
                             ],
                           canActivate: [UserGuard]},
@@ -56,6 +61,7 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: '', redirectTo: 'unregistered', pathMatch: 'full' },
                         { path: 'admin', component:AdminComponent,
                           children:[
+                            {path: 'users',component:AdminUsersComponent},
                             {path: 'createDriver', component: CreateDriverComponent},
                             {path: 'history', component: AdminHistoryComponent},
                             {path: 'inbox', component: AdminInboxComponent},

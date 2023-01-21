@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse, HttpResponse} from "@angular/common/http";
 import {AllDriversDTO} from "../DTO/AllDriversDTO";
 import {BehaviorSubject, catchError, map, mergeMap, Observable, of} from "rxjs";
 import {VehicleInfoDTO} from "../DTO/VehicleInfoDTO";
@@ -25,8 +25,12 @@ export class DriverService {
   private Location$ = new BehaviorSubject<any>({});
   selectLocation$ = this.Location$.asObservable();
 
-  getAll(): Observable<AllDriversDTO> {
-    return this.http.get<AllDriversDTO>(this.endpoint);
+  getAll(): Observable<HttpResponse<AllDriversDTO>> {
+    return this.http.get<AllDriversDTO>(this.endpoint,{
+
+      observe: 'response',
+      responseType: 'json'
+    });
   }
   getVehiclePrice(vehicleTypeId:string): Observable<number> {
     return this.http.get<number>('http://localhost:8000/api/vehicle/type/' + vehicleTypeId);

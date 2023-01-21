@@ -8,14 +8,14 @@
             <p>License plate:</p>
             <p>Number of seats:</p>
             <p>Type:</p>
-            <mat-checkbox [disabled]="true" [checked] = "vehicleInfo?.petTransport || true">Pets</mat-checkbox>
+            <mat-checkbox [disabled]="true" [checked] = "isForPets">Pets</mat-checkbox>
         </div>
         <div id="valueContainer">
             <p>{{vehicleInfo?.model}}</p>
             <p>{{vehicleInfo?.licenseNumber}}</p>
             <p>{{vehicleInfo?.passengerSeats}}</p>
             <p>{{vehicleInfo?.vehicleType}}</p>
-            <mat-checkbox [disabled]="true" [checked] = "vehicleInfo?.babyTransport || true">Baby</mat-checkbox>
+            <mat-checkbox [disabled]="true" [checked] = "isForBabies">Baby</mat-checkbox>
         </div>
     </div>
 </div>

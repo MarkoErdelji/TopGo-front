@@ -28,7 +28,14 @@ export class RouteFormComponent implements OnInit {
       } })
     this.selectedFormInput = this.routeForm.get("location")
     this.notSelectedFormInput = this.routeForm.get("destination")
+    this.mapService.selectMapClick$.subscribe({next:(adress:string)=>{
+        if(adress != "[object Object]") {
+          this.selectedFormInput.setValue(adress);
+          [this.selectedFormInput,this.notSelectedFormInput] = [this.notSelectedFormInput,this.selectedFormInput];
 
+        }
+
+      } })
   }
 
   submit() {
@@ -42,7 +49,7 @@ export class RouteFormComponent implements OnInit {
       this.driverService.getAll().subscribe(value =>
       {
 
-        for(let driver of value.results)
+        for(let driver of value.body!.results)
         {
 
           this.driverService.setLocation(driver);

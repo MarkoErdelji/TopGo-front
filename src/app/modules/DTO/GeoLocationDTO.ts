@@ -1,5 +1,5 @@
 export interface GeoLocationDTO {
-  address: string;
+  address: String;
   latitude: number;
   longitude: number;
 }

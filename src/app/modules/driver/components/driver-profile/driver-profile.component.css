@@ -102,6 +102,7 @@ img{
     border-radius: 100px;
     height:130px;
     margin-bottom:50px;
+    object-fit:cover;
 }
 
 #valueContainer{

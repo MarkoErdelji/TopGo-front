@@ -10,11 +10,12 @@ import { CreateDriverComponent } from './components/create-driver/create-driver.
 import { AdminHistoryComponent } from './components/admin-history/admin-history.component';
 import { AdminInboxComponent } from './components/admin-inbox/admin-inbox.component';
 import { RequestNotificationComponent } from './components/request-notification/request-notification.component';
+import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 
 
 
 @NgModule({
-  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent],
+  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent],
   imports: [
     AppRoutingModule,
     MaterialModule,
