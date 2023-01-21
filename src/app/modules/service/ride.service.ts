@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {AllDriversDTO} from "../DTO/AllDriversDTO";
 import {CreateRideDTO} from "../DTO/CreateRideDTO";
 import {RejectionTextDTO} from "../DTO/RejectionTextDTO";
+import { RideDTO } from '../DTO/RideDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +39,10 @@ export class RideService {
   declineRide(rideId, rejectionTextDTO:RejectionTextDTO){
     return this.http.put<any>(this.endpoint+"/"+rideId+"/decline",JSON.stringify(rejectionTextDTO),{'headers':this.headers,observe: 'response',
     responseType: 'json'});
+  }
+
+  getFinishedRidesByDriverId(driverId){
+    return this.http.get<RideDTO[]>(this.endpoint+"/driver/"+driverId+"/finished",{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
   }
 }

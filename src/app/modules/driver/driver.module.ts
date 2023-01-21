@@ -18,6 +18,8 @@ import { DriverChangePasswordDialogComponent } from './components/driver-profile
 import { DriverChangeImageDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-change-image-dialog/driver-change-image-dialog.component';
 import { DriverNotificationsComponent } from './components/driver-notifications/driver-notifications.component';
 import { HistoryInstanceComponent } from './components/driver-history/history-instance/history-instance.component';
+import { MapModule } from 'src/app/components/map/map.module';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 
 
@@ -41,9 +43,11 @@ import { HistoryInstanceComponent } from './components/driver-history/history-in
     AppRoutingModule,
     MaterialModule,
     FormsModule,
+    MapModule,
     ReactiveFormsModule,
     NavbarModule,
-    CommonModule
+    CommonModule,
+    FontAwesomeModule
   ],
   exports: [
     DriverComponent,DriverMenuComponent,DriverProfileComponent,DriverInboxComponent,DriverHistoryComponent,DriverReportsComponent,DriverProfileEditComponent,DriverChangePasswordDialogComponent,DriverChangeImageDialogComponent

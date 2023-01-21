@@ -1,4 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { RideDTO } from 'src/app/modules/DTO/RideDTO';
+import { DriverService } from 'src/app/modules/service/driver.service';
+import { RideService } from 'src/app/modules/service/ride.service';
+import { HistoryInstanceComponent } from './history-instance/history-instance.component';
 
 @Component({
   selector: 'app-driver-history',
@@ -7,9 +11,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DriverHistoryComponent implements OnInit {
 
-  constructor() { }
+  rideDtos:RideDTO[] = []
+  ridesLoaded:boolean = false;
+  constructor(private rideService:RideService,private driverService:DriverService) { }
 
   ngOnInit(): void {
+    this.rideService.getFinishedRidesByDriverId(this.driverService.id).subscribe(response=>{
+      this.rideDtos = response.body || [];
+      this.ridesLoaded = true;
+    })
   }
 
 }

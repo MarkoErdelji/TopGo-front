@@ -1,9 +1,165 @@
 
-<div id="list-holder-wrapper">
-    <div id="list-holder">
-        <div id="list-holder-header"><h1>History</h1></div>
-        <div class="history-instance" id="instance-container">
-        <app-history-instance class="instance"></app-history-instance>
+<div id="history-content">
+    <div id="history-main-content" class="shadow">
+        <div id="history-instance-content">
+            <div id="header-content">
+                <div id="img-icon-content">
+                    <img src="assets/images/carIcon.png" class="header-icon">
+                    <div id="header-text-container">
+                        <p class="header-text">1/21/2021</p>
+                    </div>
+                    <img src="assets/images/destination-marker.png" class="header-icon">
+                </div>
+                <div class="orange-line"></div>
+            </div>
+            <div id="other-content">
+                <div id="main-time-holder" class="horizontal-flex-end">
+                    <div id="main-start-time-holder">
+                        <div class="horizontal-flex">
+                            <p class="title-text">Start:</p>
+                            <p class="value-text">14/01/2021 00:42</p>
+                        </div>
+                    </div>
+                    <img src="assets/images/timeIcon.png" class="time-icon">
+                    <div id="main-end-time-holder">
+                        <div class="horizontal-flex">
+                            <p class="title-text">End:</p>
+                            <p class="value-text">14/01/2021 00:42</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-location-holder" class="horizontal-flex-end">
+                    <div id="main-departure-holder">
+                        <div class="horizontal-flex">
+                            <img class="icon" src="assets/images/departure-marker.png">
+                            <p class="title-text">Departure:</p>
+                            <p class="value-text">753 Oak Boulevard</p>
+                        </div>
+                    </div>
+                    <div id="main-destination-holder">
+                        <div class="horizontal-flex">
+                            <img class="destination-icon" src="assets/images/destination-marker.png">
+                            <p class="title-text">Destination:</p>
+                            <p class="value-text">753 Oak Boulevard</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-price-distance-holder" class="horizontal-flex-end">
+                    <div id="main-price-holder">
+                        <div class="horizontal-flex">
+                            <img class="icon" src="assets/images/moneyIcon.png">
+                            <p class="title-text">Price:</p>
+                            <p class="value-text" id="price-text">1600 RSD</p>
+                        </div>
+                    </div>
+                    <div id="main-distance-holder">
+                        <div class="horizontal-flex">
+                            <img class="destination-icon" src="assets/images/distanceIcon.png">
+                            <p class="title-text">Distance:</p>
+                            <p class="value-text">0.8 KM</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-passenger-holder" class="vertical-flex">
+                    <p class="title-text">Passengers:</p>
+                    <div id="passenger-holder" class="horizontal-flex">
+                        <div class="passenger-holder-instance horizontal-flex">
+                            <img class="passenger-image" src="assets/images/tate.png">
+                            <p class="value-text">Kristijan bubasarba</p>
+                        </div>
+                        <div class="passenger-holder-instance horizontal-flex">
+                            <img class="passenger-image" src="assets/images/tate.png">
+                            <p class="value-text">Kristijan bubasarba</p>
+                        </div>
+                        <div class="passenger-holder-instance horizontal-flex">
+                            <img class="passenger-image" src="assets/images/tate.png">
+                            <p class="value-text">Kristijan bubasarba</p>
+                        </div>
+                        <div class="passenger-holder-instance horizontal-flex">
+                            <img class="passenger-image" src="assets/images/tate.png">
+                            <p class="value-text">Kristijan bubasarba</p>
+                        </div>
+                        <div class="passenger-holder-instance horizontal-flex">
+                            <img class="passenger-image" src="assets/images/tate.png">
+                            <p class="value-text">Kristijan bubasarba</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-review-holder">
+                    <div id="main-driver-review-holder" class="vertical-flex">
+                        <p class="title-text">Driver reviews:</p>
+                        <div class="review-holder">
+                            <div class="review-instance vertical-flex">
+                                <div class="horizontal-flex">
+                                    <img class="passenger-image" src="assets/images/tate.png">
+                                    <p class="title-text">Kristijan bubasarba</p>
+                                </div>
+                                <div class="star-rating">
+                                    <div class="star1">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star2">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star3">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star4">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star5">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                </div>
+                                <p id="review-value-holder">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure architecto esse aperiam eius, quaerat nobis rem dolor cumque molestias, doloribus quasi dolorem doloremque, neque consectetur odit maiores minus sequi assumenda harum sit tempore veniam iusto libero! Corporis dolorum eos mollitia esse doloremque sapiente voluptates quis. Voluptas expedita consequuntur fugit corporis animi. Perferendis repellendus sunt aliquid ex explicabo in itaque, molestias, beatae impedit quasi quisquam? Eveniet, cum nemo. Illo officiis modi et sapiente. Autem officia incidunt et voluptate, accusantium obcaecati modi libero, dicta necessitatibus repudiandae voluptatum tempore culpa aliquid tenetur odio quisquam labore quae amet facere eveniet! Neque quibusdam perspiciatis cum minima placeat, porro, animi quos, nemo voluptate rem vitae quia odio culpa nobis consectetur omnis est pariatur blanditiis nam ipsam saepe suscipit? Nisi reiciendis cum dignissimos dolorem delectus ullam veniam voluptates, voluptatibus aperiam explicabo sit deleniti nostrum harum esse odio tenetur impedit nam enim! Quaerat dolore incidunt rerum soluta. Laboriosam repellat a distinctio velit ab! Earum veritatis, iure doloremque pariatur nobis beatae consectetur ipsum ab explicabo veniam, eum atque et ea id culpa adipisci sit nesciunt dolore numquam possimus cupiditate esse impedit. Vero porro ab id quibusdam laudantium, esse eos error consectetur recusandae neque accusantium sit non adipisci impedit quos iure. Eaque eos aut quam, suscipit sed cum nihil tenetur debitis vero excepturi amet architecto tempore ratione quasi officiis libero, aperiam, aliquid cupiditate sequi praesentium magnam. Repellat, natus! Dolore deserunt ratione optio sequi dignissimos minus, alias distinctio, ab velit consequatur maxime! Tenetur asperiores ipsa vitae temporibus perferendis nesciunt amet voluptates aliquam dolores architecto sapiente, ducimus, mollitia unde. Veniam, corrupti! Nisi tempora dolorum reprehenderit sequi possimus nostrum dolores voluptates aliquam earum, quas similique nemo? Maxime, necessitatibus dolorem reiciendis temporibus totam a distinctio, eaque, iure aperiam nam fuga incidunt labore. Reiciendis recusandae, sed debitis culpa praesentium nemo accusamus dolores quasi distinctio provident accusantium aspernatur modi? Pariatur temporibus harum eius labore atque magni porro fuga veritatis rem quis, saepe impedit repellendus rerum totam debitis quidem et dolorum dolor aperiam minima odit distinctio ex. Et, tempora nemo. A corporis corrupti, veniam voluptatum excepturi asperiores sed culpa doloribus voluptatibus tempora distinctio maxime qui numquam, veritatis laudantium eius sequi? Debitis perspiciatis dicta quaerat laboriosam sapiente vitae autem voluptatem quod earum, modi eveniet facilis tenetur, quasi, nihil eum ut voluptate! Voluptate voluptatum aliquid nisi consequuntur assumenda dolorem numquam vitae eius veritatis odio error fugiat enim architecto, nulla saepe magni! Iste id possimus, fugiat alias quo laboriosam ex!
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div id="main-vehicle-review-holder" class="vertical-flex">
+                        <p class="title-text">Vehicle reviews:</p>
+                        <div class="review-holder">
+                            <div class="review-instance vertical-flex">
+                                <div class="horizontal-flex">
+                                    <img class="passenger-image" src="assets/images/tate.png">
+                                    <p class="title-text">Kristijan bubasarba</p>
+                                </div>
+                                <div class="star-rating">
+                                    <div class="star1">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star2">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star3">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star4">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                    <div class="star5">
+                                        <fa-icon [icon]="['fas', 'star']"></fa-icon>
+                                    </div>
+                                </div>
+                                <p id="review-value-holder">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Iure architecto esse aperiam eius, quaerat nobis rem dolor cumque molestias, doloribus quasi dolorem doloremque, neque consectetur odit maiores minus sequi assumenda harum sit tempore veniam iusto libero! Corporis dolorum eos mollitia esse doloremque sapiente voluptates quis. Voluptas expedita consequuntur fugit corporis animi. Perferendis repellendus sunt aliquid ex explicabo in itaque, molestias, beatae impedit quasi quisquam? Eveniet, cum nemo. Illo officiis modi et sapiente. Autem officia incidunt et voluptate, accusantium obcaecati modi libero, dicta necessitatibus repudiandae voluptatum tempore culpa aliquid tenetur odio quisquam labore quae amet facere eveniet! Neque quibusdam perspiciatis cum minima placeat, porro, animi quos, nemo voluptate rem vitae quia odio culpa nobis consectetur omnis est pariatur blanditiis nam ipsam saepe suscipit? Nisi reiciendis cum dignissimos dolorem delectus ullam veniam voluptates, voluptatibus aperiam explicabo sit deleniti nostrum harum esse odio tenetur impedit nam enim! Quaerat dolore incidunt rerum soluta. Laboriosam repellat a distinctio velit ab! Earum veritatis, iure doloremque pariatur nobis beatae consectetur ipsum ab explicabo veniam, eum atque et ea id culpa adipisci sit nesciunt dolore numquam possimus cupiditate esse impedit. Vero porro ab id quibusdam laudantium, esse eos error consectetur recusandae neque accusantium sit non adipisci impedit quos iure. Eaque eos aut quam, suscipit sed cum nihil tenetur debitis vero excepturi amet architecto tempore ratione quasi officiis libero, aperiam, aliquid cupiditate sequi praesentium magnam. Repellat, natus! Dolore deserunt ratione optio sequi dignissimos minus, alias distinctio, ab velit consequatur maxime! Tenetur asperiores ipsa vitae temporibus perferendis nesciunt amet voluptates aliquam dolores architecto sapiente, ducimus, mollitia unde. Veniam, corrupti! Nisi tempora dolorum reprehenderit sequi possimus nostrum dolores voluptates aliquam earum, quas similique nemo? Maxime, necessitatibus dolorem reiciendis temporibus totam a distinctio, eaque, iure aperiam nam fuga incidunt labore. Reiciendis recusandae, sed debitis culpa praesentium nemo accusamus dolores quasi distinctio provident accusantium aspernatur modi? Pariatur temporibus harum eius labore atque magni porro fuga veritatis rem quis, saepe impedit repellendus rerum totam debitis quidem et dolorum dolor aperiam minima odit distinctio ex. Et, tempora nemo. A corporis corrupti, veniam voluptatum excepturi asperiores sed culpa doloribus voluptatibus tempora distinctio maxime qui numquam, veritatis laudantium eius sequi? Debitis perspiciatis dicta quaerat laboriosam sapiente vitae autem voluptatem quod earum, modi eveniet facilis tenetur, quasi, nihil eum ut voluptate! Voluptate voluptatum aliquid nisi consequuntur assumenda dolorem numquam vitae eius veritatis odio error fugiat enim architecto, nulla saepe magni! Iste id possimus, fugiat alias quo laboriosam ex!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>            
+    </div>
+    <div id="list-holder-wrapper">
+        <div id="list-holder">
+            <div id="list-holder-header"><h1>History</h1></div>
+            <div class="history-instance" id="instance-container" *ngIf="ridesLoaded">
+            <app-history-instance class="instance" *ngFor="let item of rideDtos" [rideDTO]="item"></app-history-instance>
+            </div>
         </div>
     </div>
 </div>

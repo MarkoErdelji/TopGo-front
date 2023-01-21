@@ -1,24 +1,21 @@
 <div id="round-wrapper">
     <div id="content-holder">
+        <div id="title-container">
+            <p id="date-value">{{date}}</p>
+        </div>
         <div class="value-container" id="departure-container">
             <div class="title-img-container">
-                <img>
+                <img src="assets/images/departure-marker.png" class="icon">
                 <p id="departure-title">Departure:</p>
             </div>
-            <p id="departure-value">Mokap</p>
+            <p id="departure-value" class="text-value">{{rideDTO.locations[0].departure.address}}</p>
         </div>
         <div class="value-container" id="destination-container">
-            <p id="destination-title">Destination:</p>
-            <p id="destination-value">Mokap</p>
+            <div class="title-img-container">
+                <img src="assets/images/destination-marker.png" class="destination-icon">
+                <p id="destination-title">Destination:</p>
+            </div> 
+            <p id="destination-value" class="text-value">{{rideDTO.locations[0].destination.address}}</p>
         </div>
-        <div class="value-container" id="start-date-container">
-            <p id="start-date-title">Start:</p>
-            <p id="start-date-value">14-01-2021</p>
-        </div>
-        <div class="value-container" id="end-date-container">
-            <p id="end-date-title">End:</p>
-            <p id="end-date-value">14-01-2021</p>
-        </div>
-        <img id="passenger">
     </div>
 </div>

@@ -20,6 +20,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './_service/authconfig.interceptor';
 import { ForgotPasswordComponent } from './components/login/password-reset/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/login/password-reset/reset-password/reset-password.component';
+import { FontAwesomeModule,FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import {faStar} from'@fortawesome/free-solid-svg-icons';
 
 
 
@@ -42,7 +44,8 @@ import { ResetPasswordComponent } from './components/login/password-reset/reset-
     UnregisteredUserModule,
     RegisteredUserModule,
     DriverModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
@@ -51,4 +54,8 @@ import { ResetPasswordComponent } from './components/login/password-reset/reset-
   }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faStar);
+  }
+ }
