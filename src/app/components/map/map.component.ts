@@ -13,6 +13,8 @@ import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
 import {marker} from "leaflet";
 import {AuthService} from "../../_service/auth.service";
 import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
+import {Subscription} from "rxjs";
+
 
 
 
@@ -30,6 +32,8 @@ export class MapComponent implements AfterViewInit {
   private markerList: L.Marker[] = [];
 
   private selectedLocation!:L.Marker;
+
+  private subscriptions: Subscription[] = [];
 
 
 
@@ -54,10 +58,10 @@ export class MapComponent implements AfterViewInit {
 
     const map = this.map as L.Map;
     map.zoomOut(6);
-    this.mapService.search(this.location.location).subscribe({
+    this.subscriptions.push(this.mapService.search(this.location.location).subscribe({
       next: (departure) =>{
         console.log(location)
-        this.mapService.search(this.location.destination).subscribe({
+        this.subscriptions.push(this.mapService.search(this.location.destination).subscribe({
           next:(destination) => {
             console.log(destination)
             const routeControl = L.Routing.control({
@@ -81,9 +85,9 @@ export class MapComponent implements AfterViewInit {
 
             this.previouseRouteControl = routeControl;
           }
-        })
+        }))
       }
-    });
+    }));
     if(this.previouseRouteControl != null){
       const map = this.map as L.Map;
       map.removeControl(this.previouseRouteControl);
@@ -92,7 +96,7 @@ export class MapComponent implements AfterViewInit {
 
   addDriverMarker(driver:DriverInfoDTO) : void {
 
-    this.driverService.getDriverVehicle(driver.id).subscribe(vehicle =>
+    this.subscriptions.push(this.driverService.getDriverVehicle(driver.id).subscribe(vehicle =>
     {
       let marker = new L.Marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude],{icon: greenIcon});
       marker.addTo(this.map);
@@ -103,7 +107,7 @@ export class MapComponent implements AfterViewInit {
         mService.setDriver(driver);
       });
 
-    })
+    }))
 
 
 
@@ -113,7 +117,7 @@ export class MapComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     this.initMap();
     this.registerOnClick();
-    this.routeFormService.selectLocation$.subscribe({next:(location)=>{
+    this.subscriptions.push(this.routeFormService.selectLocation$.subscribe({next:(location)=>{
 
       this.location = location;
         if(this.location.location && this.location.destination) {
@@ -121,19 +125,19 @@ export class MapComponent implements AfterViewInit {
           console.log(this.location.destination)
           this.createRoute();
         }
-   } })
-    this.driverService.selectLocation$.subscribe({next:(driver)=>{
+   } }))
+    this.subscriptions.push(this.driverService.selectLocation$.subscribe({next:(driver)=>{
 
         if(driver) {
           console.log(driver);
           this.addDriverMarker(driver)
         }
-      } })
+      } }))
 
-    this.routeFormService.RemoveMarkers$.subscribe({next:(remove)=>{
+    this.subscriptions.push(this.routeFormService.RemoveMarkers$.subscribe({next:(remove)=>{
         console.log("remove");
         this.markerList.forEach(marker => marker.remove());
-      } })
+      } }))
 
   }
 
@@ -154,6 +158,12 @@ export class MapComponent implements AfterViewInit {
       this.selectedLocation = new L.Marker([lat, lng],{icon: arrowIcon}).addTo(this.map);
     });
   }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.map.remove();
+    this.map = null;
+    console.log("blaaa")
+  }
 
 
 }
@@ -173,4 +183,6 @@ let  arrowIcon = L.icon({
   iconSize:     [30, 30], // size of the icon
   iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
 });
+
+
 

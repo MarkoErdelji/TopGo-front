@@ -39,6 +39,7 @@ export class RegisteredUserComponent implements OnInit {
           {
             this.passengerInfo = passengerResponse
             this.passengerService.id = passengerResponse?.id;
+
             console.log(passengerResponse);
           })
         }

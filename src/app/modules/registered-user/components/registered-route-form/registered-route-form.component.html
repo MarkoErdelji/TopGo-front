@@ -1,14 +1,9 @@
 
 <div id = "driver-div" #popupContent>
-  <div id = "driver-info">
-    <img id = "driver-image" src="{{driverImage}}">
-    <div id = "info">
-    <p id ="driver-name" >{{driverName}}</p>
-      <p id ="driver-phone" >{{driverPhone}}</p>
-      <p id ="driver-email">{{driverEmail}}</p>
-    </div>
+
 </div>
-</div>
+
+
 
 <div id="test" #formDiv >
   <form [formGroup]="goForm" (ngSubmit)="go($event.submitter.id)">
@@ -52,7 +47,7 @@
 
 </div>
 <div id = 'confirm-ride' #confirmRide>
-  <div id = 'confirm-ride-info' class = 'center' #confirmRideInfo>
+  <div id = 'confirm-ride-info' class = 'center' >
     <div class = 'route-div'>
       <img src="assets/images/carIcon.png" id = "departure-image">
       <hr id = "orange-line">
@@ -62,7 +57,7 @@
       <p id = 'departure-text' >{{destinationP}}</p>
       <p id = 'destination-text' >{{departureP}}</p>
     </div>
-    <div id = 'driver-info-ride'>
+    <div id = 'driver-info-ride' #confirmRideInfo>
       <div id ='driver-info-border'>
       <img src="{{driverImage}}" id = "driver-image-ride">
       <div id = driver-info-ride-text>
@@ -103,6 +98,10 @@
             <img src="assets/images/moneyIcon.png" class="icon" />
             {{ridePrice}} RSD
           </div>
+          <div class="icon-text">
+            <img src="assets/images/status-icon-png-2.jpg" class="icon" />
+            {{rideStatus}}
+          </div>
         </div>
       </div>
     </div>
@@ -112,4 +111,15 @@
     </div>
   </div>
 </div>
+<div [hidden]="acceptedBtn" id="accept-ride-div">
+  <div class ='white-bck'>
+<button  id="withdraw-button" (click)='withdrawRide()' class ='shadow'  type="button" mat-raised-button>WITHDRAW</button>
+  <button  id="chat-button"  class ='shadow'  type="button" mat-raised-button>CHAT</button>
+  </div>
+</div>
 
+<div [hidden]="activeBtn" id="active-ride-div">
+  <div class = 'white-bck'>
+  <button  id="panic-button" class ='shadow'  type="button" mat-raised-button>PANIC</button>
+  </div>
+</div>

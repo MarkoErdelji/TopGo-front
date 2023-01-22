@@ -83,8 +83,10 @@ mat-checkbox
   position: fixed;
   right: 0;
   border-radius: 5px 0px 0px 5px;
-  display: none;
   top: 5%;
+  height: fit-content;
+  width: fit-content;
+  padding: 0px 10px 0px 10px
 
 
 }
@@ -227,6 +229,7 @@ mat-checkbox
 #driver-info-ride
 {
   width: 100%;
+  border-radius: 5px;
 
 
 }
@@ -287,3 +290,47 @@ mat-checkbox
   height: 70px;
   width: 70px;
 }
+
+#withdraw-button,#chat-button,#panic-button
+{
+  border-radius: 10%;
+  width: 100px;
+  height: 70px;
+  color: white;
+  margin: 30px;
+
+
+}
+#withdraw-button,#panic-button
+{
+  background-color: darkred;
+}
+#chat-button
+{
+  background-color: #FF9642;
+}
+#accept-ride-div
+{
+
+
+}
+#active-ride-div,#accept-ride-div
+{
+  background-color: rgba(0, 0, 0, 0.459);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 100px;
+}
+.white-bck {
+  background-color: white;
+  border-radius: 5px;
+}
+#active-ride-div
+{
+
+
+}
+
