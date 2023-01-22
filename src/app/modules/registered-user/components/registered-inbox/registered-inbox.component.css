@@ -124,7 +124,7 @@ h1
 .receiver-bubble
 {
   padding: 30px;
-
+  max-width: 30%;
   width: fit-content;
   height: fit-content;
   background-color: #e3e3e3;

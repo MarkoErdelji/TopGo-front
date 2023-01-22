@@ -79,13 +79,6 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
     ).subscribe((res: any) => {
       if(res != null){
         console.log(res);
-        window.alert("Driver will now start ride")
-        this.rideService.startRide(this.ride.id).subscribe((response)=>{
-          window.alert("Ride started")
-          this.rideService.finishRide(this.ride.id).subscribe((response)=>{
-            window.alert("Ride is over")
-          })
-        })
         this.data.snackBarRef.dismiss();
       }
     });
