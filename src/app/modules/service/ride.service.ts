@@ -5,6 +5,7 @@ import {Observable} from "rxjs";
 import {AllDriversDTO} from "../DTO/AllDriversDTO";
 import {CreateRideDTO} from "../DTO/CreateRideDTO";
 import {RejectionTextDTO} from "../DTO/RejectionTextDTO";
+import {RideDTO} from "../DTO/RideDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -24,6 +25,10 @@ export class RideService {
     return this.http.put<any>(this.endpoint+"/"+rideId+"/accept",{'headers':this.headers,observe: 'response',
     responseType: 'json'});
   }
+  withdraw(rideId){
+    return this.http.put<RideDTO>(this.endpoint+"/"+rideId+"/withdraw",{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
 
   startRide(rideId){
     return this.http.put<any>(this.endpoint+"/"+rideId+"/start",{'headers':this.headers,observe: 'response',
@@ -38,5 +43,12 @@ export class RideService {
   declineRide(rideId, rejectionTextDTO:RejectionTextDTO){
     return this.http.put<any>(this.endpoint+"/"+rideId+"/decline",JSON.stringify(rejectionTextDTO),{'headers':this.headers,observe: 'response',
     responseType: 'json'});
+  }
+
+  getPassengerPendingRide(id:number){
+    return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/pending")
+  }
+  getPassengerAcceptedRide(id:number){
+    return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/accepted")
   }
 }
