@@ -5,7 +5,8 @@ import {Observable} from "rxjs";
 import {AllDriversDTO} from "../DTO/AllDriversDTO";
 import {CreateRideDTO} from "../DTO/CreateRideDTO";
 import {RejectionTextDTO} from "../DTO/RejectionTextDTO";
-import {RideDTO} from "../DTO/RideDTO";
+import { RideDTO } from '../DTO/RideDTO';
+
 
 @Injectable({
   providedIn: 'root'
@@ -51,4 +52,5 @@ export class RideService {
   getPassengerAcceptedRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/accepted")
   }
+
 }

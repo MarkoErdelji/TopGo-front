@@ -6,6 +6,9 @@ import {VehicleInfoDTO} from "../DTO/VehicleInfoDTO";
 import {GeoLocationDTO} from "../DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
 import { Router } from '@angular/router';
+import { RideDTO } from '../DTO/RideDTO';
+import { SortParameters } from '../DTO/SortParameters';
+import { UserRidesListDTO } from '../DTO/UserRidesListDTO';
 
 
 @Injectable({
@@ -49,6 +52,11 @@ export class DriverService {
   }
   getDriversDocumentsByDriverId(id:number){
     return this.http.get<any>(this.endpoint+"/"+id+"/documents");
+  }
+
+  getDriverRides(driverId,sortParam){
+    return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride?sort="+sortParam.toLowerCase(),{observe: 'response',
+      responseType: 'json'});
   }
 
   setImageUrl(url: string) {
