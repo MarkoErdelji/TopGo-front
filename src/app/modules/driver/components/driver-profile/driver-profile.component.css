@@ -80,6 +80,8 @@
 mat-icon:hover{
     cursor:pointer;
 }
+
+
 mat-icon{
     background-color: #cacaca;
     border: 1px solid black;

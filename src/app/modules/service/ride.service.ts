@@ -41,8 +41,4 @@ export class RideService {
     responseType: 'json'});
   }
 
-  getFinishedRidesByDriverId(driverId){
-    return this.http.get<RideDTO[]>(this.endpoint+"/driver/"+driverId+"/finished",{'headers':this.headers,observe: 'response',
-      responseType: 'json'});
-  }
 }

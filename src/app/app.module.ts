@@ -21,7 +21,7 @@ import { AuthInterceptor } from './_service/authconfig.interceptor';
 import { ForgotPasswordComponent } from './components/login/password-reset/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from './components/login/password-reset/reset-password/reset-password.component';
 import { FontAwesomeModule,FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import {faStar} from'@fortawesome/free-solid-svg-icons';
+import {faStar,faStarHalf} from'@fortawesome/free-solid-svg-icons';
 
 
 
@@ -57,5 +57,6 @@ import {faStar} from'@fortawesome/free-solid-svg-icons';
 export class AppModule {
   constructor(library: FaIconLibrary) {
     library.addIcons(faStar);
+    library.addIcons(faStarHalf);
   }
  }
