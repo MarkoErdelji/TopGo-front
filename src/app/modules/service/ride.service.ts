@@ -53,4 +53,8 @@ export class RideService {
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/accepted")
   }
 
+  getDriverAcceptedRide(id:number){
+    return this.http.get<RideDTO>(this.endpoint+"/driver/"+id+"/accepted")
+  }
+
 }

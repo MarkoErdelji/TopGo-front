@@ -145,8 +145,6 @@ hr{
   justify-content: center;
   visibility: hidden;
 }
-<<<<<<< HEAD
-=======
 
 .old-new{
   padding: 10px;
@@ -170,7 +168,7 @@ hr{
   flex-direction: column;
   margin: 0 !important;
 }
->>>>>>> 31b5fcc1ff4302dc5a5219e614c5025554333b6c
+
 
 .old-new{
   padding: 10px;

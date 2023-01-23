@@ -1,0 +1,120 @@
+#ride-container{
+  border-radius: 5px;
+  width:400px;
+  height: 280px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.459);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+#ride-info{
+  border-radius: 5px;
+  width: 95%;
+  height: 95%;
+  background-color: white;
+}
+#passenger-profile-picture{
+  border-radius: 100px;
+  width: 100px;
+  height: 100px;
+  stroke: black;
+  margin: 15px;
+  border: 2px solid black;
+}
+
+#passenger-info{
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+}
+#passenger-identity{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-size: large;
+}
+#orange-line{
+  height: 2px;
+  border-radius: 20px;
+  background-color: orange;
+  width: 80%;
+
+}
+
+#ride-details{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+}
+.details{
+  display: flex;
+  flex-direction: row;
+
+
+}
+
+#distance-img, #status-img, #money-img, #time-img{
+  width: 20px;
+  height:20px;
+  margin-right: 10px;
+  margin-left: 10px;
+}
+
+#row1{
+  margin-right: 50px;
+}
+
+#buttons{
+  background-color: rgba(0, 0, 0, 0.459);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  bottom: 50px;
+  right: 0;
+  width: 400px;
+  height: 100px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  border-radius: 5px;
+}
+
+#buttons-background{
+  background-color: white;
+  width: 95%;
+  height: 95%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+
+}
+button{
+
+  overflow: hidden;
+  width: 80px;
+  height: 40px;
+  margin: 10px;
+  color: white;
+  font-size: large;
+
+}
+#start-btn{
+  background-color: #FF9642;
+  border-radius: 5px;
+}
+#chat-btn{
+  background-color: #FF9642;
+  border-radius: 5px;
+}
+#cancel-btn{
+  background-color: #D2D2D2;
+  border-radius: 5px;
+}

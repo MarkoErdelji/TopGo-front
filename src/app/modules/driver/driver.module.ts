@@ -21,6 +21,7 @@ import { HistoryInstanceComponent } from './components/driver-history/history-in
 import { MapModule } from 'src/app/components/map/map.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
+import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 
 
 
@@ -40,6 +41,7 @@ import { DriverHomeComponent } from './components/driver-home/driver-home.compon
     DriverNotificationsComponent,
     HistoryInstanceComponent,
     DriverHomeComponent,
+    DriverCurrentRideComponent,
   ],
   imports: [
     AppRoutingModule,
