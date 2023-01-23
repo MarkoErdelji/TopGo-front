@@ -14,7 +14,21 @@ import {marker} from "leaflet";
 import {AuthService} from "../../_service/auth.service";
 import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
 import {Subscription} from "rxjs";
-
+import { icon, Marker } from 'leaflet';
+const iconRetinaUrl = 'assets/destination-marker.png';
+const iconUrl = 'assets/destination-marker.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [41, 41],
+  iconAnchor: [20, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
 
 
 
@@ -70,6 +84,14 @@ export class MapComponent implements AfterViewInit {
                 serviceUrl: `http://router.project-osrm.org/route/v1/`
               }),
               show: false,
+              lineOptions: {
+                missingRouteTolerance:2,
+                extendToWaypoints:true,
+                styles: [
+                    {color: '#ff7e15', opacity: 1, weight: 5}
+                ]
+
+              },
               waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
             }).addTo(this.map);
             routeControl.on('routesfound', (e) => {
@@ -185,7 +207,7 @@ let  arrowIcon = L.icon({
 });
 
 let  routeIcon = L.icon({
-  iconUrl: 'assets/images/destinationIcon.png',
+  iconUrl: 'assets/images/destination-icon.png',
 
   iconSize:     [30, 30], // size of the icon
   iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
