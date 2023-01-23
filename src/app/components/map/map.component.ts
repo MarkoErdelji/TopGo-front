@@ -63,13 +63,13 @@ export class MapComponent implements AfterViewInit {
         console.log(location)
         this.subscriptions.push(this.mapService.search(this.location.destination).subscribe({
           next:(destination) => {
+
             console.log(destination)
             const routeControl = L.Routing.control({
               router: L.Routing.osrmv1({
                 serviceUrl: `http://router.project-osrm.org/route/v1/`
               }),
               show: false,
-              routeWhileDragging: true,
               waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
             }).addTo(this.map);
             routeControl.on('routesfound', (e) => {
@@ -179,6 +179,13 @@ let  greenIcon = L.icon({
 });
 let  arrowIcon = L.icon({
   iconUrl: 'assets/images/arrowIcon.png',
+
+  iconSize:     [30, 30], // size of the icon
+  iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
+});
+
+let  routeIcon = L.icon({
+  iconUrl: 'assets/images/destinationIcon.png',
 
   iconSize:     [30, 30], // size of the icon
   iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
