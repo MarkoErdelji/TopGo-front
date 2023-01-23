@@ -20,6 +20,8 @@ import {PassengerSocketService} from "../../../service/passenger-socket.service"
 import {RideDTO} from "../../../DTO/RideDTO";
 import {VehicleInfoDTO} from "../../../DTO/VehicleInfoDTO";
 import {AuthService} from "../../../../_service/auth.service";
+import  { MatDialog } from '@angular/material/dialog';
+import {ChatDialogComponent} from "./registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -56,6 +58,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   isVisible: boolean = false;
   acceptedBtn: boolean = true;
   activeBtn: boolean = true;
+  msg?:string;
 
   forBabies?:boolean;
 
@@ -444,6 +447,14 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.rideService.withdraw(this.currentRide?.id).subscribe(ride => this.currentRide);
 
   }
-  constructor(private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(ChatDialogComponent, {
+      width: '400px',
+      data: {ride: this.currentRide}
+    });
+
+  }
+  constructor(public dialog: MatDialog,private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
 }

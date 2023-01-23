@@ -9,10 +9,11 @@ import { AppRoutingModule } from 'src/app/app-routing.module';
 import { MapModule } from 'src/app/components/map/map.module';
 import { MapComponent } from 'src/app/components/map/map.component';
 import {RegisteredRouteFormComponent} from "./components/registered-route-form/registered-route-form.component";
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RegisteredProfileComponent } from './components/registered-profile/registered-profile.component';
 import { RegisteredHomeComponent } from './components/registered-home/registered-home.component';
 import { RegisteredInboxComponent } from './components/registered-inbox/registered-inbox.component';
+import { ChatDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component';
 
 
 
@@ -23,16 +24,18 @@ import { RegisteredInboxComponent } from './components/registered-inbox/register
         RegisteredRouteFormComponent,
         RegisteredProfileComponent,
         RegisteredHomeComponent,
-        RegisteredInboxComponent
+        RegisteredInboxComponent,
+        ChatDialogComponent
     ],
-  imports: [
-    AppRoutingModule,
-    MaterialModule,
-    CommonModule,
-    NavbarModule,
-    MapModule,
-    ReactiveFormsModule
-  ],
+    imports: [
+        AppRoutingModule,
+        MaterialModule,
+        CommonModule,
+        NavbarModule,
+        MapModule,
+        ReactiveFormsModule,
+        FormsModule
+    ],
   exports: [
     RegisteredUserComponent
   ]
