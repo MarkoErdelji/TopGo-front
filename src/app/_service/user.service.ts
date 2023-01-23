@@ -1,7 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, of } from 'rxjs';
-import { UserListDTO } from '../modules/DTO/UserListDTO';
+import { UserListDTO, UserListResponseDTO } from '../modules/DTO/UserListDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +21,14 @@ export class UserService {
         
   }
 
+  getUserById(id:number){
+    return this.http
+      .get<UserListResponseDTO>(`http://localhost:8000/api/user/id/`+id,{
+
+        observe: 'response',
+        responseType: 'json'
+      })
+  }
   blockUser(userId){
     return this.http
       .put<any>(`http://localhost:8000/api/user/`+userId+"/block",{

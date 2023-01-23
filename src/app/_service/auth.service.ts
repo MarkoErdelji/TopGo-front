@@ -118,6 +118,14 @@ export class AuthService {
       break;
    }
   }
+  getUserId()
+  {
+    let token:string=localStorage.getItem('access_token')!;
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+
+    return decodedToken.id;
+  }
 
   changeUserPassword(userId,newPassword,oldPassword){
     let passwordObject = {new_password:newPassword,old_password:oldPassword}

@@ -1,1 +1,166 @@
-<p>driver-history works!</p>
+
+<div id="history-content">
+    <div id="history-main-content" class="shadow">
+        <div id="history-instance-content" *ngIf="itemLoaded">
+            <div id="header-content">
+                <div id="img-icon-content">
+                    <img src="assets/images/carIcon.png" class="header-icon">
+                    <div id="header-text-container">
+                        <p class="header-text">{{startDateOnlyDate}}</p>
+                    </div>
+                    <img src="assets/images/destination-marker.png" class="header-icon">
+                </div>
+                <div class="orange-line"></div>
+            </div>
+            <div id="other-content">
+                <div id="main-time-holder" class="horizontal-flex-end">
+                    <div id="main-start-time-holder">
+                        <div class="horizontal-flex">
+                            <p class="title-text">Start:</p>
+                            <p class="value-text">{{startDate}}</p>
+                        </div>
+                    </div>
+                    <img src="assets/images/timeIcon.png" class="time-icon">
+                    <div id="main-end-time-holder">
+                        <div class="horizontal-flex">
+                            <p class="title-text">End:</p>
+                            <p class="value-text">{{endDate}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-location-holder" class="horizontal-flex-end">
+                    <div id="main-departure-holder">
+                        <div class="horizontal-flex">
+                            <img class="icon" src="assets/images/departure-marker.png">
+                            <p class="title-text">Departure:</p>
+                            <p class="value-text">{{selectedRide!.locations[0].departure.address}}</p>
+                        </div>
+                    </div>
+                    <div id="main-destination-holder">
+                        <div class="horizontal-flex">
+                            <img class="destination-icon" src="assets/images/destination-marker.png">
+                            <p class="title-text">Destination:</p>
+                            <p class="value-text">{{selectedRide!.locations[0].destination.address}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-pet-baby-holder" class="horizontal-flex-end">
+                    <div id="main-pet-holder">
+                        <div class="horizontal-flex">
+                            <img class="icon" src="assets/images/petIcon.png">
+                            <p class="title-text">Pets:</p>
+                            <mat-checkbox [disabled]=true [checked]=selectedRide!.petTransport></mat-checkbox>
+                        </div>
+                    </div>
+                    <div id="main-baby-holder">
+                        <div class="horizontal-flex">
+                            <img class="destination-icon" src="assets/images/babyIcon.png">
+                            <p class="title-text">Babies:</p>
+                            <mat-checkbox [disabled]=true [checked]=selectedRide!.babyTransport></mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-price-holder" class="horizontal-flex-end">
+                    <div class="horizontal-flex">
+                        <img class="destination-icon" src="assets/images/moneyIcon.png">
+                        <p class="title-text">Price:</p>
+                        <p class="value-text price-text">{{selectedRide!.totalCost}} RSD</p>
+                    </div>
+                </div>
+                <div id="main-passenger-holder" class="vertical-flex">
+                    <p class="title-text">Passengers:</p>
+                    <div id="passenger-holder" class="horizontal-flex">
+                        <div class="passenger-holder-instance horizontal-flex" *ngFor="let item of passengerInfo">
+                            <img class="passenger-image" src={{item.profilePicture}}>
+                            <p class="value-text">{{item.name}} {{item.surname}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div id="main-review-holder">
+                    <div id="main-driver-review-holder" class="vertical-flex">
+                        <p class="title-text">Driver reviews:</p>
+                        <div class="review-holder">
+                            <div class="review-instance vertical-flex" *ngFor="let item of driverReviews">
+                                <div class="horizontal-flex">
+                                    <img class="passenger-image" src={{item.passenger.profilePicture}}>
+                                    <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>
+                                </div>
+                                <div class="star-rating">
+                                    <div *ngFor="let i of [0, 1, 2, 3, 4]; o">
+                                        <div *ngIf="item.review.rating-i > 0 && item.review.rating-i >= 1">
+                                            <i class='fas fa-star star' style="width:100%"></i>
+                                        </div>
+                                        <div *ngIf="item.review.rating-i <= 0;">
+                                            <i class='fas fa-star star' style="width:0%"></i>
+                                        </div>
+                                        <div *ngIf="item.review.rating-i < 1 && item.review.rating-i >0" >
+                                            <i class='fas fa-star star'  [ngStyle]="{'width': (item.review.rating-i)*100 + '%'}"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p id="review-value-holder">
+                                    {{ item.review.comment }}
+                                </p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div id="main-vehicle-review-holder" class="vertical-flex">
+                        <p class="title-text">Vehicle reviews:</p>
+                        <div class="review-holder">
+                            <div class="review-instance vertical-flex" *ngFor="let item of vehicleReviews">
+                                <div class="horizontal-flex">
+                                    <img class="passenger-image" src={{item.passenger.profilePicture}}>
+                                    <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>
+                                </div>
+                                <div class="star-rating">
+                                    <div *ngFor="let i of [0, 1, 2, 3, 4]; o">
+                                        <div *ngIf="item.review.rating-i > 0 && item.review.rating-i >= 1">
+                                            <i class='fas fa-star star' style="width:100%"></i>
+                                        </div>
+                                        <div *ngIf="item.review.rating-i <= 0;">
+                                            <i class='fas fa-star star' style="width:0%"></i>
+                                        </div>
+                                        <div *ngIf="item.review.rating-i < 1 && item.review.rating-i >0" >
+                                            <i class='fas fa-star star'  [ngStyle]="{'width': (item.review.rating-i)*100 + '%'}"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <p id="review-value-holder">
+                                    {{ item.review.comment }}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>            
+    </div>
+    <div id="list-holder-wrapper">
+        <div id="list-holder">
+            <div id="list-holder-header"><h1>History</h1>
+                <div class="white-background">
+                    <mat-form-field>
+                        <mat-label>Sort by</mat-label>
+                        <mat-select [(ngModel)]="selectedSortParam" (ngModelChange)="onOptionSelected()">
+                           <mat-option *ngFor="let sortParam of sortParams" [value]="sortParam" defa>
+                                {{ sortParam }}
+                            </mat-option>
+                        </mat-select>
+                        <!-- <mat-form-field>
+                            <mat-label>Choose a date</mat-label>
+                            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDatetime">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                          </mat-form-field> -->
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="history-instance" id="instance-container" *ngIf="ridesLoaded" ngClass="" >
+            <app-history-instance class="instance" *ngFor="let item of rideDtos" (click)="selectRide(item); selectedRide = item" [rideDTO]="item" [ngClass]="{'highlight': selectedRide === item}"></app-history-instance>
+            </div>
+        </div>
+    </div>
+    
+</div>
