@@ -7,6 +7,7 @@ import {UserService} from "../../_service/user.service";
 import {AuthService} from "../../_service/auth.service";
 import {RegisteredService} from "../service/registered.service";
 import {PassengerInfoDTO} from "../DTO/PassengerInfoDTO";
+import { PassengerSocketService } from '../service/passenger-socket.service';
 
 @Component({
   selector: 'app-registered-user',
@@ -16,9 +17,10 @@ import {PassengerInfoDTO} from "../DTO/PassengerInfoDTO";
 export class RegisteredUserComponent implements OnInit {
   private passengerInfo? :PassengerInfoDTO;
 
-  constructor(private userService:UserService,private passengerService:RegisteredService,private authService:AuthService) { }
+  constructor(private userService:UserService,private passengerService:RegisteredService,private authService:AuthService,private passengerSocketService:PassengerSocketService) { }
 
   ngOnInit(): void {
+    
     this.userService.getUserByEmail(this.authService.getEmail()).subscribe(
       response=>{
         if(response.status == 200){
@@ -37,6 +39,7 @@ export class RegisteredUserComponent implements OnInit {
           ).
           subscribe(passengerResponse=>
           {
+            this.passengerSocketService.initializeWebSocketConnection(this.authService.getUserId());
             this.passengerInfo = passengerResponse
             this.passengerService.id = passengerResponse?.id;
 
