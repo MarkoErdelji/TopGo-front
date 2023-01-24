@@ -130,19 +130,21 @@ export class MapComponent implements AfterViewInit {
     }))
 
   }
+  
 
-  clearCurrentRoute(){
-    if(this.previouseRouteControl != null){
-      const map = this._map as L.Map;
-      map.removeControl(this.previouseRouteControl);
-    }
-  }
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.subscriptions.push(this.routeFormService.routeRemovalSubject$.subscribe({next:(value)=>{
-        this.clearCurrentRoute();
-      }}))
+    this.subscriptions.push(this.routeFormService.vehicleLocationSubject$.subscribe(vehicle =>
+      {
+        console.log(vehicle);
+        let marker = new L.Marker([vehicle.latitude, vehicle.longitude],{icon: greenIcon});
+        marker.addTo(this._map);
+        this._markerList.push(marker)
+      }))
+    this.subscriptions.push(this.routeFormService.routeRemovalSubject$.subscribe({next:(value)=>{ 
+      this.clearCurrentRoute();
+    }}))
     this.subscriptions.push(this.routeFormService.selectLocation$.subscribe({next:(location)=>{
 
         this.location = location;
@@ -202,7 +204,12 @@ export class MapComponent implements AfterViewInit {
     this._map = null;
     console.log("blaaa")
   }
-
+  clearCurrentRoute(){
+    if(this.previouseRouteControl != null){
+      const map = this._map as L.Map;
+      map.removeControl(this.previouseRouteControl);
+    }
+  }
 
 }
 
