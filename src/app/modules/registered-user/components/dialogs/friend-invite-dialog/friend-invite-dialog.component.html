@@ -1,0 +1,11 @@
+<div class="custom-snack-bar">
+  <div id="friend-div">
+    <img id = 'user-img' [src] = 'pfp'>
+  </div>
+  {{userName}} has invited you for a ride!
+      <div class="actions">
+        <button mat-raised-button class="accept"(click)="onAccept()">Accept</button>
+        <button mat-raised-button class="decline"(click)="onDecline()">Decline</button>
+      </div>
+
+</div>

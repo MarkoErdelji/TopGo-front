@@ -133,6 +133,9 @@ export class DriverCurrentRideComponent implements OnInit {
       this.rideService.startRide(this.rideId).subscribe(response=>{
         if(response != null){
           console.log(response)
+          this.rideService.simulateRide(this.rideId).subscribe(res=>{
+            console.log(res);
+          })
         }
       })
     }

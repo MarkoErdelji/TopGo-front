@@ -75,7 +75,7 @@ export class DriverSocketService {
   setReturnVehicleLocation(location: GeoLocationDTO) {
     this.returnVehicleLocation$.next(location);
   }
-  
+
   private returnRide$ = new BehaviorSubject<any>({});
   selectReturnRide$ = this.returnRide$.asObservable();
   setReturnRide(ride: RideDTO) {
