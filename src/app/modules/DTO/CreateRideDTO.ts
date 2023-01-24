@@ -8,4 +8,6 @@ export interface CreateRideDTO {
   vehicleType: string;
   babyTransport: boolean;
   petTransport: boolean;
+  scheduledTime: string|null;
 }
+

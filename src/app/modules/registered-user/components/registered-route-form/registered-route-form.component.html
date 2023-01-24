@@ -35,8 +35,18 @@
         <input matInput id = "number-input" type="number" min="2" max="10" step="2" value = "4" placeholder="Seats">
       </mat-form-field>
       <div id = "button-div">
+        <mat-form-field id="date-input-field">
+          <input matInput id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Choose a date" [formControl]="dateControl" >
+          <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker [disabled]=false #picker [showSpinners]="true" [showSeconds]="false"
+             [stepHour]="1" [stepMinute]="1"
+             [touchUi]="true"  [enableMeridian]="false" 
+             [hideTime]="false">
+          </ngx-mat-datetime-picker>
+       </mat-form-field>
+  
       <button  id="order-button" type="submit" mat-raised-button >Order</button>
-        <button  id="cancel-button" type="submit" mat-raised-button >Cancle</button>
+        <button  id="cancel-button" type="submit" mat-raised-button >Cancel</button>
 
       </div>
 
@@ -57,7 +67,7 @@
       <p id = 'departure-text' >{{destinationP}}</p>
       <p id = 'destination-text' >{{departureP}}</p>
     </div>
-    <div id = 'driver-info-ride' #confirmRideInfo>
+    <div id = 'driver-info-ride' #confirmRideInfo >
       <div id ='driver-info-border'>
       <img src="{{driverImage}}" id = "driver-image-ride">
       <div id = driver-info-ride-text>

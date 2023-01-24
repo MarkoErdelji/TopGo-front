@@ -20,6 +20,7 @@ import {PassengerSocketService} from "../../../service/passenger-socket.service"
 import {RideDTO} from "../../../DTO/RideDTO";
 import {VehicleInfoDTO} from "../../../DTO/VehicleInfoDTO";
 import {AuthService} from "../../../../_service/auth.service";
+import { UserService } from 'src/app/_service/user.service';
 
 @Component({
   selector: 'app-registered-route-form',
@@ -40,6 +41,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   @ViewChild('confirmRide') confirmRide?: ElementRef;
   @ViewChild('confirmRideInfo') confirmRideInfo?: ElementRef;
   @ViewChild('formDiv') formDiv?: ElementRef;
+  selectedTime: Date | undefined;
   driverName?:string;
   driverPhone?:string;
   driverEmail?:string;
@@ -58,6 +60,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   activeBtn: boolean = true;
 
   forBabies?:boolean;
+  dateControl = new FormControl();
 
 
    isDisabled = true;
@@ -70,6 +73,7 @@ export class RegisteredRouteFormComponent implements OnInit {
    notSelectedFormInput: any;
 
   private subscriptions: Subscription[] = [];
+
 
 
     async go(id: string) {
@@ -119,14 +123,33 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   private orderPressed() {
-      let ride:CreateRideDTO = <CreateRideDTO>
-        {
-          locations: [],
-          passengers: [],
-          vehicleType: '',
-          babyTransport: false,
-          petTransport: false
-        };
+      let scheduleDate:Date | null = this.dateControl.value
+      if(scheduleDate == null){
+        scheduleDate = new Date();
+        scheduleDate.setSeconds(scheduleDate.getSeconds()+10);
+      }
+      else if(scheduleDate.getTime() < Date.now()){
+        window.alert("Can not select time before now !!");
+        return;
+      }
+      else if(scheduleDate.getTime() > (Date.now()+18000000)){
+        window.alert("Can not select time after 5 hours from now !!");
+        return;
+      }
+      if(scheduleDate.getTime() < (Date.now()+900000)){
+        scheduleDate = null;
+      }
+      let ride:CreateRideDTO
+      ride = <CreateRideDTO>
+          {
+            locations: [],
+            passengers: [],
+            vehicleType: '',
+            babyTransport: false,
+            petTransport: false,
+            scheduledTime: scheduleDate
+          };
+
       let forBabies :boolean = this.goForm.get("forBabies")?.value
       let forPets:boolean = this.goForm.get("forPets")?.value
       if (this.goForm.get("forBabies")?.value == undefined)
@@ -136,6 +159,10 @@ export class RegisteredRouteFormComponent implements OnInit {
       ride!.babyTransport = forBabies;
       ride!.petTransport = forPets;
       let carType:string;
+      if(this.goForm.get("carType")?.value == null){
+        window.alert("You must select a car type!")
+        return;
+      }
       if(this.goForm.get("carType")?.value == "1")
       {
         carType = "STANDARD"
@@ -150,7 +177,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       }
       ride!.vehicleType = carType!;
 
-
+    
     this.subscriptions.push(this.mapService.search(this.currentLocation!.location).subscribe({
       next: (departure) => {
         let geo:GeoLocationDTO = <GeoLocationDTO>{
@@ -192,10 +219,14 @@ export class RegisteredRouteFormComponent implements OnInit {
                 })
               ).subscribe(response =>
               {
-                // @ts-ignore
-                this.confirmRide.nativeElement.style.display = 'block';
-                this.SetRide(response.body);
-
+                if(response!=null){
+                  if(response.body.status == "SCHEDULED"){
+                    return;
+                  }
+                  // @ts-ignore
+                  this.confirmRide.nativeElement.style.display = 'block';
+                  this.SetRide(response.body);
+                }
 
 
               }));
@@ -219,8 +250,6 @@ export class RegisteredRouteFormComponent implements OnInit {
       this.showDriverInfo(this.selectedDriver!);
       this.driverService.setLocation(this.selectedDriver!);
       this.InitConfirmRide();
-      this.passengerSocketService.initializeWebSocketConnection(this.passengerService.id);
-
     });
   }
 
@@ -279,19 +308,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       this.numberOfSeats = vehicle.passengerSeats;
       this.forAnimals= vehicle.petTransport;
       this.forBabies = vehicle.babyTransport;
-      let vehType:string = "1"
-      if(vehicle.vehicleType == "STANDARD")
-        vehType ="1"
-      if(vehicle.vehicleType == "LUXURY")
-        vehType ="2"
-      if(vehicle.vehicleType == "VAN")
-        vehType ="3"
-
-      this.driverService.getVehiclePrice(vehType).subscribe(price  =>
-    {
-        console.log(price)
-        this.ridePrice = price * this.distance!;
-    })
+      
 
     }))
   }
@@ -311,13 +328,21 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
   ngOnInit(): void {
-
     this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
         if(ride.id) {
-          this.isVisible = true;
           this.currentRide = ride;
           this.rideStatus = ride.status;
-          console.log("bla");
+          if (ride.status == "PENDING"){
+            this.driverService.getDriverVehicle(ride.driver.id).subscribe((result)=>{
+              this.vehicleNameRide = result.model
+             this.vehicleTypeRide = result.vehicleType
+            })
+            this.driverService.getDriverById(ride.driver.id).subscribe((result)=>{
+              this.selectedDriver = result;
+              this.showDriverInfo(this.selectedDriver!);
+              this.driverService.setLocation(this.selectedDriver!);
+            })
+          }
           if (ride.status == "ACCEPTED")
           {
             this.rideAccepted(ride);
@@ -326,17 +351,48 @@ export class RegisteredRouteFormComponent implements OnInit {
           {
             this.rideActive(ride);
           }
+          if (ride.status == "SCHEDULED"){
+            window.alert("Your scheduled ride for:" + ride.startTime+" has been accepted by one of our drivers!")
+          }
+          if (ride.status == "DECLINED"){
+            
+          }
         }
 
       }
     })
+
+    this.passengerSocketService.selectReturnError$.subscribe({next:(error:string)=>{
+        if(error == "No drivers left!"){
+          this.closeOrder();
+          window.alert("No more drivers are left for your ride!")
+        }
+    }})
+
+    this.passengerSocketService.selectReturnNotification$.subscribe({next:(notification:string)=>{
+      console.log(notification)
+    }})
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")
 
     this.mapService.selectDistanceAndAverage$.subscribe({next:(distance:DistanceAndAverageDTO)=>{
       this.distance = distance.distance;
       this.average = distance.average;
+      let vehType:string = "1"
+      if(this.vehicleTypeRide! == "STANDARD")
+        vehType ="1"
+      if(this.vehicleTypeRide! == "LUXURY")
+        vehType ="2"
+      if(this.vehicleTypeRide! == "VAN")
+        vehType ="3"
 
+      this.driverService.getVehiclePrice(vehType).subscribe(price  =>
+    {
+        console.log(price)
+        this.ridePrice = price * this.distance!;
+        console.log(this.ridePrice)
+        console.log(this.distance)
+    })
 
 
       } })
@@ -350,7 +406,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       }
     }))
     this.CheckForRides();
-
+    
 
   }
 
@@ -411,6 +467,9 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.driverName = driver.name + " " + driver.surname;
     this.driverPhone = driver.telephoneNumber;
     this.driverEmail = driver.email;
+    this.driverNameRide = driver.name + " " + driver.surname;
+    this.driverPhoneRide = driver.telephoneNumber;
+    this.driverEmailRide = driver.email;
     this.driverImage = driver.profilePicture;
     this.isDisabled = false;
   }
@@ -444,6 +503,6 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.rideService.withdraw(this.currentRide?.id).subscribe(ride => this.currentRide);
 
   }
-  constructor(private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
+  constructor(private userService:UserService,private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
 }

@@ -32,7 +32,7 @@ export class DriverSocketService {
     this.stompClient.subscribe('/topic/driver/ride/'+driverId, (message) => {
       try{
         const ride: RideDTO = JSON.parse(message.body);
-        if(ride.status == "PENDING"){
+        if(ride.status == "PENDING" || ride.status == "SCHEDULED"){
           if (this.notificationDisplayed) {
             // Add notification to queue if there is already one being displayed
             this.notificationQueue.push(ride);

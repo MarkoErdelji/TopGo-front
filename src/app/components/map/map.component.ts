@@ -10,11 +10,24 @@ import {MapService} from "./map.service";
 import {DriverService} from "../../modules/service/driver.service";
 import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
-import {Marker, marker} from "leaflet";
 import {AuthService} from "../../_service/auth.service";
 import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
 import {Subscription} from "rxjs";
-
+import { icon, Marker } from 'leaflet';
+const iconRetinaUrl = 'assets/destination-marker.png';
+const iconUrl = 'assets/destination-marker.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [41, 41],
+  iconAnchor: [20, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
 
 
 
@@ -62,13 +75,21 @@ export class MapComponent implements AfterViewInit {
         console.log(location)
         this.subscriptions.push(this.mapService.search(this.location.destination).subscribe({
           next:(destination) => {
+
             console.log(destination)
             const routeControl = L.Routing.control({
               router: L.Routing.osrmv1({
                 serviceUrl: `http://router.project-osrm.org/route/v1/`
               }),
               show: false,
-              routeWhileDragging: true,
+              lineOptions: {
+                missingRouteTolerance:2,
+                extendToWaypoints:true,
+                styles: [
+                    {color: '#ff7e15', opacity: 1, weight: 5}
+                ]
+
+              },
               waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
             }).addTo(this._map);
             routeControl.on('routesfound', (e) => {
@@ -186,6 +207,13 @@ let  greenIcon = L.icon({
 });
 let  arrowIcon = L.icon({
   iconUrl: 'assets/images/arrowIcon.png',
+
+  iconSize:     [30, 30], // size of the icon
+  iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
+});
+
+let  routeIcon = L.icon({
+  iconUrl: 'assets/images/destination-icon.png',
 
   iconSize:     [30, 30], // size of the icon
   iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location

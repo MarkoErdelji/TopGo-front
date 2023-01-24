@@ -42,7 +42,6 @@ export class DriverCurrentRideComponent implements OnInit {
         this.setRideInfo(ride);
       }
       if(ride.status == "ACTIVE"){
-        window.alert("USPELOOOO ALOOOOOO")
         this.setRideInfo(ride);
       }
       }})

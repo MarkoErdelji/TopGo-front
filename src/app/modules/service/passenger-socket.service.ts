@@ -24,6 +24,7 @@ export class PassengerSocketService {
     const that = this;
     this.stompClient.connect({}, function() {
       that.openSocket(passengerId);
+      that.openNotificationSocket(passengerId);
     });
   }
 
@@ -42,6 +43,20 @@ export class PassengerSocketService {
     });
   }
 
+  openNotificationSocket(passengerId){
+    this.stompClient.subscribe('/topic/passenger/scheduledNotification/'+passengerId, (message) => {
+      try{
+      const notification: string = JSON.parse(message.body);
+      console.log(notification);
+      this.setReturnNotification(notification);
+      }
+      catch{
+        const error:String = message.body;
+        this.setReturnError(error);
+      }
+    });
+  }
+
   private returnRide$ = new BehaviorSubject<any>({});
   selectReturnRide$ = this.returnRide$.asObservable();
   setReturnRide(ride: RideDTO) {
@@ -49,8 +64,15 @@ export class PassengerSocketService {
   }
 
 
+  private returnNotification$ = new BehaviorSubject<any>({});
+  selectReturnNotification$ = this.returnNotification$.asObservable();
+  setReturnNotification(notification: string) {
+    this.returnNotification$.next(notification);
+  }
+
+
   private returnError$ = new BehaviorSubject<any>({});
-  selectReturnError$ = this.returnRide$.asObservable();
+  selectReturnError$ = this.returnError$.asObservable();
   setReturnError(error: String) {
     this.returnError$.next(error);
   }
