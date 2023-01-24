@@ -46,12 +46,13 @@ export class PassengerSocketService {
   openNotificationSocket(passengerId){
     this.stompClient.subscribe('/topic/passenger/scheduledNotification/'+passengerId, (message) => {
       try{
-      const notification: string = JSON.parse(message.body);
+      const notification: string = message.body
       console.log(notification);
       this.setReturnNotification(notification);
       }
       catch{
         const error:String = message.body;
+        console.log(error);
         this.setReturnError(error);
       }
     });
