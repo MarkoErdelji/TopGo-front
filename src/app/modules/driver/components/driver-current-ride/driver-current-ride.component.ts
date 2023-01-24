@@ -14,6 +14,12 @@ import {VehicleDTO} from "../../../DTO/VehicleDTO";
 import {LocationDTO} from "../../../unregistered-user/components/route-form/LocationDTO";
 import {Router} from "@angular/router";
 import {Location} from "@angular/common";
+import {
+  EditProfileDialogComponent
+} from "../../../registered-user/components/registered-profile/registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component";
+import {PanicDialogComponent} from "../../dialogs/panic-dialog/panic-dialog.component";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {RejectionTextDTO} from "../../../DTO/RejectionTextDTO";
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -34,7 +40,8 @@ export class DriverCurrentRideComponent implements OnInit {
   rideId: number = 0;
   isStarted: boolean = false;
   hasRides: boolean = false;
-  constructor(private location:Location, private routeFormService:RouteFormService, private driverSocketSerivice:DriverSocketService, private mapService:MapService, private userService:UserService, private rideService:RideService, private authService:AuthService, private driverService:DriverService) { }
+  rejectionTextDTO?: RejectionTextDTO;
+  constructor(private dialog:MatDialog ,private location:Location, private routeFormService:RouteFormService, private driverSocketSerivice:DriverSocketService, private mapService:MapService, private userService:UserService, private rideService:RideService, private authService:AuthService, private driverService:DriverService) { }
 
   ngOnInit(): void {
     this.haveAcceptedRides();
@@ -57,6 +64,14 @@ export class DriverCurrentRideComponent implements OnInit {
         this.routeFormService.clearRoute();
 
       }
+      if(ride.status == "PANIC"){
+        this.isAccepted = false;
+        this.isStarted = false;
+        this.hasRides = false;
+        this.rideVisible = false;
+        this.routeFormService.clearRoute();
+      }
+
       }})
   }
 
@@ -155,5 +170,34 @@ export class DriverCurrentRideComponent implements OnInit {
         }
       })
     }
+  }
+
+  onPanicClick() {
+    const dialogRef = this.dialog.open(PanicDialogComponent, {
+      width: '250px',
+      data: {msg: "Panicim"}
+    });
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        if(typeof this.rideId === "undefined"){
+
+          this.rideService.getDriverActiveRide(this.authService.getUserId()).subscribe(rideDTO=>{
+            if(rideDTO != null) {
+              this.rideService.panicRide(rideDTO.id, result).subscribe(response=>{
+                console.log(response)
+                window.alert(response)
+              })
+            }
+          })
+
+        }
+        else{
+          this.rideService.panicRide(this.rideId, result).subscribe(response=>{
+            console.log(response)
+            window.alert("Ride is canceled cause panic was pressed")
+          })
+        }
+      }
+    })
   }
 }

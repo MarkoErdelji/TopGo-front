@@ -46,7 +46,7 @@
     <button mat-raised-button (click)="startRide()"  id="start-btn" *ngIf="isAccepted">Start</button>
     <button mat-raised-button (click)="endRide()"  id="end-btn" *ngIf="isStarted">End</button>
     <button mat-raised-button id="chat-btn">Chat</button>
-    <button mat-raised-button id="panic-btn" *ngIf="isStarted">PANIC</button>
+    <button mat-raised-button (click) = "onPanicClick()" id="panic-btn" *ngIf="isStarted">PANIC</button>
     <button mat-raised-button id="cancel-btn" *ngIf="isAccepted">cancel</button>
   </div>
 </div>
