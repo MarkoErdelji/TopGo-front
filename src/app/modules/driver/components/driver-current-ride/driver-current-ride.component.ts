@@ -7,6 +7,11 @@ import {first} from "rxjs";
 import {DistanceAndAverageDTO} from "../../../DTO/DistanceAndAverageDTO";
 import {RideService} from "../../../service/ride.service";
 import {AuthService} from "../../../../_service/auth.service";
+import {RegisteredService} from "../../../service/registered.service";
+import {UserService} from "../../../service/user.service";
+import {RouteFormService} from "../../../service/route-form.service";
+import {VehicleDTO} from "../../../DTO/VehicleDTO";
+import {LocationDTO} from "../../../unregistered-user/components/route-form/LocationDTO";
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -23,47 +28,97 @@ export class DriverCurrentRideComponent implements OnInit {
   time?: number;
   money: number = 0;
   status: string = "";
-  constructor(private driverSocketSerivice:DriverSocketService, private mapService:MapService, private driverService:DriverService, private rideService:RideService, private authService:AuthService) { }
+  isAccepted: boolean = false;
+  rideId: number = 0;
+  constructor(private routeFormService:RouteFormService, private driverSocketSerivice:DriverSocketService, private mapService:MapService, private userService:UserService, private rideService:RideService, private authService:AuthService, private driverService:DriverService) { }
 
   ngOnInit(): void {
     this.haveAcceptedRides();
+    this.haveActiveRides()
     this.driverSocketSerivice.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
-      console.log("Ide gas matoriiiiiiii")
+      this.rideId = ride.id
       if(ride.status == "ACCEPTED"){
+
+        this.setRideInfo(ride);
+      }
+      if(ride.status == "ACTIVE"){
+        window.alert("USPELOOOO ALOOOOOO")
         this.setRideInfo(ride);
       }
       }})
   }
 
   setRideInfo(ride: RideDTO) {
-    this.driverService.getDriverById(ride.driver.id).subscribe(driver => {
-      this.name = driver.name + ' ' + driver.surname;
-      this.phoneNumber = driver.telephoneNumber;
-      this.email = driver.email;
-      this.mapService.selectDistanceAndAverage$.subscribe({
-        next: (distance: DistanceAndAverageDTO) => {
-          this.distance = distance.distance;
-          this.time = distance.average;
-          console.log("distanca"+this.distance);
-          console.log("vreme"+this.time);
-        }
-      })
+    this.userService.getUserById(String(ride.passengers[0].id)).subscribe(passenger => {
+      this.name = passenger.name + ' ' + passenger.surname;
+      this.phoneNumber = passenger.telephoneNumber;
+      this.email = passenger.email;
     })
-
+    this.time = ride.estimatedTimeInMinutes;
     this.status = ride.status;
     this.money = ride.totalCost;
     console.log(ride)
     this.rideVisible = true;
+    if(ride.status == "ACCEPTED"){
+      this.isAccepted = true;
+      this.driverService.getDriverById(ride.driver.id).subscribe(driver=>{
+        this.driverService.getDriverVehicle(driver.id).subscribe(vehicle=>{
+          let location:LocationDTO = {
+            location:vehicle.currentLocation.address,
+            destination: ride.locations[0].departure.address
+          }
+          console.log(location)
+          this.routeFormService.setLocation(location);
+        })
+      })
+    }
+    else if(ride.status == "ACTIVE"){
+      let location:LocationDTO = {
+        location:ride.locations[0].departure.address,
+        destination: ride.locations[0].destination.address
+      }
+      this.isAccepted = false;
+      console.log(location)
+      this.routeFormService.setLocation(location)
+    }
+
   }
 
   haveAcceptedRides(){
     this.rideService.getDriverAcceptedRide(this.authService.getUserId()).subscribe(rideDTO=>{
       if(rideDTO != null) {
         this.setRideInfo(rideDTO)
-        this.rideVisible = true;
-
       }
     })
   }
 
+  haveActiveRides(){
+    this.rideService.getDriverActiveRide(this.authService.getUserId()).subscribe(rideDTO=>{
+      if(rideDTO != null) {
+        this.setRideInfo(rideDTO)
+      }
+    })
+  }
+
+  startRide() {
+    if(typeof this.rideId === "undefined"){
+      this.rideService.getDriverAcceptedRide(this.authService.getUserId()).subscribe(rideDTO=>{
+        if(rideDTO != null) {
+          this.rideService.startRide(rideDTO.id).subscribe(response=>{
+            if(response != null){
+              console.log(response)
+            }
+          })
+        }
+      })
+    }
+    else{
+      this.rideService.startRide(this.rideId).subscribe(response=>{
+        if(response != null){
+          console.log(response)
+        }
+      })
+    }
+
+  }
 }

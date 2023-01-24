@@ -112,6 +112,29 @@ export class MapComponent implements AfterViewInit {
 
   ngAfterViewInit(): void {
     this.initMap();
+    this.subscriptions.push(this.routeFormService.selectLocation$.subscribe({next:(location)=>{
+
+        this.location = location;
+        if(this.location.location && this.location.destination) {
+          console.log(this.location.location)
+          console.log(this.location.destination)
+          this.createRoute();
+        }
+      } }))
+
+    this.subscriptions.push(this.driverService.selectLocation$.subscribe({next:(driver)=>{
+        if(driver) {
+          console.log(driver);
+          this.addDriverMarker(driver)
+        }
+      } }))
+
+    this.subscriptions.push(this.routeFormService.RemoveMarkers$.subscribe({next:(remove)=>{
+        console.log("remove");
+        this._markerList.forEach(marker => marker.remove());
+      } }))
+
+
     if(this.authService.getUserRole() == 'DRIVER'){
       this.driverService.getDriverById(this.authService.getUserId()).subscribe((response)=>{
         this.addDriverMarker(response);
@@ -119,27 +142,7 @@ export class MapComponent implements AfterViewInit {
     }
     else if(this.authService.getUserRole() == 'USER'){
       this.registerOnClick();
-      this.subscriptions.push(this.routeFormService.selectLocation$.subscribe({next:(location)=>{
 
-          this.location = location;
-          if(this.location.location && this.location.destination) {
-            console.log(this.location.location)
-            console.log(this.location.destination)
-            this.createRoute();
-          }
-        } }))
-      this.subscriptions.push(this.driverService.selectLocation$.subscribe({next:(driver)=>{
-
-          if(driver) {
-            console.log(driver);
-            this.addDriverMarker(driver)
-          }
-        } }))
-
-      this.subscriptions.push(this.routeFormService.RemoveMarkers$.subscribe({next:(remove)=>{
-          console.log("remove");
-          this._markerList.forEach(marker => marker.remove());
-        } }))
     }
 
 

@@ -41,10 +41,10 @@
     </div>
   </div>
 </div>
-<div id="buttons">
+<div id="buttons" *ngIf="isAccepted">
   <div id="buttons-background">
-    <button id="start-btn">Start</button>
-    <button id="chat-btn">chat</button>
-    <button id="cancel-btn">cancel</button>
+    <button mat-raised-button (click)="startRide()"  id="start-btn">Start</button>
+    <button mat-raised-button id="chat-btn">chat</button>
+    <button mat-raised-button id="cancel-btn">cancel</button>
   </div>
 </div>
