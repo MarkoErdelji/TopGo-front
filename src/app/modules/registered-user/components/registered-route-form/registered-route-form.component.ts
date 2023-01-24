@@ -64,6 +64,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   activeBtn: boolean = true;
   msg?:string;
   friends:PassengerInfoDTO[]=[];
+  acceptedFriends:UserRef[]=[];
   friendInvites = new Map<number, string>();
 
   forBabies?:boolean;
@@ -109,6 +110,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   private GoPressed(id: string) {
+      this.passengerSocketService.initializeWebSocketConnectionFriendResponse(this.authService.getUserId());
     this.routeFormService.RemoveAllMarkers();
     this.isDisabled = true;
     // @ts-ignore
@@ -152,12 +154,12 @@ export class RegisteredRouteFormComponent implements OnInit {
         let utcTime = scheduleDate.getTime();
         utcDate = new Date(Date.UTC(scheduleDate.getFullYear(),scheduleDate.getMonth(),scheduleDate.getDate(),scheduleDate.getHours(),scheduleDate.getMinutes(),scheduleDate.getSeconds()));
       }
-      
+
       let ride:CreateRideDTO
       ride = <CreateRideDTO>
           {
             locations: [],
-            passengers: [],
+            passengers: this.acceptedFriends,
             vehicleType: '',
             babyTransport: false,
             petTransport: false,
@@ -353,6 +355,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.passengerSocketService.stompClient.disconnect()
   }
   ngOnInit(): void {
     this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
@@ -581,6 +584,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   }
 
+
   inviteFriend() {
     this.userService.getUserByEmail(this.goForm.get("friendEmail")?.value).subscribe(result =>
     {
@@ -594,10 +598,27 @@ export class RegisteredRouteFormComponent implements OnInit {
               console.log(pass.id)
               this.passengerService.invite(pass.id).subscribe(response =>
               {
-                console.log(response)
+                this.friends.push(pass);
+                this.friendInvites.set(pass.id,"PENDING");
+                this.passengerSocketService.selectResponse$.subscribe(friendResponse =>
+                {
+                  if(friendResponse.status == "ACCEPTED")
+                  {
+                    this.friendInvites.set(friendResponse.invitedId,"ACCEPTED");
+                    let userRef:UserRef =
+                      {
+                        id : pass.id,
+                        email: pass.email
+                      }
+                      this.acceptedFriends.push(userRef);
+                  }
+                  if(friendResponse.status == "REJECTED")
+                  {
+                    this.friendInvites.set(friendResponse.invitedId,"REJECTED");
+                  }
+                })
               })
-              this.friends.push(pass);
-              this.friendInvites.set(pass.id,"PENDING");
+
 
             }
         }

@@ -14,6 +14,11 @@ import {
 import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
 import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
 import { RouteFormService } from './route-form.service';
+import {DriverNotificationsComponent} from "../driver/components/driver-notifications/driver-notifications.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {
+  FriendInviteDialogComponent
+} from "../registered-user/components/dialogs/friend-invite-dialog/friend-invite-dialog.component";
 
 
 @Injectable({
@@ -24,7 +29,7 @@ export class PassengerSocketService {
   notificationDisplayed: boolean = false;
   notificationQueue: RideDTO[] = [];
 
-  constructor(public dialog: MatDialog,private routeService:RouteFormService ) {}
+  constructor(private snackBar:MatSnackBar,public dialog: MatDialog,private routeService:RouteFormService ) {}
 
   public stompClient;
   public msg:any = [];
@@ -41,12 +46,44 @@ export class PassengerSocketService {
       that.openVehicleLocationSocket(passengerId);
     });
   }
+  initializeWebSocketConnectionFriendResponse(passengerId) {
+    const serverUrl = 'http://localhost:8000/ws';
+    const ws = new SockJS(serverUrl);
+    this.stompClient = Stomp.over(ws);
+    const that = this;
+    this.stompClient.connect({}, function() {
+      that.openSocketFriendResponse(passengerId);
+
+    });
+  }
+  openSocketFriendResponse(passengerId)
+  {
+    this.stompClient.subscribe('/topic/passenger/response/'+passengerId, (message) => {
+      try{
+        const res: InviteFriendDTO = JSON.parse(message.body);
+        console.log(res)
+        this.setResponse(res);
+
+      }
+      catch{
+        const error:String = message.body;
+        console.log(error);
+        this.setReturnError(error);
+      }
+    });
+
+  }
+  private returnResponse$ = new BehaviorSubject<any>({});
+  selectResponse$ = this.returnResponse$.asObservable();
+  setResponse(response: InviteFriendDTO) {
+    this.returnResponse$.next(response);
+  }
   openInvitesSocket(passengerId)
   {
     this.stompClient.subscribe('/topic/passenger/invites/'+passengerId, (message) => {
       try{
         const inv: InviteFriendDTO = JSON.parse(message.body);
-        console.log(inv);
+        this.displayInvite(inv);
 
       }
       catch{
@@ -153,5 +190,15 @@ export class PassengerSocketService {
     });
 
   }
+  displayInvite(inv: InviteFriendDTO) {
+    this.notificationDisplayed = true;
+    this.snackBar.openFromComponent(FriendInviteDialogComponent, {
+      data: {inv,
+        duration: 60000,snackBarRef: this.snackBar},
+      verticalPosition: 'top',
+      panelClass:".custom-snack-bar"
+
+    })
+  };
 
 }

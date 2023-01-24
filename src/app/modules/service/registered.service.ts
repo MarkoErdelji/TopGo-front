@@ -27,6 +27,10 @@ export class RegisteredService {
     return this.http.put<InviteFriendDTO>(this.endpoint+"/ride/invite/"+id,{'headers':this.headers,observe: 'response',
       responseType: 'json'});
   }
+  inviteRespond(response){
+    return this.http.put<InviteFriendDTO>(this.endpoint+"/ride/response",response,{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
 
   constructor(private http: HttpClient,private router:Router) { }
 }

@@ -56,6 +56,8 @@
         <div class = "friend-div" *ngFor="let friend of friends">
         <img  class ="friend-img" [src]="friend.profilePicture">
           <img class = "loading-img" src = "assets/images/loadingGif.gif" [hidden]="friendInvites.get(friend.id) !='PENDING'"  >
+          <img class = "loading-img" src = "assets/images/x-icon.png" [hidden]="friendInvites.get(friend.id) !='REJECTED'"  >
+          <img class = "loading-img" src = "assets/images/check-icon.png" [hidden]="friendInvites.get(friend.id) !='ACCEPTED'"  >
         </div>
 
 
