@@ -1,43 +1,64 @@
 <div class="custom-snack-bar">
-    <div class="ride-info">
-      <div class="header">New ride request</div>
-      <div class="details">
-        <div class="detail">
-          <div class="label">Vehicle type:</div>
-          <div class="value">{{ ride.vehicleType }}</div>
-        </div>
-        <div class="detail">
-          <div class="label">Estimated time:</div>
-          <div class="value">{{ ride.estimatedTimeInMinutes.toFixed(0) }} minutes</div>
-        </div>
-        <div class="detail">
-          <div class="label">Total cost:</div>
-          <div class="value">{{ ride.totalCost.toFixed(0) }} DIN</div>
-        </div>
-        <div class="detail">
-          <div class="label">Baby transport:</div>
-          <div class="value">{{ ride.babyTransport ? 'Yes' : 'No' }}</div>
-        </div>
-        <div class="detail">
-          <div class="label">Pet transport:</div>
-          <div class="value">{{ ride.petTransport ? 'Yes' : 'No' }}</div>
-        </div>
-        <div class="detail">
-            <div class="label">Passengers:</div>
-                <div class="passenger-values">
-                <ul>
-                    <li *ngFor="let passenger of passengerUsernameProfile">
-                      <img [src]="passenger.profilePicture" [title] = "passenger.email">
-                    </li>
-                </ul>
-                </div>
-            </div>
+  <div id = 'confirm-ride' #confirmRide>
+    <div id = 'confirm-ride-info' class = 'center shadow' >
+      <div class = 'route-div'>
+        <img src="assets/images/carIcon.png" id = "departure-image">
+        <hr id = "orange-line">
+        <img src="assets/images/destination-marker.png" id = "destination-image">
       </div>
-    </div>
-    <hr>
-    <div class="timer">{{ secondsLeft }} seconds left</div>
-    <div class="actions">
-      <button mat-raised-button class="accept"(click)="onAccept()">Accept</button>
-      <button mat-raised-button class="decline"(click)="onDecline()">Decline</button>
-    </div>
+      <div class = 'route-div'>
+        <p id = 'departure-text' >{{ride.locations[0].departure.address}}</p>
+        <p id = 'destination-text' >{{ride.locations[0].destination.address}}</p>
+      </div>
+      <div id = 'driver-info-ride' #confirmRideInfo >
+        <div id = vehicle-info-ride-text>
+          <div id = 'ride-only-vehicle-info'>
+            <div>
+              <div class="icon-text">
+                <img src="assets/images/modelIcon.png" class="icon" />
+                <p class="centered-text">{{ride.vehicleType}}</p>
+              </div>
+              <div class="icon-text">
+                <img src="assets/images/petIcon.png" class="icon" />
+                <p class="centered-text">{{ride.petTransport}}</p>
+              </div>
+              <div class="icon-text">
+                <img src="assets/images/babyIcon.png" class="icon" />
+                <p class="centered-text">{{ride.babyTransport}}</p>
+              </div>
+            </div>
+            <div id = 'payment-ride-info'>
+              <div class="icon-text">
+                <img src="assets/images/timeIcon.png" class="icon" />
+                <p class="centered-text">{{ride.estimatedTimeInMinutes}} Min</p>
+              </div>
+              <div class="icon-text">
+                <img src="assets/images/moneyIcon.png" class="icon" />
+                <p class="centered-text">{{ride.totalCost}} RSD</p>
+              </div>
+              <div class="icon-text">
+                <img src="assets/images/status-icon-png-2.jpg" class="icon" />
+                <p class="centered-text">{{ride.status}}</p>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="detail">
+          <div class="label">Passengers:</div>
+              <div class="passenger-values">
+              <ul>
+                  <li *ngFor="let passenger of passengerUsernameProfile">
+                    <img [src]="passenger.profilePicture" [title] = "passenger.email">
+                  </li>
+              </ul>
+              </div>
+          </div>
+      <hr>
+      <div class="timer">{{ secondsLeft }} seconds left</div>
+      <div class="actions">
+        <button mat-raised-button class="accept"(click)="onAccept()">Accept</button>
+        <button mat-raised-button class="decline"(click)="onDecline()">Decline</button>
+      </div>
   </div>
+</div>

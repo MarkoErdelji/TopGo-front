@@ -12,6 +12,9 @@ import {
   RideNotificationComponent
 } from "../registered-user/components/dialogs/ride-notification/ride-notification.component";
 import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
+import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
+import { RouteFormService } from './route-form.service';
+
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +24,7 @@ export class PassengerSocketService {
   notificationDisplayed: boolean = false;
   notificationQueue: RideDTO[] = [];
 
-  constructor(public dialog: MatDialog ) {}
+  constructor(public dialog: MatDialog,private routeService:RouteFormService ) {}
 
   public stompClient;
   public msg:any = [];
@@ -35,6 +38,7 @@ export class PassengerSocketService {
       that.openSocket(passengerId);
       that.openNotificationSocket(passengerId);
       that.openInvitesSocket(passengerId);
+      that.openVehicleLocationSocket(passengerId);
     });
   }
   openInvitesSocket(passengerId)
@@ -73,22 +77,39 @@ export class PassengerSocketService {
   openNotificationSocket(passengerId){
     this.stompClient.subscribe('/topic/passenger/scheduledNotification/'+passengerId, (message) => {
       try{
-      const notification: string = JSON.parse(message.body);
+      const notification: string = message.body
       console.log(notification);
       this.setReturnNotification(notification);
       }
       catch{
         const error:String = message.body;
+        console.log(error);
         this.setReturnError(error);
       }
     });
   }
+
+  openVehicleLocationSocket(passengerId){
+    this.stompClient.subscribe('/topic/vehicleLocation/ride/user/'+passengerId, (message) => {
+      try{
+        const geoLocation: GeoLocationDTO = JSON.parse(message.body);
+        console.log(geoLocation);
+        this.routeService.changeMarkerLocation(geoLocation);        }
+        catch{
+          console.log(message)
+          return;
+        }
+    });
+  }
+
+
 
   private returnRide$ = new BehaviorSubject<any>({});
   selectReturnRide$ = this.returnRide$.asObservable();
   setReturnRide(ride: RideDTO) {
     this.returnRide$.next(ride);
   }
+
 
 
   private returnNotification$ = new BehaviorSubject<any>({});

@@ -21,11 +21,13 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
   passengerUsernameProfile?:any[];
   timerSubscription!: Subscription;
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any,private rideService:RideService,private passengerService:RegisteredService) {}
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any,private rideService:RideService,private userService:UserService) {}
 
   ngOnInit(): void {
     this.ride = this.data.ride;
-    this.secondsLeft = this.data.duration / 1000;
+    this.ride.totalCost = Math.floor(this.ride.totalCost*100)/100;
+    this.ride.estimatedTimeInMinutes = Math.floor(this.ride.estimatedTimeInMinutes*100)/100;
+    this.secondsLeft = this.data.duration /1000;
     this.startTimer();
   }
 
@@ -36,10 +38,10 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
         email: '',
         profilePicture: ''
       }
-      this.passengerService.getPassengerById(passenger.id).subscribe(result=>{
+      this.userService.getUserById(passenger.id).subscribe(result=>{
         console.log(result);
-        instance.email =result.email
-        instance.profilePicture = result.profilePicture
+        instance.email =result.body!.email
+        instance.profilePicture = result!.body!.profilePicture
         console.log(instance);
         this.passengerUsernameProfile!.push(instance)
         console.log(this.passengerUsernameProfile)}
@@ -77,6 +79,9 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
       )
     ).subscribe((res: any) => {
       if(res != null){
+        this.rideService.simulateRide(this.ride.id).subscribe(res=>{
+          console.log(res);
+        })
         console.log(res);
         this.data.snackBarRef.dismiss();
       }

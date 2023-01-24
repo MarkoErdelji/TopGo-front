@@ -12,6 +12,8 @@ import {UserService} from "../../../service/user.service";
 import {RouteFormService} from "../../../service/route-form.service";
 import {VehicleDTO} from "../../../DTO/VehicleDTO";
 import {LocationDTO} from "../../../unregistered-user/components/route-form/LocationDTO";
+import {Router} from "@angular/router";
+import {Location} from "@angular/common";
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -30,7 +32,9 @@ export class DriverCurrentRideComponent implements OnInit {
   status: string = "";
   isAccepted: boolean = false;
   rideId: number = 0;
-  constructor(private routeFormService:RouteFormService, private driverSocketSerivice:DriverSocketService, private mapService:MapService, private userService:UserService, private rideService:RideService, private authService:AuthService, private driverService:DriverService) { }
+  isStarted: boolean = false;
+  hasRides: boolean = false;
+  constructor(private location:Location, private routeFormService:RouteFormService, private driverSocketSerivice:DriverSocketService, private mapService:MapService, private userService:UserService, private rideService:RideService, private authService:AuthService, private driverService:DriverService) { }
 
   ngOnInit(): void {
     this.haveAcceptedRides();
@@ -44,10 +48,20 @@ export class DriverCurrentRideComponent implements OnInit {
       if(ride.status == "ACTIVE"){
         this.setRideInfo(ride);
       }
+      if(ride.status == "FINISHED"){
+        window.alert("Ride is finished")
+        this.isAccepted = false;
+        this.isStarted = false;
+        this.hasRides = false;
+        this.rideVisible = false;
+        this.routeFormService.clearRoute();
+
+      }
       }})
   }
 
   setRideInfo(ride: RideDTO) {
+    this.hasRides = true;
     this.userService.getUserById(String(ride.passengers[0].id)).subscribe(passenger => {
       this.name = passenger.name + ' ' + passenger.surname;
       this.phoneNumber = passenger.telephoneNumber;
@@ -77,6 +91,7 @@ export class DriverCurrentRideComponent implements OnInit {
         destination: ride.locations[0].destination.address
       }
       this.isAccepted = false;
+      this.isStarted = true;
       console.log(location)
       this.routeFormService.setLocation(location)
     }
@@ -105,6 +120,9 @@ export class DriverCurrentRideComponent implements OnInit {
         if(rideDTO != null) {
           this.rideService.startRide(rideDTO.id).subscribe(response=>{
             if(response != null){
+              this.rideService.simulateRide(rideDTO.id).subscribe(res=>{
+                console.log(res);
+              })
               console.log(response)
             }
           })
@@ -119,5 +137,26 @@ export class DriverCurrentRideComponent implements OnInit {
       })
     }
 
+  }
+
+  endRide() {
+    if(typeof this.rideId === "undefined"){
+      this.rideService.getDriverActiveRide(this.authService.getUserId()).subscribe(rideDTO=>{
+        if(rideDTO != null) {
+          this.rideService.finishRide(rideDTO.id).subscribe(response=>{
+            if(response != null){
+              console.log(response)
+            }
+          })
+        }
+      })
+    }
+    else{
+      this.rideService.finishRide(this.rideId).subscribe(response=>{
+        if(response != null){
+          console.log(response)
+        }
+      })
+    }
   }
 }

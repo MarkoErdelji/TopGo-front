@@ -121,3 +121,9 @@ button{
 #cancel-btn{
   background-color: gray;
 }
+#end-btn{
+  background-color: #FF9642;
+}
+#panic-btn{
+  background-color: darkred;
+}
