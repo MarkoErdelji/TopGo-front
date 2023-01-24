@@ -19,6 +19,13 @@ export class RouteFormService {
   RemoveAllMarkers() {
     this.Cancel$.next(true);
   }
+
+  private routeRemoval$ = new BehaviorSubject<any>({});
+  routeRemovalSubject$ = this.routeRemoval$.asObservable();
+  clearRoute(){
+    this.routeRemoval$.next(true);
+  }
+
 }
 
 
