@@ -4,6 +4,7 @@ import {Router} from "@angular/router";
 import {RejectionTextDTO} from "../DTO/RejectionTextDTO";
 import {UpdatePassengerDTO} from "../DTO/UpdatePassengerDTO";
 import {PassengerInfoDTO} from "../DTO/PassengerInfoDTO";
+import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,10 @@ export class RegisteredService {
 
   editProfile(id, info:UpdatePassengerDTO){
     return this.http.put<PassengerInfoDTO>(this.endpoint+"/"+id,info,{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
+  invite(id){
+    return this.http.put<InviteFriendDTO>(this.endpoint+"/ride/invite/"+id,{'headers':this.headers,observe: 'response',
       responseType: 'json'});
   }
 

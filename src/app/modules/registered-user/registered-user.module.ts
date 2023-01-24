@@ -16,6 +16,8 @@ import { RegisteredInboxComponent } from './components/registered-inbox/register
 import { ChatDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component';
 import { NotificationDialogComponent } from './components/registered-dialogs/notification-dialog/notification-dialog.component';
 import { EditProfileDialogComponent } from './components/registered-profile/registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component';
+import { PanicDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/panic-dialog/panic-dialog.component';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 
 
 
@@ -29,7 +31,8 @@ import { EditProfileDialogComponent } from './components/registered-profile/regi
         RegisteredInboxComponent,
         NotificationDialogComponent,
         ChatDialogComponent,
-        EditProfileDialogComponent
+        EditProfileDialogComponent,
+        PanicDialogComponent
     ],
 
   imports: [

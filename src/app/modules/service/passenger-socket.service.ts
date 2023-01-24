@@ -8,10 +8,11 @@ import {
   ChatDialogComponent
 } from "../registered-user/components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-
 import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
 import { RouteFormService } from './route-form.service';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
+import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +26,7 @@ export class PassengerSocketService {
 
   public stompClient;
   public msg:any = [];
+
   initializeWebSocketConnection(passengerId) {
     const serverUrl = 'http://localhost:8000/ws';
     const ws = new SockJS(serverUrl);
@@ -33,8 +35,25 @@ export class PassengerSocketService {
     this.stompClient.connect({}, function() {
       that.openSocket(passengerId);
       that.openNotificationSocket(passengerId);
+      that.openInvitesSocket(passengerId);
       that.openVehicleLocationSocket(passengerId);
     });
+  }
+  openInvitesSocket(passengerId)
+  {
+    this.stompClient.subscribe('/topic/passenger/invites/'+passengerId, (message) => {
+      try{
+        const inv: InviteFriendDTO = JSON.parse(message.body);
+        console.log(inv);
+
+      }
+      catch{
+        const error:String = message.body;
+        console.log(error);
+        this.setReturnError(error);
+      }
+    });
+
   }
 
   openSocket(passengerId){
