@@ -5,6 +5,7 @@ import * as SockJS from 'sockjs-client';
 import { DriverNotificationsComponent } from '../driver/components/driver-notifications/driver-notifications.component';
 import { RideDTO } from '../DTO/RideDTO';
 import { DriverService } from './driver.service';
+import {BehaviorSubject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -26,21 +27,48 @@ export class DriverSocketService {
       that.openSocket(driverId);
     });
   }
-  
+
   openSocket(driverId){
     this.stompClient.subscribe('/topic/driver/ride/'+driverId, (message) => {
-      const ride: RideDTO = JSON.parse(message.body);
-      if (this.notificationDisplayed) {
-      // Add notification to queue if there is already one being displayed
-      this.notificationQueue.push(ride);
-      } else {
-      // Display notification immediately if there isn't one being displayed
-      this.displayNotification(ride);
+      try{
+        const ride: RideDTO = JSON.parse(message.body);
+        if(ride.status == "PENDING"){
+          if (this.notificationDisplayed) {
+            // Add notification to queue if there is already one being displayed
+            this.notificationQueue.push(ride);
+          } else {
+            // Display notification immediately if there isn't one being displayed
+            this.displayNotification(ride);
+          }
+        }
+        else{
+          this.setReturnRide(ride);
+        }
       }
+      catch{
+        const error:String = message.body;
+        console.log(error);
+        this.setReturnError(error);
+      }
+
+
       });
   }
+  private returnRide$ = new BehaviorSubject<any>({});
+  selectReturnRide$ = this.returnRide$.asObservable();
+  setReturnRide(ride: RideDTO) {
+    this.returnRide$.next(ride);
+  }
 
-displayNotification(ride: RideDTO) {
+
+  private returnError$ = new BehaviorSubject<any>({});
+  selectReturnError$ = this.returnRide$.asObservable();
+  setReturnError(error: String) {
+    this.returnError$.next(error);
+  }
+
+
+  displayNotification(ride: RideDTO) {
   this.notificationDisplayed = true;
   this.snackBar.openFromComponent(DriverNotificationsComponent, {
     data: {ride,
@@ -60,7 +88,7 @@ displayNotification(ride: RideDTO) {
     }
       });
   };
-        
+
   sendMessage(message) {
     this.stompClient.send('/app/send' , {}, message);
   }
