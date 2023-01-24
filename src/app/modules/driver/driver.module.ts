@@ -42,6 +42,7 @@ import { DriverCurrentRideComponent } from './components/driver-current-ride/dri
     HistoryInstanceComponent,
     DriverHomeComponent,
     DriverCurrentRideComponent,
+    DriverInboxComponent
   ],
   imports: [
     AppRoutingModule,

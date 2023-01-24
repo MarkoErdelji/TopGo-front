@@ -35,6 +35,10 @@ export class RideService {
     return this.http.put<RideDTO>(this.endpoint+"/"+rideId+"/withdraw",{'headers':this.headers,observe: 'response',
       responseType: 'json'});
   }
+  panic(rideId,rejectionTextDTO:RejectionTextDTO){
+    return this.http.put<RideDTO>(this.endpoint+"/"+rideId+"/panic",rejectionTextDTO,{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
 
   startRide(rideId){
     return this.http.put<any>(this.endpoint+"/"+rideId+"/start",{'headers':this.headers,observe: 'response',
@@ -57,6 +61,10 @@ export class RideService {
   getPassengerAcceptedRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/accepted")
   }
+  getPassengerActiveRide(id:number){
+    return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/active")
+  }
+
 
   getDriverAcceptedRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/driver/"+id+"/accepted")
