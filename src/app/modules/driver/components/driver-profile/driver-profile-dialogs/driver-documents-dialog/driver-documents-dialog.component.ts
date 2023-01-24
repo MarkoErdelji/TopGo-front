@@ -15,7 +15,6 @@ export class DriverDocumentsDialogComponent implements OnInit {
   ngOnInit(): void {
     this.driverService.getDriversDocumentsByDriverId(this.driverService.id!).subscribe(response=>{
       this.elements = response;
-      console.log(response);
     })
   }
 

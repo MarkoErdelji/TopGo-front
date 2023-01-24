@@ -8,12 +8,10 @@ import {
   ChatDialogComponent
 } from "../registered-user/components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {
-  RideNotificationComponent
-} from "../registered-user/components/dialogs/ride-notification/ride-notification.component";
-import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
 import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
 import { RouteFormService } from './route-form.service';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
+import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
 
 
 @Injectable({
@@ -145,7 +143,7 @@ export class PassengerSocketService {
     }
     if (message == "ACTIVE")
     {
-      msg = "Your Is Started!"
+      msg = "Your Ride has Started!"
     }
     const dialogRef = this.dialog.open(RideNotificationComponent, {
       width: '250px',

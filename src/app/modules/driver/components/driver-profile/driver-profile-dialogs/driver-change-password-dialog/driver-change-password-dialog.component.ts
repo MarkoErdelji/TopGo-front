@@ -1,8 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { catchError, of } from 'rxjs';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { AuthService } from 'src/app/_service/auth.service';
 
@@ -18,7 +19,7 @@ export class DriverChangePasswordDialogComponent implements OnInit {
     newPasswordControl: new FormControl("",[Validators.required,Validators.minLength(6)])
   });
   
-  constructor(private driverService:DriverService,private dialogRef: MatDialogRef<DriverChangePasswordDialogComponent>,private authService:AuthService) { }
+  constructor(private dialog:MatDialog,private driverService:DriverService,private dialogRef: MatDialogRef<DriverChangePasswordDialogComponent>,private authService:AuthService) { }
 
   ngOnInit(): void {
   }
@@ -35,14 +36,23 @@ export class DriverChangePasswordDialogComponent implements OnInit {
         ).subscribe(
           response=>{
             if(response.status == 204){
-              window.alert("Password successfuly changed");
+              const dialogRef = this.dialog.open(RideNotificationComponent, {
+                width: '250px',
+                data: {msg:"Password successfuly changed!"}
+              });
               this.dialogRef.close();
             }
             else if(response.status == 400){
-              window.alert("Please enter the correct old password!");
+              const dialogRef = this.dialog.open(RideNotificationComponent, {
+                width: '250px',
+                data: {msg:"Please enter the correct old password!"}
+              });
             }
             else if (response.status == 404){
-              window.alert("No such user exists!")
+              const dialogRef = this.dialog.open(RideNotificationComponent, {
+                width: '250px',
+                data: {msg:"No such user exists!"}
+              });
             }
           }
         )

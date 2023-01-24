@@ -11,6 +11,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { Md5 } from 'ts-md5';
 import { RegisterData } from '../components/register/RegisterDTO';
 import {DriverInfoDTO} from "../modules/DTO/DriverInfoDTO";
+import { RideNotificationComponent } from '../components/dialogs/ride-notification/ride-notification.component';
+import { MatDialog } from '@angular/material/dialog';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,7 +23,7 @@ export class AuthService {
   currentUser = {};
 
 
-  constructor(private http: HttpClient, public router: Router) {}
+  constructor(private http: HttpClient, public router: Router,private dialog:MatDialog) {}
   // Sign-in
 
   async signIn(username:string|null,password:string|null) {
@@ -31,6 +33,15 @@ export class AuthService {
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers,observe: 'response',
       responseType: 'json'}).pipe(
         catchError((error:HttpErrorResponse) => {
+          if(error.status == 400){
+            console.log(error)
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg:error.error.message
+              }
+            });
+  
+          }
           return of(error);
         }
         )
@@ -39,10 +50,6 @@ export class AuthService {
           localStorage.setItem('access_token', res.body.accessToken);
           localStorage.setItem('refresh_token',res.body.refreshToken);
           this.checkForToken();
-        }
-        if(res.status == 400){
-          window.alert(res.error.message);
-
         }
       });
     return res;
@@ -65,9 +72,16 @@ export class AuthService {
       ).subscribe(
         response =>{
           if(response.status == 409){
-            window.alert("Error: email already exists!");
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '300px',
+              data: {msg: "Error: email already exists!"}
+            });
           }
           else{
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '400px',
+              data: {msg: "An activation email has been sent for your account!"}
+            });
             this.router.navigate(['login']);
           }
           return response;
@@ -100,7 +114,10 @@ export class AuthService {
    const isExpired = helper.isTokenExpired(JWTtoken);
 
    if (isExpired){
-    window.alert("Your token has expired,please log in again");
+    const dialogRef = this.dialog.open(RideNotificationComponent, {
+      width: '300px',
+      data: {msg: "Your token has expired,please log in again"}
+    });
     this.router.navigate(['login'])
     return;
    }
