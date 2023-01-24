@@ -1,0 +1,37 @@
+<div id ='main-content'>
+<div id = "content-div">
+
+  <form [formGroup]="editForm" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline" class="route-form-field" id="firstName">
+      <mat-label>First Name</mat-label>
+      <input matInput name="firstName" formControlName="firstName" [(ngModel)]="firstName">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="route-form-field" id="lastName">
+      <mat-label>Last Name</mat-label>
+      <input matInput name="lastName" formControlName="lastName" [(ngModel)]="lastName">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="route-form-field" id="email">
+      <mat-label>Email</mat-label>
+      <input matInput name="email" formControlName="email" [(ngModel)]="email">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="route-form-field" id="address">
+      <mat-label>Address</mat-label>
+      <input matInput name="address" formControlName="address" [(ngModel)]="address">
+    </mat-form-field>
+    <mat-form-field appearance="outline" class="route-form-field" id="phoneNumber">
+      <mat-label>Phone Number</mat-label>
+      <input matInput name="phoneNumber" formControlName="phoneNumber" [(ngModel)]="phoneNumber">
+    </mat-form-field>
+    <mat-label>Profile Picture</mat-label>
+    <input type="file" accept="image/jpeg" (change)="uploadImage($event)" title="" >
+    <div id = "button-div">
+      <mat-dialog-actions>
+        <button id = "cancel-btn" type="button" mat-button (click)="onNoClick()">Close</button>
+        <button id = "save-btn" type="submit" mat-button >Save</button>
+
+      </mat-dialog-actions>
+    </div>
+  </form>
+</div>
+
+</div>

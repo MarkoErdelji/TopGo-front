@@ -1,7 +1,7 @@
 <div id="full-content">
   <div class="shadow" id="profile-content">
     <div id="profile-img-container">
-      <img src="{{pfp}}}" id="profile-image">
+      <img [src]='pfp' id="profile-image">
 
     </div>
     <div id="profile-data">
@@ -24,7 +24,7 @@
         <p>{{phone}}</p>
       </div>
     </div>
-    <button mat-raised-button shadow id="edit-profile" [routerLink]="['']">Edit profile</button>
+    <button mat-raised-button shadow id="edit-profile" (click)="openDialog()">Edit profile</button>
   </div>
   <div id="report-content">
     <div class="shadow" id="report-box"> </div>

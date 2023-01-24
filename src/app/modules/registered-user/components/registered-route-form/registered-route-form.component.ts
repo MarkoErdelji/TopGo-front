@@ -22,6 +22,7 @@ import {VehicleInfoDTO} from "../../../DTO/VehicleInfoDTO";
 import {AuthService} from "../../../../_service/auth.service";
 import  { MatDialog } from '@angular/material/dialog';
 import {ChatDialogComponent} from "./registered-route-form-dialogs/chat-dialog/chat-dialog.component";
+import { UserService } from 'src/app/_service/user.service';
 
 @Component({
   selector: 'app-registered-route-form',
@@ -42,6 +43,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   @ViewChild('confirmRide') confirmRide?: ElementRef;
   @ViewChild('confirmRideInfo') confirmRideInfo?: ElementRef;
   @ViewChild('formDiv') formDiv?: ElementRef;
+  selectedDatetime: Date | undefined;
   driverName?:string;
   driverPhone?:string;
   driverEmail?:string;
@@ -122,14 +124,15 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   private orderPressed() {
-      let ride:CreateRideDTO = <CreateRideDTO>
-        {
-          locations: [],
-          passengers: [],
-          vehicleType: '',
-          babyTransport: false,
-          petTransport: false
-        };
+        let ride:CreateRideDTO = <CreateRideDTO>
+          {
+            locations: [],
+            passengers: [],
+            vehicleType: '',
+            babyTransport: false,
+            petTransport: false,
+          };
+
       let forBabies :boolean = this.goForm.get("forBabies")?.value
       let forPets:boolean = this.goForm.get("forPets")?.value
       if (this.goForm.get("forBabies")?.value == undefined)
@@ -222,8 +225,6 @@ export class RegisteredRouteFormComponent implements OnInit {
       this.showDriverInfo(this.selectedDriver!);
       this.driverService.setLocation(this.selectedDriver!);
       this.InitConfirmRide();
-      this.passengerSocketService.initializeWebSocketConnection(this.passengerService.id);
-
     });
   }
 
@@ -314,13 +315,21 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
   ngOnInit(): void {
-
     this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
         if(ride.id) {
-          this.isVisible = true;
           this.currentRide = ride;
           this.rideStatus = ride.status;
-          console.log("bla");
+          if (ride.status == "PENDING"){
+            this.driverService.getDriverVehicle(ride.driver.id).subscribe((result)=>{
+              this.vehicleNameRide = result.model
+             this.vehicleTypeRide = result.vehicleType
+            })
+            this.driverService.getDriverById(ride.driver.id).subscribe((result)=>{
+              this.selectedDriver = result;
+              this.showDriverInfo(this.selectedDriver!);
+              this.driverService.setLocation(this.selectedDriver!);
+            })
+          }
           if (ride.status == "ACCEPTED")
           {
             this.rideAccepted(ride);
@@ -329,10 +338,24 @@ export class RegisteredRouteFormComponent implements OnInit {
           {
             this.rideActive(ride);
           }
+          if (ride.status == "DECLINED"){
+
+          }
         }
 
       }
     })
+
+    this.passengerSocketService.selectReturnError$.subscribe({next:(error:string)=>{
+        if(error == "No drivers left!"){
+          this.closeOrder();
+          window.alert("No more drivers are left for your ride!")
+        }
+    }})
+
+    this.passengerSocketService.selectReturnNotification$.subscribe({next:(notification:string)=>{
+      console.log(notification)
+    }})
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")
 
@@ -414,6 +437,9 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.driverName = driver.name + " " + driver.surname;
     this.driverPhone = driver.telephoneNumber;
     this.driverEmail = driver.email;
+    this.driverNameRide = driver.name + " " + driver.surname;
+    this.driverPhoneRide = driver.telephoneNumber;
+    this.driverEmailRide = driver.email;
     this.driverImage = driver.profilePicture;
     this.isDisabled = false;
   }
@@ -448,6 +474,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   }
 
+
   openDialog(): void {
     const dialogRef = this.dialog.open(ChatDialogComponent, {
       width: '400px',
@@ -455,6 +482,6 @@ export class RegisteredRouteFormComponent implements OnInit {
     });
 
   }
-  constructor(public dialog: MatDialog,private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
+  constructor(private userService:UserService,public dialog: MatDialog,private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
 }

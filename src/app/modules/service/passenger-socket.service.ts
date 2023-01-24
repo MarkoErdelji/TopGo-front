@@ -4,6 +4,13 @@ import * as SockJS from 'sockjs-client';
 import { RideDTO } from '../DTO/RideDTO';
 import {BehaviorSubject} from "rxjs";
 import { HttpErrorResponse } from '@angular/common/http';
+import {
+  ChatDialogComponent
+} from "../registered-user/components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {
+  RideNotificationComponent
+} from "../registered-user/components/dialogs/ride-notification/ride-notification.component";
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +20,7 @@ export class PassengerSocketService {
   notificationDisplayed: boolean = false;
   notificationQueue: RideDTO[] = [];
 
-  constructor( ) {}
+  constructor(public dialog: MatDialog ) {}
 
   public stompClient;
   public msg:any = [];
@@ -24,6 +31,7 @@ export class PassengerSocketService {
     const that = this;
     this.stompClient.connect({}, function() {
       that.openSocket(passengerId);
+      that.openNotificationSocket(passengerId);
     });
   }
 
@@ -33,10 +41,25 @@ export class PassengerSocketService {
       const ride: RideDTO = JSON.parse(message.body);
       console.log(ride);
       this.setReturnRide(ride);
+      this.openDialog(ride.status);
       }
       catch{
         const error:String = message.body;
         console.log(error);
+        this.setReturnError(error);
+      }
+    });
+  }
+
+  openNotificationSocket(passengerId){
+    this.stompClient.subscribe('/topic/passenger/scheduledNotification/'+passengerId, (message) => {
+      try{
+      const notification: string = JSON.parse(message.body);
+      console.log(notification);
+      this.setReturnNotification(notification);
+      }
+      catch{
+        const error:String = message.body;
         this.setReturnError(error);
       }
     });
@@ -49,8 +72,15 @@ export class PassengerSocketService {
   }
 
 
+  private returnNotification$ = new BehaviorSubject<any>({});
+  selectReturnNotification$ = this.returnNotification$.asObservable();
+  setReturnNotification(notification: string) {
+    this.returnNotification$.next(notification);
+  }
+
+
   private returnError$ = new BehaviorSubject<any>({});
-  selectReturnError$ = this.returnRide$.asObservable();
+  selectReturnError$ = this.returnError$.asObservable();
   setReturnError(error: String) {
     this.returnError$.next(error);
   }
@@ -59,4 +89,29 @@ export class PassengerSocketService {
   sendMessage(message) {
     this.stompClient.send('/app/send' , {}, message);
   }
+  openDialog(message:string): void {
+    let msg = ''
+    if (message == "ACCEPTED")
+    {
+      msg = "Your Ride Was Accepted!"
+    }
+    if (message == "CANCELED")
+    {
+      msg = "Your Ride Was Canceled!"
+    }
+    if (message == "REJECTED")
+    {
+      msg = "Your Ride Was Rejected!"
+    }
+    if (message == "ACTIVE")
+    {
+      msg = "Your Is Started!"
+    }
+    const dialogRef = this.dialog.open(RideNotificationComponent, {
+      width: '250px',
+      data: {msg: msg}
+    });
+
+  }
+
 }

@@ -9,3 +9,13 @@ export interface CreateRideDTO {
   babyTransport: boolean;
   petTransport: boolean;
 }
+
+
+export interface CreateScheduledRideDTO {
+  locations: RouteForCreateRideDTO[];
+  passengers: UserRef[];
+  vehicleType: string;
+  babyTransport: boolean;
+  petTransport: boolean;
+  scheduledTime: string;
+}

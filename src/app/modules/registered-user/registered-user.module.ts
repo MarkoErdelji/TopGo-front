@@ -14,6 +14,9 @@ import { RegisteredProfileComponent } from './components/registered-profile/regi
 import { RegisteredHomeComponent } from './components/registered-home/registered-home.component';
 import { RegisteredInboxComponent } from './components/registered-inbox/registered-inbox.component';
 import { ChatDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component';
+import { NotificationDialogComponent } from './components/registered-dialogs/notification-dialog/notification-dialog.component';
+import { RideNotificationComponent } from './components/dialogs/ride-notification/ride-notification.component';
+import { EditProfileDialogComponent } from './components/registered-profile/registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component';
 
 
 
@@ -25,17 +28,23 @@ import { ChatDialogComponent } from './components/registered-route-form/register
         RegisteredProfileComponent,
         RegisteredHomeComponent,
         RegisteredInboxComponent,
-        ChatDialogComponent
+        NotificationDialogComponent,
+        ChatDialogComponent,
+        RideNotificationComponent,
+        EditProfileDialogComponent
     ],
-    imports: [
-        AppRoutingModule,
-        MaterialModule,
-        CommonModule,
-        NavbarModule,
-        MapModule,
-        ReactiveFormsModule,
-        FormsModule
-    ],
+
+  imports: [
+    AppRoutingModule,
+    MaterialModule,
+    FormsModule,
+    MapModule,
+    ReactiveFormsModule,
+    NavbarModule,
+    CommonModule,
+    ReactiveFormsModule
+
+  ],
   exports: [
     RegisteredUserComponent
   ]
