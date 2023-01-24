@@ -23,6 +23,10 @@ import {AuthService} from "../../../../_service/auth.service";
 import  { MatDialog } from '@angular/material/dialog';
 import {ChatDialogComponent} from "./registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 import { UserService } from 'src/app/_service/user.service';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
+import {PanicDialogComponent} from "./registered-route-form-dialogs/panic-dialog/panic-dialog.component";
+import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
+
 
 @Component({
   selector: 'app-registered-route-form',
@@ -61,6 +65,9 @@ export class RegisteredRouteFormComponent implements OnInit {
   acceptedBtn: boolean = true;
   activeBtn: boolean = true;
   msg?:string;
+  friends:PassengerInfoDTO[]=[];
+  acceptedFriends:UserRef[]=[];
+  friendInvites = new Map<number, string>();
 
   forBabies?:boolean;
   dateControl = new FormControl();
@@ -105,6 +112,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   private GoPressed(id: string) {
+      this.passengerSocketService.initializeWebSocketConnectionFriendResponse(this.authService.getUserId());
     this.routeFormService.RemoveAllMarkers();
     this.isDisabled = true;
     // @ts-ignore
@@ -133,11 +141,17 @@ export class RegisteredRouteFormComponent implements OnInit {
         scheduleDate.setSeconds(scheduleDate.getSeconds()+10);
       }
       else if(scheduleDate.getTime() < Date.now()){
-        window.alert("Can not select time before now !!");
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"Can not select time before now !!"}
+        });
         return;
       }
       else if(scheduleDate.getTime() > (Date.now()+18000000)){
-        window.alert("Can not select time after 5 hours from now !!");
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"Can not select time after 5 hours from now !!"}
+        });
         return;
       }
       let utcDate;
@@ -148,12 +162,12 @@ export class RegisteredRouteFormComponent implements OnInit {
         let utcTime = scheduleDate.getTime();
         utcDate = new Date(Date.UTC(scheduleDate.getFullYear(),scheduleDate.getMonth(),scheduleDate.getDate(),scheduleDate.getHours(),scheduleDate.getMinutes(),scheduleDate.getSeconds()));
       }
-      
+
       let ride:CreateRideDTO
       ride = <CreateRideDTO>
           {
             locations: [],
-            passengers: [],
+            passengers: this.acceptedFriends,
             vehicleType: '',
             babyTransport: false,
             petTransport: false,
@@ -170,7 +184,10 @@ export class RegisteredRouteFormComponent implements OnInit {
       ride!.petTransport = forPets;
       let carType:string;
       if(this.goForm.get("carType")?.value == null){
-        window.alert("You must select a car type!")
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"You must select a car type!"}
+        });
         return;
       }
       if(this.goForm.get("carType")?.value == "1")
@@ -264,12 +281,24 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   rideActive(ride: RideDTO) {
+    this.activeBtn = false;
+    this.acceptedBtn = true;
+    // @ts-ignore
+    this.formDiv.nativeElement.style.display = 'none';
+    // @ts-ignore
+    this.confirmRide.nativeElement.style.display = 'none';
+    // @ts-ignore
+    this.confirmRideInfo.nativeElement.style.backgroundColor = "white";
+    this.rideStatus = ride.status;
+    // @ts-ignore
+    this.popupContent.nativeElement.appendChild(this.confirmRideInfo.nativeElement);
 
 
 
   }
   rideAccepted(ride: RideDTO) {
     this.acceptedBtn = false;
+    this.activeBtn = true;
     // @ts-ignore
     this.formDiv.nativeElement.style.display = 'none';
     // @ts-ignore
@@ -318,7 +347,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       this.numberOfSeats = vehicle.passengerSeats;
       this.forAnimals= vehicle.petTransport;
       this.forBabies = vehicle.babyTransport;
-      
+
 
     }))
   }
@@ -328,7 +357,8 @@ export class RegisteredRouteFormComponent implements OnInit {
     destination: new FormControl("",[Validators.required]),
     carType: new FormControl(""),
     forBabies: new FormControl(),
-    forPets: new FormControl()
+    forPets: new FormControl(),
+    friendEmail : new FormControl()
   });
 
 
@@ -336,6 +366,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
+    this.passengerSocketService.stompClient.disconnect()
   }
   ngOnInit(): void {
     this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
@@ -362,7 +393,10 @@ export class RegisteredRouteFormComponent implements OnInit {
             this.rideActive(ride);
           }
           if (ride.status == "SCHEDULED"){
-            window.alert("Your scheduled ride for:" + ride.startTime+" has been accepted by one of our drivers!")
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg:"Your scheduled ride for:" + ride.startTime+" has been accepted by one of our drivers!"}
+            });
           }
           if (ride.status == "DECLINED"){
 
@@ -375,7 +409,10 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.passengerSocketService.selectReturnError$.subscribe({next:(error:string)=>{
         if(error == "No drivers left!"){
           this.closeOrder();
-          window.alert("No more drivers are left for your ride!")
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"No more drivers are left for your ride!"}
+          });
         }
     }})
 
@@ -468,6 +505,29 @@ export class RegisteredRouteFormComponent implements OnInit {
         console.log(this.currentRide);
       }
     })
+    this.rideService.getPassengerActiveRide(this.authService.getUserId()).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          console.log("no ride!")
+          return EMPTY;
+        }
+        return of(null);
+      })
+    ).subscribe(ride => {
+      if (ride != null) {
+
+        let locationDTO: LocationDTO = <LocationDTO>{
+          location: ride.locations[0].departure.address,
+          destination: ride.locations[0].destination.address
+        }
+        this.SetRide(ride);
+        this.rideActive(ride);
+        this.currentLocation = locationDTO;
+        this.routeFormService.setLocation(locationDTO)
+        this.currentRide = ride;
+        console.log(this.currentRide);
+      }
+    })
   }
 
   private showDriverInfo(driver: DriverInfoDTO) {
@@ -524,4 +584,65 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
   constructor(private userService:UserService,public dialog: MatDialog,private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
+  openDialogPanic() {
+    const dialogRef = this.dialog.open(PanicDialogComponent, {
+      width: '400px',
+      data: {ride: this.currentRide}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result)
+        this.rideStatus = result.body.ride.status;
+      }
+    });
+
+
+
+  }
+
+
+  inviteFriend() {
+    this.userService.getUserByEmail(this.goForm.get("friendEmail")?.value).subscribe(result =>
+    {
+      this.goForm.get("friendEmail")?.setValue("")
+      this.passengerService.getPassengerById(result.body.id).subscribe(pass =>
+      {
+        if (!this.friends.find(friend => friend.id === pass.id)) {
+          document.getElementById("test")!.style.top = "53%"
+          if(this.friends.length<=3)
+            if(pass.id! != this.authService.getUserId()) {
+              console.log(pass.id)
+              this.passengerService.invite(pass.id).subscribe(response =>
+              {
+                this.friends.push(pass);
+                this.friendInvites.set(pass.id,"PENDING");
+                this.passengerSocketService.selectResponse$.subscribe(friendResponse =>
+                {
+                  if(friendResponse.status == "ACCEPTED")
+                  {
+                    this.friendInvites.set(friendResponse.invitedId,"ACCEPTED");
+                    let userRef:UserRef =
+                      {
+                        id : pass.id,
+                        email: pass.email
+                      }
+                      this.acceptedFriends.push(userRef);
+                  }
+                  if(friendResponse.status == "REJECTED")
+                  {
+                    this.friendInvites.set(friendResponse.invitedId,"REJECTED");
+                  }
+                })
+              })
+
+
+            }
+        }
+
+      })
+
+    })
+
+  }
 }

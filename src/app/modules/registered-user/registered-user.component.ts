@@ -8,6 +8,8 @@ import {AuthService} from "../../_service/auth.service";
 import {RegisteredService} from "../service/registered.service";
 import {PassengerInfoDTO} from "../DTO/PassengerInfoDTO";
 import { PassengerSocketService } from '../service/passenger-socket.service';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-registered-user',
@@ -17,7 +19,7 @@ import { PassengerSocketService } from '../service/passenger-socket.service';
 export class RegisteredUserComponent implements OnInit {
   private passengerInfo? :PassengerInfoDTO;
 
-  constructor(private userService:UserService,private passengerService:RegisteredService,private authService:AuthService,private passengerSocketService:PassengerSocketService) { }
+  constructor(private dialog:MatDialog,private userService:UserService,private passengerService:RegisteredService,private authService:AuthService,private passengerSocketService:PassengerSocketService) { }
 
   ngOnInit(): void {
     
@@ -47,7 +49,10 @@ export class RegisteredUserComponent implements OnInit {
           })
         }
         else{
-          window.alert("Error: Email no longer in database");
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"Error: Email no longer in database"}
+          });
         }
       }
     )

@@ -1,7 +1,9 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { AfterViewInit, Component, ComponentRef, Inject, Input, OnInit, ViewChild, ViewRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBarRef, MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 import { catchError, of, Subscription, timer } from 'rxjs';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { PassengerInfoDTO } from 'src/app/modules/DTO/PassengerInfoDTO';
 import { RideDTO } from 'src/app/modules/DTO/RideDTO';
 import { RegisteredService } from 'src/app/modules/service/registered.service';
@@ -21,7 +23,7 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
   passengerUsernameProfile?:any[];
   timerSubscription!: Subscription;
 
-  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any,private rideService:RideService,private userService:UserService) {}
+  constructor(private dialog:MatDialog,@Inject(MAT_SNACK_BAR_DATA) public data: any,private rideService:RideService,private userService:UserService) {}
 
   ngOnInit(): void {
     this.ride = this.data.ride;
@@ -67,11 +69,17 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
   this.rideService.acceptRide(this.ride.id).pipe(
       catchError((error:HttpErrorResponse) => {
         if(error.status == 400){
-          window.alert(error.error.message);
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:error.error.message}
+          });
           this.data.snackBarRef.dismiss();
         }
         if(error.status == 404){
-          window.alert(error.error.message);
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:error.error.message}
+          });
           this.data.snackBarRef.dismiss();
         }
         return of(null)
@@ -79,6 +87,9 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
       )
     ).subscribe((res: any) => {
       if(res != null){
+        this.rideService.simulateRide(this.ride.id).subscribe(res=>{
+          console.log(res);
+        })
         console.log(res);
         this.data.snackBarRef.dismiss();
       }
@@ -91,11 +102,17 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
     this.rideService.declineRide(this.ride.id, rejectionTextDTO).pipe(
       catchError((error:HttpErrorResponse) => {
         if(error.status == 400){
-          window.alert(error.error.message);
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:error.error.message}
+          });
           this.data.snackBarRef.dismiss();
         }
         if(error.status == 404){
-          window.alert(error.error.message);
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:error.error.message}
+          });
           this.data.snackBarRef.dismiss();
         }
         return of(null)

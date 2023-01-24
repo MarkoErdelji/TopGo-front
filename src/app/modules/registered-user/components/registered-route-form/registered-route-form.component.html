@@ -34,18 +34,37 @@
       <mat-form-field id = 'number-input-field'>
         <input matInput id = "number-input" type="number" min="2" max="10" step="2" value = "4" placeholder="Seats">
       </mat-form-field>
-      <div id = "button-div">
+    <div>
         <mat-form-field id="date-input-field">
           <input matInput id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Choose a date" [formControl]="dateControl" >
           <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
           <ngx-mat-datetime-picker [disabled]=false #picker [showSpinners]="true" [showSeconds]="false"
              [stepHour]="1" [stepMinute]="1"
-             [touchUi]="true"  [enableMeridian]="false" 
+             [touchUi]="true"  [enableMeridian]="false"
              [hideTime]="false">
           </ngx-mat-datetime-picker>
        </mat-form-field>
-  
-      <button  id="order-button" type="submit" mat-raised-button >Order</button>
+      </div>
+      <div>
+        <mat-form-field id="referal-field">
+          <mat-label>Enter Friend Email</mat-label>
+          <input matInput name="friendEmail" formControlName="friendEmail" >
+        </mat-form-field>
+        <button  id="invite-button" type="button" (click)="inviteFriend()" mat-raised-button >Invite</button>
+      </div>
+      <div id ='invited-friends' >
+        <div class = "friend-div" *ngFor="let friend of friends">
+        <img  class ="friend-img" [src]="friend.profilePicture">
+          <img class = "loading-img" src = "assets/images/loadingGif.gif" [hidden]="friendInvites.get(friend.id) !='PENDING'"  >
+          <img class = "loading-img" src = "assets/images/x-icon.png" [hidden]="friendInvites.get(friend.id) !='REJECTED'"  >
+          <img class = "loading-img" src = "assets/images/check-icon.png" [hidden]="friendInvites.get(friend.id) !='ACCEPTED'"  >
+        </div>
+
+
+      </div>
+      <div id = "button-div">
+
+      <button  id="order-button" type="submit" mat-raised-button>Order</button>
         <button  id="cancel-button" type="submit" mat-raised-button >Cancel</button>
 
       </div>
@@ -130,6 +149,6 @@
 
 <div [hidden]="activeBtn" id="active-ride-div">
   <div class = 'white-bck'>
-  <button  id="panic-button" class ='shadow'  type="button" mat-raised-button>PANIC</button>
+  <button  id="panic-button" class ='shadow' (click)='openDialogPanic()' type="button" mat-raised-button>PANIC</button>
   </div>
 </div>

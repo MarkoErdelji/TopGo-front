@@ -1,8 +1,10 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { PasswordResetService } from 'src/app/_service/password-reset.service';
 
 @Component({
@@ -30,7 +32,7 @@ export class ResetPasswordComponent implements OnInit {
     return true;
   }
   
-  constructor(private route: ActivatedRoute,private passwordResetService:PasswordResetService,private router:Router) {}
+  constructor(private dialog:MatDialog,private route: ActivatedRoute,private passwordResetService:PasswordResetService,private router:Router) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -46,11 +48,17 @@ export class ResetPasswordComponent implements OnInit {
       .pipe(
         catchError((error:HttpErrorResponse) => {
           if(error.status == 400){
-            window.alert(error.message);
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg: error.message}
+            });
             this.router.navigate(['login']);
           }
           if(error.status == 404){
-            window.alert(error.message);
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg: error.message}
+            });
             this.router.navigate(['login']);
           }
           return of(null);
@@ -59,7 +67,10 @@ export class ResetPasswordComponent implements OnInit {
       ).subscribe(
         response=>{
           if(response?.status == 204){
-            window.alert("Password successfuly reset!")
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg:"Password successfuly reset!"}
+            });
             this.router.navigate(['login']);
           }
         }

@@ -1,0 +1,45 @@
+#note-content{
+    border-radius: 10px;
+    background-color: #F4F4F4;
+    height: 80vh;
+    width: 45vw;
+    padding: 0px;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+.show-note-txt{
+    padding: 20px;
+    overflow-wrap: break-word;
+   width: 200px; /* or any other width */
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #FF9642;
+  }
+  ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #FF9642;
+  }
+  
+  ::ng-deep .mat-focused .mat-form-field-required-marker {
+    color: #FF9642
+  }
+.centered-text{
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+}
+.show-note-div{
+    display: flex;
+    background-color: white;
+    align-items: center;
+    flex-wrap: nowrap;
+    width: 60%;
+    border-radius: 15px;
+    margin-top: 20px;
+    border: 0.5px solid orange;
+    justify-content: space-around;
+    flex-direction: column;
+}

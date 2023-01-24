@@ -3,14 +3,16 @@ import { Stomp } from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import { RideDTO } from '../DTO/RideDTO';
 import {BehaviorSubject} from "rxjs";
-import { HttpErrorResponse } from '@angular/common/http';
-import {
-  ChatDialogComponent
-} from "../registered-user/components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {
-  RideNotificationComponent
-} from "../registered-user/components/dialogs/ride-notification/ride-notification.component";
+import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
+import { RouteFormService } from './route-form.service';
+import {DriverNotificationsComponent} from "../driver/components/driver-notifications/driver-notifications.component";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {FriendInviteDialogComponent} from "../registered-user/components/dialogs/friend-invite-dialog/friend-invite-dialog.component";
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
+import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -20,10 +22,11 @@ export class PassengerSocketService {
   notificationDisplayed: boolean = false;
   notificationQueue: RideDTO[] = [];
 
-  constructor(public dialog: MatDialog ) {}
+  constructor(private snackBar:MatSnackBar,public dialog: MatDialog,private routeService:RouteFormService ) {}
 
   public stompClient;
   public msg:any = [];
+
   initializeWebSocketConnection(passengerId) {
     const serverUrl = 'http://localhost:8000/ws';
     const ws = new SockJS(serverUrl);
@@ -32,7 +35,57 @@ export class PassengerSocketService {
     this.stompClient.connect({}, function() {
       that.openSocket(passengerId);
       that.openNotificationSocket(passengerId);
+      that.openInvitesSocket(passengerId);
+      that.openVehicleLocationSocket(passengerId);
     });
+  }
+  initializeWebSocketConnectionFriendResponse(passengerId) {
+    const serverUrl = 'http://localhost:8000/ws';
+    const ws = new SockJS(serverUrl);
+    this.stompClient = Stomp.over(ws);
+    const that = this;
+    this.stompClient.connect({}, function() {
+      that.openSocketFriendResponse(passengerId);
+
+    });
+  }
+  openSocketFriendResponse(passengerId)
+  {
+    this.stompClient.subscribe('/topic/passenger/response/'+passengerId, (message) => {
+      try{
+        const res: InviteFriendDTO = JSON.parse(message.body);
+        console.log(res)
+        this.setResponse(res);
+
+      }
+      catch{
+        const error:String = message.body;
+        console.log(error);
+        this.setReturnError(error);
+      }
+    });
+
+  }
+  private returnResponse$ = new BehaviorSubject<any>({});
+  selectResponse$ = this.returnResponse$.asObservable();
+  setResponse(response: InviteFriendDTO) {
+    this.returnResponse$.next(response);
+  }
+  openInvitesSocket(passengerId)
+  {
+    this.stompClient.subscribe('/topic/passenger/invites/'+passengerId, (message) => {
+      try{
+        const inv: InviteFriendDTO = JSON.parse(message.body);
+        this.displayInvite(inv);
+
+      }
+      catch{
+        const error:String = message.body;
+        console.log(error);
+        this.setReturnError(error);
+      }
+    });
+
   }
 
   openSocket(passengerId){
@@ -66,11 +119,27 @@ export class PassengerSocketService {
     });
   }
 
+  openVehicleLocationSocket(passengerId){
+    this.stompClient.subscribe('/topic/vehicleLocation/ride/user/'+passengerId, (message) => {
+      try{
+        const geoLocation: GeoLocationDTO = JSON.parse(message.body);
+        console.log(geoLocation);
+        this.routeService.changeMarkerLocation(geoLocation);        }
+        catch{
+          console.log(message)
+          return;
+        }
+    });
+  }
+
+
+
   private returnRide$ = new BehaviorSubject<any>({});
   selectReturnRide$ = this.returnRide$.asObservable();
   setReturnRide(ride: RideDTO) {
     this.returnRide$.next(ride);
   }
+
 
 
   private returnNotification$ = new BehaviorSubject<any>({});
@@ -106,7 +175,7 @@ export class PassengerSocketService {
     }
     if (message == "ACTIVE")
     {
-      msg = "Your Is Started!"
+      msg = "Your Ride has Started!"
     }
     const dialogRef = this.dialog.open(RideNotificationComponent, {
       width: '250px',
@@ -114,5 +183,15 @@ export class PassengerSocketService {
     });
 
   }
+  displayInvite(inv: InviteFriendDTO) {
+    this.notificationDisplayed = true;
+    this.snackBar.openFromComponent(FriendInviteDialogComponent, {
+      data: {inv,
+        duration: 60000,snackBarRef: this.snackBar},
+      verticalPosition: 'top',
+      panelClass:".custom-snack-bar"
+
+    })
+  };
 
 }

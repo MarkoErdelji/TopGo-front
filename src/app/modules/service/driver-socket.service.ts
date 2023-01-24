@@ -6,6 +6,8 @@ import { DriverNotificationsComponent } from '../driver/components/driver-notifi
 import { RideDTO } from '../DTO/RideDTO';
 import { DriverService } from './driver.service';
 import {BehaviorSubject} from "rxjs";
+import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
+import { RouteFormService } from './route-form.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +16,7 @@ export class DriverSocketService {
   notificationDisplayed: boolean = false;
   notificationQueue: RideDTO[] = [];
 
-  constructor(private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar,private routeService:RouteFormService) {}
 
   public stompClient;
   public msg:any = [];
@@ -25,6 +27,7 @@ export class DriverSocketService {
     const that = this;
     this.stompClient.connect({}, function() {
       that.openSocket(driverId);
+      that.openVehicleLocationSocket(driverId);
     });
   }
 
@@ -54,6 +57,25 @@ export class DriverSocketService {
 
       });
   }
+
+  openVehicleLocationSocket(driverId){
+    this.stompClient.subscribe('/topic/vehicleLocation/ride/user/'+driverId, (message) => {
+      try{
+        const geoLocation: GeoLocationDTO = JSON.parse(message.body);
+        console.log(geoLocation);
+        this.routeService.changeMarkerLocation(geoLocation);         }
+        catch{
+          return;
+        }
+    });
+  }
+
+  private returnVehicleLocation$ = new BehaviorSubject<any>({});
+  selectReturnVehicleLocation$ = this.returnVehicleLocation$.asObservable();
+  setReturnVehicleLocation(location: GeoLocationDTO) {
+    this.returnVehicleLocation$.next(location);
+  }
+
   private returnRide$ = new BehaviorSubject<any>({});
   selectReturnRide$ = this.returnRide$.asObservable();
   setReturnRide(ride: RideDTO) {
