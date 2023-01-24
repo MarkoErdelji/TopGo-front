@@ -55,6 +55,11 @@ export class RideService {
     responseType: 'json'});
   }
 
+  panicRide(rideId, rejectionTextDTO:RejectionTextDTO){
+    return this.http.put<any>(this.endpoint+"/"+rideId+"/panic",JSON.stringify(rejectionTextDTO),{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
+
   getPassengerPendingRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/pending")
   }

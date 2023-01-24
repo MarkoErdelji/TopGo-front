@@ -1,0 +1,25 @@
+#dialog-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+button{
+  border: 0 !important;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+#confirm-button{
+  background-color: #FF9642;
+  color: white;
+}
+#cancel-button{
+  background-color: gray;
+  color: white;
+}

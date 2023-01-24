@@ -22,6 +22,7 @@ import { MapModule } from 'src/app/components/map/map.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
+import { PanicDialogComponent } from './dialogs/panic-dialog/panic-dialog.component';
 
 
 
@@ -42,7 +43,9 @@ import { DriverCurrentRideComponent } from './components/driver-current-ride/dri
     HistoryInstanceComponent,
     DriverHomeComponent,
     DriverCurrentRideComponent,
+    PanicDialogComponent,
     DriverInboxComponent
+
   ],
   imports: [
     AppRoutingModule,
