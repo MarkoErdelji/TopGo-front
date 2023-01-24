@@ -127,6 +127,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   private orderPressed() {
       let scheduleDate:Date | null = this.dateControl.value
+      console.log(scheduleDate);
       if(scheduleDate == null){
         scheduleDate = new Date();
         scheduleDate.setSeconds(scheduleDate.getSeconds()+10);
@@ -139,9 +140,15 @@ export class RegisteredRouteFormComponent implements OnInit {
         window.alert("Can not select time after 5 hours from now !!");
         return;
       }
+      let utcDate;
       if(scheduleDate.getTime() < (Date.now()+900000)){
-        scheduleDate = null;
+        utcDate = null;
       }
+      else{
+        let utcTime = scheduleDate.getTime();
+        utcDate = new Date(Date.UTC(scheduleDate.getFullYear(),scheduleDate.getMonth(),scheduleDate.getDate(),scheduleDate.getHours(),scheduleDate.getMinutes(),scheduleDate.getSeconds()));
+      }
+      
       let ride:CreateRideDTO
       ride = <CreateRideDTO>
           {
@@ -150,7 +157,7 @@ export class RegisteredRouteFormComponent implements OnInit {
             vehicleType: '',
             babyTransport: false,
             petTransport: false,
-            scheduledTime: scheduleDate
+            scheduledTime: utcDate
           };
 
       let forBabies :boolean = this.goForm.get("forBabies")?.value

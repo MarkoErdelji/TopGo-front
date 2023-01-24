@@ -1,11 +1,12 @@
 .custom-snack-bar {
-  width:100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 300px;
-    color:black;
-    background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 100px;
+  min-width: 300px;
+  min-height: 500px;
+  color: black;
+  background-color: white;
   }
   
   .ride-info {
@@ -48,6 +49,8 @@
   }
   
   .timer {
+    display: flex;
+    justify-content: center;
     font-size: 14px;
     margin-top:20px;
     margin-bottom: 20px;
@@ -70,6 +73,7 @@
 }
 
   .actions {
+    justify-content: center;
     display: flex;
   }
   
@@ -91,3 +95,369 @@
     background-color: #F4F4F4;
     color: black;
   }
+
+
+  #test
+{
+  width: fit-content;
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.459);
+  position :fixed;
+  top: 75%;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+
+
+}
+
+#location,#destination
+{
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+::ng-deep .mat-datepicker-content{
+  display:inline !important;
+  font-family: 'Material Icons' !important;
+
+
+}
+
+::ng-deep .mat-calendar-body-selected{
+  background-color: #FF9642 !important;
+}
+
+::ng-deep .mat-calendar-body-cell:hover{
+  background-color: white !important;
+}
+::ng-deep .mat-calendar-body-cell-content:hover{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
+::ng-deep .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
+mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  border-radius: 5px;
+}
+
+mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
+  background-color: white;
+  border-radius: 5px;
+}
+#date-input-field{
+  float: left;
+  margin-left: 5px;
+}
+#route-div {
+  background-color: white;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 20px 5px 5px;
+}
+
+#moreOptions
+{
+  background-color: rgb(255, 255, 255);
+  margin: 0px 10px 10px 10px;
+  padding:15px;
+  border-radius: 5px;
+  height: fit-content;
+}
+#order-button  {
+  margin :10px;
+  margin-top: 0;
+  margin-bottom: 30px;
+  background-color: #FF9642;
+  color: white;
+  margin: 10px;
+  font-size: large;
+
+}
+#confirm-button:disabled
+{
+  background-color: gray;
+}
+#button-div
+{
+  text-align: center;
+}
+mat-checkbox
+{
+  margin:5px;
+  margin-left: 20px;
+  display: inline-block;
+}
+
+#go-button {
+  background-color: #FF9642;
+  color: white;
+  margin: 10px;
+  font-size: x-large;
+}
+#driver-div {
+  background-color: rgba(0, 0, 0, 0.459);
+  position: fixed;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+  top: 5%;
+  height: fit-content;
+  width: fit-content;
+  padding: 0px 10px 0px 10px
+
+
+}
+#driver-image,#driver-image-ride
+{
+
+  border-radius: 100px;
+  width: 100px;
+  height: 100px;
+  stroke: black;
+  margin: 10px;
+  display:inline-block;
+  border: 2px solid black;
+}
+
+
+#info{
+  display: inline-block;
+  margin: 15px;
+  vertical-align: top;
+  font-size: large;
+}
+#driver-info
+{
+  border-radius: 5px;
+  background-color: white;
+  margin :10px;
+}
+
+
+#confirm-ride-info
+{
+  width: 30%;
+  min-width: 500px;
+  padding: 20px;
+  height: fit-content;
+  min-height: 400px;
+  background-color: white;
+  border-radius: 10px;
+
+
+}
+
+
+#orange-line
+{
+  width: 46%;
+  border-radius: 20px;
+  margin-top: 15px;
+  height: 10px;
+  background-color: orange;
+  position: fixed;
+  left: 30%;
+  top: 10%;
+}
+.route-div{
+  width: 100%;
+  margin: 30px 30px 0px 10px;
+  position: relative;
+  height: 50px;
+}
+
+.centered-text{
+  white-space: nowrap;
+}
+
+#departure-image{
+  border: 0 !important;
+  display: inline-block;
+  position: fixed;
+  top: 6%;
+  left: 3%;
+}
+
+#destination-image
+{
+  border: 0 !important;
+    position: fixed;
+    right: 10%;
+    width: 50px;
+    height: 50px;
+    top: 6%;
+    display: inline-block;
+    text-align: left;
+}
+::-webkit-scrollbar {
+  width: 0.2em;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+
+#destination-text
+{
+  border-radius: 5px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    margin-top: 20px;
+    height: 50px;
+    width: 150px;
+    position: fixed;
+    right: 5%;
+    overflow-x: scroll;
+    text-align: justify;
+
+}
+
+#departure-text
+{
+  border-radius: 5px;
+    background-color: #f4f4f4;
+    padding: 15px;
+    margin-top: 20px;
+    height: 50px;
+    width: 150px;
+    position: fixed;
+    left: 5%;
+        overflow-x: scroll;
+    text-align: justify;
+
+}
+.icon-text {
+  margin :5px;
+  display: flex;
+  align-items: center;
+}
+
+
+.icon {
+  border:0 !important;
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+}
+
+#driver-info-ride
+{
+  width: 90%;
+  border-radius: 5px;
+  margin: 15px;
+  margin-top: 60px;
+
+
+
+
+}
+#driver-info-border
+{
+  margin: 10px;
+  padding: 10px;
+  border-bottom: 2px solid orange;
+
+}
+#driver-info-ride-text
+{
+  display: inline-block;
+  vertical-align: top;
+  font-size: large;
+  margin: 15px 5px 15px 15px;
+
+}
+#vehicle-info-ride-text
+{
+  font-size: large;
+  margin: 15px;
+}
+
+#close-button
+{
+  background-color: #FF9642;
+  color: white;
+  margin: 10px;
+  font-size: x-large;
+
+}
+#cancer-order-button
+{
+  background-color: gray !important;
+}
+#number-input ,#number-input-field
+{
+  width: 70px;
+  margin-left: 10px;
+}
+#ride-button-div
+{
+  width: 100%;
+  text-align: center;
+}
+#payment-ride-info
+{
+  float: right;
+}
+
+#ride-only-vehicle-info
+{
+  display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+#payment-ride-info{
+  display:inline;
+}
+#loading-gif
+{
+  height: 70px;
+  width: 70px;
+}
+
+#withdraw-button,#chat-button,#panic-button
+{
+  border-radius: 10%;
+  width: 100px;
+  height: 70px;
+  color: white;
+  margin: 30px;
+
+
+}
+#withdraw-button,#panic-button
+{
+  background-color: darkred;
+}
+#chat-button
+{
+  background-color: #FF9642;
+}
+#accept-ride-div
+{
+
+
+}
+#active-ride-div,#accept-ride-div
+{
+  background-color: rgba(0, 0, 0, 0.459);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 100px;
+}
+.white-bck {
+  background-color: white;
+  border-radius: 5px;
+}
+#active-ride-div
+{
+
+
+}
+
