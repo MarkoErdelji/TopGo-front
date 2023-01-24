@@ -1,7 +1,8 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, of } from 'rxjs';
-import { UserListDTO, UserListResponseDTO } from '../modules/DTO/UserListDTO';
+import { UserListBlockedDTO, UserListDTO, UserListResponseBlockedDTO, UserListResponseDTO } from '../modules/DTO/UserListDTO';
+import { UserNoteListDTO } from '../modules/DTO/UserNoteListDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -48,7 +49,15 @@ export class UserService {
   }
 
   getUsers(page,size){
-    return this.http.get<UserListDTO>('http://localhost:8000/api/user', { params: { page: page, size: size },   observe: 'response',
+    return this.http.get<UserListBlockedDTO>('http://localhost:8000/api/user', { params: { page: page, size: size },   observe: 'response',
+    responseType: 'json' },)
+  }
+  getUsersNotes(userId,page,size){
+    return this.http.get<UserNoteListDTO>('http://localhost:8000/api/user/'+userId+"/note", { params: { page: page, size: size },   observe: 'response',
+    responseType: 'json' },)
+  }
+  addUserNote(userId,dto){
+    return this.http.post<UserListBlockedDTO>('http://localhost:8000/api/user/'+userId+"/note",dto,   {observe: 'response',
     responseType: 'json' },)
   }
 }

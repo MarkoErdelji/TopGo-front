@@ -11,11 +11,13 @@ import { AdminHistoryComponent } from './components/admin-history/admin-history.
 import { AdminInboxComponent } from './components/admin-inbox/admin-inbox.component';
 import { RequestNotificationComponent } from './components/request-notification/request-notification.component';
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
+import { AdminNoteDialogComponent } from './components/admin-note-dialog/admin-note-dialog.component';
+import { AdminCreateNoteDialogComponent } from './components/admin-create-note-dialog/admin-create-note-dialog.component';
 
 
 
 @NgModule({
-  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent],
+  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent],
   imports: [
     AppRoutingModule,
     MaterialModule,

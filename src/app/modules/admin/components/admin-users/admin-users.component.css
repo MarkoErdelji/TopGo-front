@@ -16,6 +16,12 @@ mat-icon{
 mat-icon:hover{
   cursor: pointer;
 }
+.addNoteBtn{
+  color:rgb(5, 184, 5);
+}
+.noteBtn{
+  color: #0000f7;
+}
 #iconDiv{
   display:flex;
   flex-direction: row;

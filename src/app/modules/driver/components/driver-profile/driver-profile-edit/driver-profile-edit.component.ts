@@ -4,6 +4,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { catchError, first, map, of } from 'rxjs';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { ProfileChangesRequestService } from 'src/app/modules/service/profile-changes-request.service';
@@ -79,10 +80,16 @@ export class DriverProfileEditComponent implements OnInit {
     ).subscribe(
       response =>{
         if(response.status == 404){
-          window.alert("Error while sending data!");
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"Error while sending data!"}
+          });
         }
         else if(response. status == 201){
-          window.alert("Request for changes successfuly sent!");
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"Request for changes successfuly sent!"}
+          });
           this.router.navigate(['driver/profile'])
         }
       }

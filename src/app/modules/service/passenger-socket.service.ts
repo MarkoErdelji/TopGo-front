@@ -8,9 +8,10 @@ import {
   ChatDialogComponent
 } from "../registered-user/components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
-import {
-  RideNotificationComponent
-} from "../registered-user/components/dialogs/ride-notification/ride-notification.component";
+
+import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
+import { RouteFormService } from './route-form.service';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class PassengerSocketService {
   notificationDisplayed: boolean = false;
   notificationQueue: RideDTO[] = [];
 
-  constructor(public dialog: MatDialog ) {}
+  constructor(public dialog: MatDialog,private routeService:RouteFormService ) {}
 
   public stompClient;
   public msg:any = [];
@@ -32,6 +33,7 @@ export class PassengerSocketService {
     this.stompClient.connect({}, function() {
       that.openSocket(passengerId);
       that.openNotificationSocket(passengerId);
+      that.openVehicleLocationSocket(passengerId);
     });
   }
 
@@ -66,11 +68,27 @@ export class PassengerSocketService {
     });
   }
 
+  openVehicleLocationSocket(passengerId){
+    this.stompClient.subscribe('/topic/vehicleLocation/ride/user/'+passengerId, (message) => {
+      try{
+        const geoLocation: GeoLocationDTO = JSON.parse(message.body);
+        console.log(geoLocation);
+        this.routeService.changeMarkerLocation(geoLocation);        }
+        catch{
+          console.log(message)
+          return;
+        }
+    });
+  }
+
+
+
   private returnRide$ = new BehaviorSubject<any>({});
   selectReturnRide$ = this.returnRide$.asObservable();
   setReturnRide(ride: RideDTO) {
     this.returnRide$.next(ride);
   }
+
 
 
   private returnNotification$ = new BehaviorSubject<any>({});
@@ -106,7 +124,7 @@ export class PassengerSocketService {
     }
     if (message == "ACTIVE")
     {
-      msg = "Your Is Started!"
+      msg = "Your Ride has Started!"
     }
     const dialogRef = this.dialog.open(RideNotificationComponent, {
       width: '250px',
