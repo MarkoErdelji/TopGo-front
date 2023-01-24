@@ -50,6 +50,45 @@ mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
   float: left;
   margin-left: 5px;
 }
+#referal-field
+{
+  margin: 0px 10px 0px 20px;
+}
+#invited-friends
+{width: 100%;
+  text-align: center;
+}
+.friend-div
+{
+  height: fit-content;
+  width: fit-content;
+  display: inline-block;
+  margin: 5px;
+  position: relative;
+  height: 51px;
+  width: 51px;
+}
+
+.friend-img
+{
+  border: 1px solid black;
+}
+#invited-friends>.friend-div>img
+{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+
+}
+.loading-img
+{
+  position: absolute;
+  left: 0;
+  top:0;
+  height: 40px;
+  width: 40px;
+
+}
 #route-div {
   background-color: white;
   width: fit-content;

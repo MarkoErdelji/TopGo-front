@@ -23,6 +23,8 @@ import {AuthService} from "../../../../_service/auth.service";
 import  { MatDialog } from '@angular/material/dialog';
 import {ChatDialogComponent} from "./registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 import { UserService } from 'src/app/_service/user.service';
+import {PanicDialogComponent} from "./registered-route-form-dialogs/panic-dialog/panic-dialog.component";
+import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
 
 @Component({
   selector: 'app-registered-route-form',
@@ -61,6 +63,8 @@ export class RegisteredRouteFormComponent implements OnInit {
   acceptedBtn: boolean = true;
   activeBtn: boolean = true;
   msg?:string;
+  friends:PassengerInfoDTO[]=[];
+  friendInvites = new Map<number, string>();
 
   forBabies?:boolean;
   dateControl = new FormControl();
@@ -257,12 +261,24 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   rideActive(ride: RideDTO) {
+    this.activeBtn = false;
+    this.acceptedBtn = true;
+    // @ts-ignore
+    this.formDiv.nativeElement.style.display = 'none';
+    // @ts-ignore
+    this.confirmRide.nativeElement.style.display = 'none';
+    // @ts-ignore
+    this.confirmRideInfo.nativeElement.style.backgroundColor = "white";
+    this.rideStatus = ride.status;
+    // @ts-ignore
+    this.popupContent.nativeElement.appendChild(this.confirmRideInfo.nativeElement);
 
 
 
   }
   rideAccepted(ride: RideDTO) {
     this.acceptedBtn = false;
+    this.activeBtn = true;
     // @ts-ignore
     this.formDiv.nativeElement.style.display = 'none';
     // @ts-ignore
@@ -311,7 +327,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       this.numberOfSeats = vehicle.passengerSeats;
       this.forAnimals= vehicle.petTransport;
       this.forBabies = vehicle.babyTransport;
-      
+
 
     }))
   }
@@ -321,7 +337,8 @@ export class RegisteredRouteFormComponent implements OnInit {
     destination: new FormControl("",[Validators.required]),
     carType: new FormControl(""),
     forBabies: new FormControl(),
-    forPets: new FormControl()
+    forPets: new FormControl(),
+    friendEmail : new FormControl()
   });
 
 
@@ -461,6 +478,29 @@ export class RegisteredRouteFormComponent implements OnInit {
         console.log(this.currentRide);
       }
     })
+    this.rideService.getPassengerActiveRide(this.authService.getUserId()).pipe(
+      catchError((error) => {
+        if (error.status === 404) {
+          console.log("no ride!")
+          return EMPTY;
+        }
+        return of(null);
+      })
+    ).subscribe(ride => {
+      if (ride != null) {
+
+        let locationDTO: LocationDTO = <LocationDTO>{
+          location: ride.locations[0].departure.address,
+          destination: ride.locations[0].destination.address
+        }
+        this.SetRide(ride);
+        this.rideActive(ride);
+        this.currentLocation = locationDTO;
+        this.routeFormService.setLocation(locationDTO)
+        this.currentRide = ride;
+        console.log(this.currentRide);
+      }
+    })
   }
 
   private showDriverInfo(driver: DriverInfoDTO) {
@@ -517,4 +557,47 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
   constructor(private userService:UserService,public dialog: MatDialog,private authService:AuthService,private passengerSocketService:PassengerSocketService,private routeFormService:RouteFormService ,private driverService:DriverService ,private mapService:MapService,private passengerService:RegisteredService,private rideService:RideService) { }
 
+  openDialogPanic() {
+    const dialogRef = this.dialog.open(PanicDialogComponent, {
+      width: '400px',
+      data: {ride: this.currentRide}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        console.log(result)
+        this.rideStatus = result.body.ride.status;
+      }
+    });
+
+
+
+  }
+
+  inviteFriend() {
+    this.userService.getUserByEmail(this.goForm.get("friendEmail")?.value).subscribe(result =>
+    {
+      this.goForm.get("friendEmail")?.setValue("")
+      this.passengerService.getPassengerById(result.body.id).subscribe(pass =>
+      {
+        if (!this.friends.find(friend => friend.id === pass.id)) {
+          document.getElementById("test")!.style.top = "53%"
+          if(this.friends.length<=3)
+            if(pass.id! != this.authService.getUserId()) {
+              console.log(pass.id)
+              this.passengerService.invite(pass.id).subscribe(response =>
+              {
+                console.log(response)
+              })
+              this.friends.push(pass);
+              this.friendInvites.set(pass.id,"PENDING");
+
+            }
+        }
+
+      })
+
+    })
+
+  }
 }

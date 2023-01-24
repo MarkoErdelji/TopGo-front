@@ -17,6 +17,7 @@ import { ChatDialogComponent } from './components/registered-route-form/register
 import { NotificationDialogComponent } from './components/registered-dialogs/notification-dialog/notification-dialog.component';
 import { RideNotificationComponent } from './components/dialogs/ride-notification/ride-notification.component';
 import { EditProfileDialogComponent } from './components/registered-profile/registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component';
+import { PanicDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/panic-dialog/panic-dialog.component';
 
 
 
@@ -31,7 +32,8 @@ import { EditProfileDialogComponent } from './components/registered-profile/regi
         NotificationDialogComponent,
         ChatDialogComponent,
         RideNotificationComponent,
-        EditProfileDialogComponent
+        EditProfileDialogComponent,
+        PanicDialogComponent
     ],
 
   imports: [
