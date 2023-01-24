@@ -23,8 +23,10 @@ import {AuthService} from "../../../../_service/auth.service";
 import  { MatDialog } from '@angular/material/dialog';
 import {ChatDialogComponent} from "./registered-route-form-dialogs/chat-dialog/chat-dialog.component";
 import { UserService } from 'src/app/_service/user.service';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import {PanicDialogComponent} from "./registered-route-form-dialogs/panic-dialog/panic-dialog.component";
 import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
+
 
 @Component({
   selector: 'app-registered-route-form',
@@ -139,11 +141,17 @@ export class RegisteredRouteFormComponent implements OnInit {
         scheduleDate.setSeconds(scheduleDate.getSeconds()+10);
       }
       else if(scheduleDate.getTime() < Date.now()){
-        window.alert("Can not select time before now !!");
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"Can not select time before now !!"}
+        });
         return;
       }
       else if(scheduleDate.getTime() > (Date.now()+18000000)){
-        window.alert("Can not select time after 5 hours from now !!");
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"Can not select time after 5 hours from now !!"}
+        });
         return;
       }
       let utcDate;
@@ -176,7 +184,10 @@ export class RegisteredRouteFormComponent implements OnInit {
       ride!.petTransport = forPets;
       let carType:string;
       if(this.goForm.get("carType")?.value == null){
-        window.alert("You must select a car type!")
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"You must select a car type!"}
+        });
         return;
       }
       if(this.goForm.get("carType")?.value == "1")
@@ -382,7 +393,10 @@ export class RegisteredRouteFormComponent implements OnInit {
             this.rideActive(ride);
           }
           if (ride.status == "SCHEDULED"){
-            window.alert("Your scheduled ride for:" + ride.startTime+" has been accepted by one of our drivers!")
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg:"Your scheduled ride for:" + ride.startTime+" has been accepted by one of our drivers!"}
+            });
           }
           if (ride.status == "DECLINED"){
 
@@ -395,7 +409,10 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.passengerSocketService.selectReturnError$.subscribe({next:(error:string)=>{
         if(error == "No drivers left!"){
           this.closeOrder();
-          window.alert("No more drivers are left for your ride!")
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"No more drivers are left for your ride!"}
+          });
         }
     }})
 

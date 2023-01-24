@@ -1,0 +1,14 @@
+<div class="shadow" id='document-content'>
+    <div id="reset-text">
+        <p>Create new note:</p>
+    </div>
+    <form [formGroup]="createNoteForm" (ngSubmit)="createNote()" id = "createNoteForm">
+        <mat-form-field appearance="outline">
+            <mat-label>Message</mat-label>
+            <textarea matInput name="Message" style="resize: none;" type="text" rows="5" formControlName="createNoteMessageControl"></textarea>
+            <mat-error  *ngIf="createNoteForm.controls.createNoteMessageControl.errors?.['required']">Error: field can not be empty</mat-error>
+            <mat-error  *ngIf="createNoteForm.controls.createNoteMessageControl.errors?.['maxlength']">Error: Message must be a max of 255 characters!</mat-error>
+        </mat-form-field>
+        <button  id="submit-button" type="submit" mat-raised-button>Submit</button>
+    </form>
+</div>

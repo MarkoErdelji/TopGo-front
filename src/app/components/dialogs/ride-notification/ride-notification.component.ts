@@ -1,7 +1,5 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {UserService} from "../../../../service/user.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
-import {SendMessageDTO} from "../../../../DTO/SendMessageDTO";
 
 @Component({
   selector: 'app-ride-notification',
@@ -13,7 +11,6 @@ export class RideNotificationComponent implements OnInit {
   Message: any;
 
   constructor(
-    private userService: UserService,
     public dialogRef: MatDialogRef<RideNotificationComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
   }

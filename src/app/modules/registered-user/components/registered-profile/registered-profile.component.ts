@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {RegisteredService} from "../../../service/registered.service";
 import {DistanceAndAverageDTO} from "../../../DTO/DistanceAndAverageDTO";
 import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
-import {RideNotificationComponent} from "../dialogs/ride-notification/ride-notification.component";
 import {MatDialog} from "@angular/material/dialog";
 import {
   EditProfileDialogComponent

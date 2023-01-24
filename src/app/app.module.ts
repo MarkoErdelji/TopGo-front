@@ -22,12 +22,14 @@ import { ForgotPasswordComponent } from './components/login/password-reset/forgo
 import { ResetPasswordComponent } from './components/login/password-reset/reset-password/reset-password.component';
 import { FontAwesomeModule,FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import {faStar,faStarHalf} from'@fortawesome/free-solid-svg-icons';
+import { RideNotificationComponent } from './components/dialogs/ride-notification/ride-notification.component';
 
 
 
 
 @NgModule({
   declarations: [
+    RideNotificationComponent,
     AppComponent,
     LoginComponent,
     RegisterComponent,
