@@ -21,7 +21,7 @@ import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatDatepickerModule} from '@angular/material/datepicker';
-
+import { NgxMatDatetimePickerModule,NgxMatNativeDateModule } from '@angular-material-components/datetime-picker';
 
 @NgModule({
   imports: [
@@ -32,6 +32,8 @@ import { MatDatepickerModule} from '@angular/material/datepicker';
     MatNativeDateModule,
     MatToolbarModule,
     MatTooltipModule,
+    NgxMatNativeDateModule,
+    NgxMatDatetimePickerModule,
     MatListModule,
     MatInputModule,
     MatDatepickerModule,
@@ -55,6 +57,7 @@ import { MatDatepickerModule} from '@angular/material/datepicker';
     MatCheckboxModule,
     MatIconModule,
     MatNativeDateModule,
+    NgxMatDatetimePickerModule,
     MatDatepickerModule,
     MatToolbarModule,
     MatTooltipModule,

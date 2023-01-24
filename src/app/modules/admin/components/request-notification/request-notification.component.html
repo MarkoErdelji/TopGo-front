@@ -5,20 +5,20 @@
     <div id="titleDiv">
       <h1 id="title">Requests</h1>
     </div>
-     <div [ngClass]="'container-column'">
+    <div [ngClass]="'container-column'">
 
-       <ng-template  ngFor let-item [ngForOf]="lista" let-i="index">
-          <div class="reques-containter shadow"(click)="onRequestiClick(i)">
-            <div id="person">
-              <div id="img">
-                <img [src]="imageUrl" id="profile-image">
-              </div>
-                <div id="first-name-last-name">
-                  <p>{{item.firstName}}</p>
-                  <p>{{item.lastName}}</p>
-                </div>
+      <ng-template  ngFor let-item [ngForOf]="lista" let-i="index">
+        <div class="reques-containter shadow"(click)="onRequestiClick(i)">
+          <div id="person">
+            <div id="img">
+              <img [src]="imageUrl" id="profile-image">
+            </div>
+            <div id="first-name-last-name">
+              <p>{{item.firstName}}</p>
+              <p>{{item.lastName}}</p>
             </div>
           </div>
+        </div>
       </ng-template>
     </div>
   </div>
@@ -55,8 +55,10 @@
             </div>
           </div>
           <div id="request-btns">
-          <button mat-raised-button (click)="acceptChanges()" id="edit-profile">accept</button>
-          <button mat-raised-button (click)="declineChanges()" id="decline-btn">Decline</button>
+
+            <button mat-raised-button (click)="acceptChanges()" id="edit-profile">accept</button>
+            <button mat-raised-button (click)="declineChanges()" id="decline-btn">Decline</button>
+
           </div>
         </div>
       </div>

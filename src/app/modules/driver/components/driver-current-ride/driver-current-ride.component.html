@@ -1,0 +1,50 @@
+<div id="ride-container" *ngIf="rideVisible">
+  <div id="ride-info">
+    <div id="passenger-info">
+      <img src="assets/images/tate.png" id="passenger-profile-picture">
+      <div id="passenger-identity">
+        <div id="passenger-name">
+          <p>{{name}}</p>
+        </div>
+        <div id="passenger-phone-number">
+          <p>{{phoneNumber}}</p>
+        </div>
+        <div id="passenger-mail">
+          <p>{{email}}</p>
+        </div>
+      </div>
+    </div>
+    <hr id="orange-line">
+    <div id="rest-ride-info"><
+      <div id="ride-details">
+        <div id="row1">
+          <div id="distance" class="details">
+            <img src="assets/images/distanceIcon.png" id="distance-img">
+            <p>{{distance}} Km</p>
+          </div>
+          <div id="estimated-time" class="details">
+            <img src="assets/images/timeIcon.png" id="time-img">
+            <p>{{time}} Min</p>
+          </div>
+        </div>
+        <div id="row2">
+          <div id="price" class="details">
+            <img src="assets/images/moneyIcon.png" id="money-img">
+            <p>{{money}} RSD</p>
+          </div>
+          <div id="status" class="details">
+            <img src="assets/images/status-icon-png-2.jpg" id="status-img">
+            <p>{{status}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="buttons" *ngIf="isAccepted">
+  <div id="buttons-background">
+    <button mat-raised-button (click)="startRide()"  id="start-btn">Start</button>
+    <button mat-raised-button id="chat-btn">chat</button>
+    <button mat-raised-button id="cancel-btn">cancel</button>
+  </div>
+</div>

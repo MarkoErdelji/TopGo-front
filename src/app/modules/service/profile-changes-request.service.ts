@@ -24,8 +24,9 @@ export class ProfileChangesRequestService {
     return this.http.put('http://localhost:8000/api/driver/'+driverDTO.id, JSON.stringify(driverDTO), {'headers':this.headers})
  }
 
- deleteRequest(id:number){
+  deleteRequest(id:number){
     return this.http.delete('http://localhost:8000/api/profileChangesRequest/' + id+'/delete',{'headers':this.headers} )
- }
+  }
+
 
 }

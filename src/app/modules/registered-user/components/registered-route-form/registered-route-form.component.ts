@@ -43,7 +43,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   @ViewChild('confirmRide') confirmRide?: ElementRef;
   @ViewChild('confirmRideInfo') confirmRideInfo?: ElementRef;
   @ViewChild('formDiv') formDiv?: ElementRef;
-  selectedDatetime: Date | undefined;
+  selectedTime: Date | undefined;
   driverName?:string;
   driverPhone?:string;
   driverEmail?:string;
@@ -63,6 +63,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   msg?:string;
 
   forBabies?:boolean;
+  dateControl = new FormControl();
 
 
    isDisabled = true;
@@ -75,6 +76,7 @@ export class RegisteredRouteFormComponent implements OnInit {
    notSelectedFormInput: any;
 
   private subscriptions: Subscription[] = [];
+
 
 
     async go(id: string) {
@@ -124,13 +126,31 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   private orderPressed() {
-        let ride:CreateRideDTO = <CreateRideDTO>
+      let scheduleDate:Date | null = this.dateControl.value
+      if(scheduleDate == null){
+        scheduleDate = new Date();
+        scheduleDate.setSeconds(scheduleDate.getSeconds()+10);
+      }
+      else if(scheduleDate.getTime() < Date.now()){
+        window.alert("Can not select time before now !!");
+        return;
+      }
+      else if(scheduleDate.getTime() > (Date.now()+18000000)){
+        window.alert("Can not select time after 5 hours from now !!");
+        return;
+      }
+      if(scheduleDate.getTime() < (Date.now()+900000)){
+        scheduleDate = null;
+      }
+      let ride:CreateRideDTO
+      ride = <CreateRideDTO>
           {
             locations: [],
             passengers: [],
             vehicleType: '',
             babyTransport: false,
             petTransport: false,
+            scheduledTime: scheduleDate
           };
 
       let forBabies :boolean = this.goForm.get("forBabies")?.value
@@ -142,6 +162,10 @@ export class RegisteredRouteFormComponent implements OnInit {
       ride!.babyTransport = forBabies;
       ride!.petTransport = forPets;
       let carType:string;
+      if(this.goForm.get("carType")?.value == null){
+        window.alert("You must select a car type!")
+        return;
+      }
       if(this.goForm.get("carType")?.value == "1")
       {
         carType = "STANDARD"
@@ -198,10 +222,14 @@ export class RegisteredRouteFormComponent implements OnInit {
                 })
               ).subscribe(response =>
               {
-                // @ts-ignore
-                this.confirmRide.nativeElement.style.display = 'block';
-                this.SetRide(response.body);
-
+                if(response!=null){
+                  if(response.body.status == "SCHEDULED"){
+                    return;
+                  }
+                  // @ts-ignore
+                  this.confirmRide.nativeElement.style.display = 'block';
+                  this.SetRide(response.body);
+                }
 
 
               }));
@@ -283,19 +311,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       this.numberOfSeats = vehicle.passengerSeats;
       this.forAnimals= vehicle.petTransport;
       this.forBabies = vehicle.babyTransport;
-      let vehType:string = "1"
-      if(vehicle.vehicleType == "STANDARD")
-        vehType ="1"
-      if(vehicle.vehicleType == "LUXURY")
-        vehType ="2"
-      if(vehicle.vehicleType == "VAN")
-        vehType ="3"
-
-      this.driverService.getVehiclePrice(vehType).subscribe(price  =>
-    {
-        console.log(price)
-        this.ridePrice = price * this.distance!;
-    })
+      
 
     }))
   }
@@ -338,6 +354,9 @@ export class RegisteredRouteFormComponent implements OnInit {
           {
             this.rideActive(ride);
           }
+          if (ride.status == "SCHEDULED"){
+            window.alert("Your scheduled ride for:" + ride.startTime+" has been accepted by one of our drivers!")
+          }
           if (ride.status == "DECLINED"){
 
           }
@@ -362,7 +381,21 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.mapService.selectDistanceAndAverage$.subscribe({next:(distance:DistanceAndAverageDTO)=>{
       this.distance = distance.distance;
       this.average = distance.average;
+      let vehType:string = "1"
+      if(this.vehicleTypeRide! == "STANDARD")
+        vehType ="1"
+      if(this.vehicleTypeRide! == "LUXURY")
+        vehType ="2"
+      if(this.vehicleTypeRide! == "VAN")
+        vehType ="3"
 
+      this.driverService.getVehiclePrice(vehType).subscribe(price  =>
+    {
+        console.log(price)
+        this.ridePrice = price * this.distance!;
+        console.log(this.ridePrice)
+        console.log(this.distance)
+    })
 
 
       } })

@@ -61,7 +61,6 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
   }
 
 
-
   onAccept() {
   this.rideService.acceptRide(this.ride.id).pipe(
       catchError((error:HttpErrorResponse) => {

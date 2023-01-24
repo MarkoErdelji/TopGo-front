@@ -17,8 +17,26 @@
   margin-right: 10px;
 }
 
+::ng-deep .mat-datepicker-content{
+  display:inline !important;
+  font-family: 'Material Icons' !important;
 
 
+}
+
+::ng-deep .mat-calendar-body-selected{
+  background-color: #FF9642 !important;
+}
+
+::ng-deep .mat-calendar-body-cell:hover{
+  background-color: white !important;
+}
+::ng-deep .mat-calendar-body-cell-content:hover{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
+::ng-deep .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
 mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
   background-color: white;
   border-radius: 5px;
@@ -28,7 +46,10 @@ mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
   background-color: white;
   border-radius: 5px;
 }
-
+#date-input-field{
+  float: left;
+  margin-left: 5px;
+}
 #route-div {
   background-color: white;
   width: fit-content;

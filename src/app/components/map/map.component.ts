@@ -10,11 +10,24 @@ import {MapService} from "./map.service";
 import {DriverService} from "../../modules/service/driver.service";
 import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
-import {marker} from "leaflet";
 import {AuthService} from "../../_service/auth.service";
 import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
 import {Subscription} from "rxjs";
-
+import { icon, Marker } from 'leaflet';
+const iconRetinaUrl = 'assets/destination-marker.png';
+const iconUrl = 'assets/destination-marker.png';
+const shadowUrl = 'assets/marker-shadow.png';
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [41, 41],
+  iconAnchor: [20, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+Marker.prototype.options.icon = iconDefault;
 
 
 
@@ -24,22 +37,21 @@ import {Subscription} from "rxjs";
   styleUrls: ['./map.component.css']
 })
 export class MapComponent implements AfterViewInit {
-  private map: any;
+  private _map: any;
   private location!: LocationDTO;
   private previouseRouteControl: L.Routing.Control | null = null;
 
 
-  private markerList: L.Marker[] = [];
+  private _markerList: L.Marker[] = [];
 
   private selectedLocation!:L.Marker;
 
   private subscriptions: Subscription[] = [];
 
 
-
   constructor(private routeFormService: RouteFormService, private mapService: MapService,private driverService:DriverService ,private authService:AuthService) { }
   private initMap(): void {
-    this.map = L.map('map', {
+    this._map = L.map('map', {
       center: [45.2396, 19.8227],
       zoom: 13,
     });
@@ -50,28 +62,36 @@ export class MapComponent implements AfterViewInit {
       attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
     });
 
-    tiles.addTo(this.map);
+    tiles.addTo(this._map);
   }
 
 
   createRoute() {
 
-    const map = this.map as L.Map;
+    const map = this._map as L.Map;
     map.zoomOut(6);
     this.subscriptions.push(this.mapService.search(this.location.location).subscribe({
       next: (departure) =>{
         console.log(location)
         this.subscriptions.push(this.mapService.search(this.location.destination).subscribe({
           next:(destination) => {
+
             console.log(destination)
             const routeControl = L.Routing.control({
               router: L.Routing.osrmv1({
                 serviceUrl: `http://router.project-osrm.org/route/v1/`
               }),
               show: false,
-              routeWhileDragging: true,
+              lineOptions: {
+                missingRouteTolerance:2,
+                extendToWaypoints:true,
+                styles: [
+                    {color: '#ff7e15', opacity: 1, weight: 5}
+                ]
+
+              },
               waypoints: [L.latLng(departure[0].lat, departure[0].lon), L.latLng(destination[0].lat, destination[0].lon)],
-            }).addTo(this.map);
+            }).addTo(this._map);
             routeControl.on('routesfound', (e) => {
               let routes = e.routes;
               let distanceAndAverage:DistanceAndAverageDTO =
@@ -89,7 +109,7 @@ export class MapComponent implements AfterViewInit {
       }
     }));
     if(this.previouseRouteControl != null){
-      const map = this.map as L.Map;
+      const map = this._map as L.Map;
       map.removeControl(this.previouseRouteControl);
     }
   }
@@ -99,9 +119,9 @@ export class MapComponent implements AfterViewInit {
     this.subscriptions.push(this.driverService.getDriverVehicle(driver.id).subscribe(vehicle =>
     {
       let marker = new L.Marker([vehicle.currentLocation.latitude, vehicle.currentLocation.longitude],{icon: greenIcon});
-      marker.addTo(this.map);
+      marker.addTo(this._map);
       marker.bindPopup(driver.name + " " + driver.surname,{autoClose: true});
-      this.markerList.push(marker)
+      this._markerList.push(marker)
       let mService :MapService = this.mapService;
       marker.on('click', function(e) {
         mService.setDriver(driver);
@@ -109,25 +129,21 @@ export class MapComponent implements AfterViewInit {
 
     }))
 
-
-
-
   }
 
   ngAfterViewInit(): void {
     this.initMap();
-    this.registerOnClick();
     this.subscriptions.push(this.routeFormService.selectLocation$.subscribe({next:(location)=>{
 
-      this.location = location;
+        this.location = location;
         if(this.location.location && this.location.destination) {
           console.log(this.location.location)
           console.log(this.location.destination)
           this.createRoute();
         }
-   } }))
-    this.subscriptions.push(this.driverService.selectLocation$.subscribe({next:(driver)=>{
+      } }))
 
+    this.subscriptions.push(this.driverService.selectLocation$.subscribe({next:(driver)=>{
         if(driver) {
           console.log(driver);
           this.addDriverMarker(driver)
@@ -136,13 +152,25 @@ export class MapComponent implements AfterViewInit {
 
     this.subscriptions.push(this.routeFormService.RemoveMarkers$.subscribe({next:(remove)=>{
         console.log("remove");
-        this.markerList.forEach(marker => marker.remove());
+        this._markerList.forEach(marker => marker.remove());
       } }))
+
+
+    if(this.authService.getUserRole() == 'DRIVER'){
+      this.driverService.getDriverById(this.authService.getUserId()).subscribe((response)=>{
+        this.addDriverMarker(response);
+      })
+    }
+    else if(this.authService.getUserRole() == 'USER'){
+      this.registerOnClick();
+
+    }
+
 
   }
 
   registerOnClick(): void {
-    this.map.on('contextmenu', (e: any) => {
+    this._map.on('contextmenu', (e: any) => {
       const coord = e.latlng;
       const lat = coord.lat;
       const lng = coord.lng;
@@ -155,13 +183,13 @@ export class MapComponent implements AfterViewInit {
       );
       if (this.selectedLocation != undefined)
       this.selectedLocation.remove();
-      this.selectedLocation = new L.Marker([lat, lng],{icon: arrowIcon}).addTo(this.map);
+      this.selectedLocation = new L.Marker([lat, lng],{icon: arrowIcon}).addTo(this._map);
     });
   }
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    this.map.remove();
-    this.map = null;
+    this._map.remove();
+    this._map = null;
     console.log("blaaa")
   }
 
@@ -179,6 +207,13 @@ let  greenIcon = L.icon({
 });
 let  arrowIcon = L.icon({
   iconUrl: 'assets/images/arrowIcon.png',
+
+  iconSize:     [30, 30], // size of the icon
+  iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
+});
+
+let  routeIcon = L.icon({
+  iconUrl: 'assets/images/destination-icon.png',
 
   iconSize:     [30, 30], // size of the icon
   iconAnchor:   [15, 30], // point of the icon which will correspond to marker's location
