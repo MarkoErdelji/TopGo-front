@@ -32,6 +32,7 @@ import { AdminUsersComponent } from './modules/admin/components/admin-users/admi
 import {
   RegisteredInboxComponent
 } from "./modules/registered-user/components/registered-inbox/registered-inbox.component";
+import {DriverHomeComponent} from "./modules/driver/components/driver-home/driver-home.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -56,7 +57,9 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'profile', component: DriverProfileComponent },
                         { path: 'profile/edit',component:DriverProfileEditComponent},
                         { path: 'history', component: DriverHistoryComponent },
-                        { path: 'reports', component:DriverReportsComponent}
+                        { path: 'reports', component:DriverReportsComponent},
+                          {path: 'home', component: DriverHomeComponent},
+                          {path: '', redirectTo: 'home', pathMatch: 'full' }
                         ],canActivate: [DriverGuard]},
                         { path: '', redirectTo: 'unregistered', pathMatch: 'full' },
                         { path: 'admin', component:AdminComponent,

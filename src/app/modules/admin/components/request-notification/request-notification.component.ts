@@ -100,13 +100,13 @@ export class RequestNotificationComponent implements OnInit {
 
   acceptChanges() {
     let driverDTO:DriverInfoDTO = {
-        id: this.driverId!,
-        name: this.firstName!,
-        surname: this.lastName!,
-        email: this.username!,
-        telephoneNumber: this.phone!,
-        profilePicture: this.mainImageUrl!,
-        address: this.address!
+      id: this.driverId!,
+      name: this.firstName!,
+      surname: this.lastName!,
+      email: this.username!,
+      telephoneNumber: this.phone!,
+      profilePicture: this.mainImageUrl!,
+      address: this.address!
     }
 
     console.log(driverDTO)

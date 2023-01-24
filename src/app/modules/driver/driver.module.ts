@@ -20,6 +20,8 @@ import { DriverNotificationsComponent } from './components/driver-notifications/
 import { HistoryInstanceComponent } from './components/driver-history/history-instance/history-instance.component';
 import { MapModule } from 'src/app/components/map/map.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { DriverHomeComponent } from './components/driver-home/driver-home.component';
+import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 
 
 
@@ -38,6 +40,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     DriverChangeImageDialogComponent,
     DriverNotificationsComponent,
     HistoryInstanceComponent,
+    DriverHomeComponent,
+    DriverCurrentRideComponent,
   ],
   imports: [
     AppRoutingModule,
