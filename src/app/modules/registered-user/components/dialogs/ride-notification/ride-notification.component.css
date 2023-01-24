@@ -1,0 +1,21 @@
+#send-btn {
+  margin :10px;
+  margin-top: 0;
+  margin-bottom: 30px;
+  background-color: #FF9642;
+  color: white;
+  margin: 10px;
+  font-size: large;
+
+}
+
+#button-div,#content-div
+{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+mat-form-field
+{
+  width: 100%;
+}

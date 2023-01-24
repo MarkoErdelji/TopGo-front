@@ -13,7 +13,10 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RegisteredProfileComponent } from './components/registered-profile/registered-profile.component';
 import { RegisteredHomeComponent } from './components/registered-home/registered-home.component';
 import { RegisteredInboxComponent } from './components/registered-inbox/registered-inbox.component';
+import { ChatDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component';
 import { NotificationDialogComponent } from './components/registered-dialogs/notification-dialog/notification-dialog.component';
+import { RideNotificationComponent } from './components/dialogs/ride-notification/ride-notification.component';
+import { EditProfileDialogComponent } from './components/registered-profile/registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component';
 
 
 
@@ -25,8 +28,12 @@ import { NotificationDialogComponent } from './components/registered-dialogs/not
         RegisteredProfileComponent,
         RegisteredHomeComponent,
         RegisteredInboxComponent,
-        NotificationDialogComponent
+        NotificationDialogComponent,
+        ChatDialogComponent,
+        RideNotificationComponent,
+        EditProfileDialogComponent
     ],
+
   imports: [
     AppRoutingModule,
     MaterialModule,
@@ -36,6 +43,7 @@ import { NotificationDialogComponent } from './components/registered-dialogs/not
     NavbarModule,
     CommonModule,
     ReactiveFormsModule
+
   ],
   exports: [
     RegisteredUserComponent
