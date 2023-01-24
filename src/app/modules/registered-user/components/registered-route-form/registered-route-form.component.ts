@@ -125,18 +125,18 @@ export class RegisteredRouteFormComponent implements OnInit {
   private orderPressed() {
       let scheduleDate:Date | null = this.dateControl.value
       if(scheduleDate == null){
-        window.alert("Wrong time entered!")
-        return;
+        scheduleDate = new Date();
+        scheduleDate.setSeconds(scheduleDate.getSeconds()+10);
       }
       else if(scheduleDate.getTime() < Date.now()){
         window.alert("Can not select time before now !!");
         return;
       }
-      else if(scheduleDate.getTime() > Date.now()+18000000){
+      else if(scheduleDate.getTime() > (Date.now()+18000000)){
         window.alert("Can not select time after 5 hours from now !!");
         return;
       }
-      else if(scheduleDate.getTime() < Date.now()+15000){
+      if(scheduleDate.getTime() < (Date.now()+900000)){
         scheduleDate = null;
       }
       let ride:CreateRideDTO
@@ -219,10 +219,14 @@ export class RegisteredRouteFormComponent implements OnInit {
                 })
               ).subscribe(response =>
               {
-                // @ts-ignore
-                this.confirmRide.nativeElement.style.display = 'block';
-                this.SetRide(response.body);
-
+                if(response!=null){
+                  if(response.body.status == "SCHEDULED"){
+                    return;
+                  }
+                  // @ts-ignore
+                  this.confirmRide.nativeElement.style.display = 'block';
+                  this.SetRide(response.body);
+                }
 
 
               }));
@@ -346,6 +350,9 @@ export class RegisteredRouteFormComponent implements OnInit {
           if (ride.status == "ACTIVE")
           {
             this.rideActive(ride);
+          }
+          if (ride.status == "SCHEDULED"){
+            window.alert("Your scheduled ride for:" + ride.startTime+" has been accepted by one of our drivers!")
           }
           if (ride.status == "DECLINED"){
             

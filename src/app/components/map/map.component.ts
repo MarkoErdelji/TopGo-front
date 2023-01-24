@@ -10,7 +10,6 @@ import {MapService} from "./map.service";
 import {DriverService} from "../../modules/service/driver.service";
 import {GeoLocationDTO} from "../../modules/DTO/GeoLocationDTO";
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
-import {Marker, marker} from "leaflet";
 import {AuthService} from "../../_service/auth.service";
 import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
 import {Subscription} from "rxjs";
