@@ -79,6 +79,9 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
       )
     ).subscribe((res: any) => {
       if(res != null){
+        this.rideService.simulateRide(this.ride.id).subscribe(res=>{
+          console.log(res);
+        })
         console.log(res);
         this.data.snackBarRef.dismiss();
       }
