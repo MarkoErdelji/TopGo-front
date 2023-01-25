@@ -70,7 +70,7 @@
                 <div id="main-passenger-holder" class="vertical-flex">
                     <p class="title-text">Passengers:</p>
                     <div id="passenger-holder" class="horizontal-flex">
-                        <div class="passenger-holder-instance horizontal-flex" *ngFor="let item of passengerInfo">
+                        <div class="passenger-holder-instance horizontal-flex shadow" *ngFor="let item of passengerInfo">
                             <img class="passenger-image" src={{item.profilePicture}}>
                             <p class="value-text">{{item.name}} {{item.surname}}</p>
                         </div>
@@ -80,7 +80,7 @@
                     <div id="main-driver-review-holder" class="vertical-flex">
                         <p class="title-text">Driver reviews:</p>
                         <div class="review-holder">
-                            <div class="review-instance vertical-flex" *ngFor="let item of driverReviews">
+                            <div class="review-instance vertical-flex shadow" *ngFor="let item of driverReviews">
                                 <div class="horizontal-flex">
                                     <img class="passenger-image" src={{item.passenger.profilePicture}}>
                                     <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>
@@ -108,7 +108,7 @@
                     <div id="main-vehicle-review-holder" class="vertical-flex">
                         <p class="title-text">Vehicle reviews:</p>
                         <div class="review-holder">
-                            <div class="review-instance vertical-flex" *ngFor="let item of vehicleReviews">
+                            <div class="review-instance vertical-flex shadow" *ngFor="let item of vehicleReviews">
                                 <div class="horizontal-flex">
                                     <img class="passenger-image" src={{item.passenger.profilePicture}}>
                                     <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { DisplayReviewDTO } from 'src/app/modules/DTO/DisplayReviewDTO';
+import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { RideDTO } from 'src/app/modules/DTO/RideDTO';
 import { SortParameters } from 'src/app/modules/DTO/SortParameters';
 import { UserListResponseDTO } from 'src/app/modules/DTO/UserListDTO';
@@ -23,6 +24,7 @@ export class AdminHistoryComponent implements OnInit {
   startDateOnlyDate:string = '';
   startDate:string = '';
   endDate:string = '';
+  driver!:DriverInfoDTO;
   passengerInfo:UserListResponseDTO[] = [];
   driverReviews:DisplayReviewDTO[] = [];
   vehicleReviews:DisplayReviewDTO[] = [];
@@ -91,18 +93,19 @@ export class AdminHistoryComponent implements OnInit {
       });
       this.itemLoaded=true;
     })
+    this.driverService.getDriverById(this.selectedRide.driver.id).subscribe((driver)=>{
+      this.driver = driver;
+    })
   }
 
 
   onOptionSelected() {
     this.ridesLoaded = false;
     this.rideDtos = [];
-    this.driverService.getDriverRides(this.driverService.id,this.selectedSortParam).subscribe(response=>{
+    this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase()).subscribe(response=>{
       console.log(response)
       response.body!.results.forEach((element)=>{
-        if(element.status == "FINISHED"){
           this.rideDtos.push(element);
-        }
       })
       this.ridesLoaded = true;
     })

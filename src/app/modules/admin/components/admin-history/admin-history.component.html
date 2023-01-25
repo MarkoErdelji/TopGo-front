@@ -28,6 +28,11 @@
                         </div>
                     </div>
                 </div>
+                <div>
+                    <div>
+
+                    </div>
+                </div>
                 <div id="main-location-holder" class="horizontal-flex-end">
                     <div id="main-departure-holder">
                         <div class="horizontal-flex">
@@ -67,10 +72,23 @@
                         <p class="value-text price-text">{{selectedRide!.totalCost}} RSD</p>
                     </div>
                 </div>
+                <div id="main-driver-holder" class="vertical-flex">
+                    <p class="title-text">Driver:</p>
+                    <div id = "driver-holder" class="horizontal-flex">
+                        <div class="driver-instance horizontal-flex shadow">
+                        <img src="{{driver.profilePicture}}" id = "driver-image-ride">
+                        <div id = driver-info-ride-text>
+                        <p id ="driver-name-ride" >{{driver.name}} {{driver.surname}}</p>
+                        <p id ="driver-phone-ride" >{{driver.telephoneNumber}}</p>
+                        <p id ="driver-email-ride" >{{driver.email}}</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
                 <div id="main-passenger-holder" class="vertical-flex">
                     <p class="title-text">Passengers:</p>
                     <div id="passenger-holder" class="horizontal-flex">
-                        <div class="passenger-holder-instance horizontal-flex" *ngFor="let item of passengerInfo">
+                        <div class="passenger-holder-instance horizontal-flex shadow" *ngFor="let item of passengerInfo" [title] = "item.email">
                             <img class="passenger-image" src={{item.profilePicture}}>
                             <p class="value-text">{{item.name}} {{item.surname}}</p>
                         </div>
@@ -80,7 +98,7 @@
                     <div id="main-driver-review-holder" class="vertical-flex">
                         <p class="title-text">Driver reviews:</p>
                         <div class="review-holder">
-                            <div class="review-instance vertical-flex" *ngFor="let item of driverReviews">
+                            <div class="review-instance vertical-flex shadow" *ngFor="let item of driverReviews">
                                 <div class="horizontal-flex">
                                     <img class="passenger-image" src={{item.passenger.profilePicture}}>
                                     <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>
@@ -108,7 +126,7 @@
                     <div id="main-vehicle-review-holder" class="vertical-flex">
                         <p class="title-text">Vehicle reviews:</p>
                         <div class="review-holder">
-                            <div class="review-instance vertical-flex" *ngFor="let item of vehicleReviews">
+                            <div class="review-instance vertical-flex shadow" *ngFor="let item of vehicleReviews">
                                 <div class="horizontal-flex">
                                     <img class="passenger-image" src={{item.passenger.profilePicture}}>
                                     <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>
@@ -140,21 +158,25 @@
     <div id="list-holder-wrapper">
         <div id="list-holder">
             <div id="list-holder-header"><h1>History</h1>
+            </div>
+            <div class="history-instance" id="instance-container" *ngIf="ridesLoaded" ngClass="" >
+            <app-history-instance class="instance" *ngFor="let item of rideDtos" (click)="selectRide(item); selectedRide = item" [rideDTO]="item" [ngClass]="{'highlight': selectedRide === item}"></app-history-instance>
+            </div>
+            <div  id="sortingDiv" class="sort-width-div">
                 <div class="white-background">
                     <mat-form-field>
                         <mat-label>Sort by</mat-label>
                         <mat-select [(ngModel)]="selectedSortParam" (ngModelChange)="onOptionSelected()">
-                           <mat-option *ngFor="let sortParam of sortParams" [value]="sortParam" defa>
+                        <mat-option *ngFor="let sortParam of sortParams" [value]="sortParam" defa>
                                 {{ sortParam }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
             </div>
-            <div class="history-instance" id="instance-container" *ngIf="ridesLoaded" ngClass="" >
-            <app-history-instance class="instance" *ngFor="let item of rideDtos" (click)="selectRide(item); selectedRide = item" [rideDTO]="item" [ngClass]="{'highlight': selectedRide === item}"></app-history-instance>
-            </div>
+            
         </div>
     </div>
     
 </div>
+
