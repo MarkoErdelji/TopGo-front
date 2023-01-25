@@ -34,9 +34,10 @@ export class PassengerSocketService {
     const that = this;
     this.stompClient.connect({}, function() {
       that.openSocket(passengerId);
-      that.openNotificationSocket(passengerId);
       that.openInvitesSocket(passengerId);
       that.openVehicleLocationSocket(passengerId);
+      that.openNotificationSocket(passengerId);
+
     });
   }
   initializeWebSocketConnectionFriendResponse(passengerId) {
@@ -49,6 +50,7 @@ export class PassengerSocketService {
 
     });
   }
+
   openSocketFriendResponse(passengerId)
   {
     this.stompClient.subscribe('/topic/passenger/response/'+passengerId, (message) => {
@@ -107,9 +109,10 @@ export class PassengerSocketService {
   openNotificationSocket(passengerId){
     this.stompClient.subscribe('/topic/passenger/scheduledNotification/'+passengerId, (message) => {
       try{
-      const notification: string = message.body
-      console.log(notification);
-      this.setReturnNotification(notification);
+        console.log(message);
+        const notification: string = message.body
+        console.log(notification);
+        this.setReturnNotification(notification);
       }
       catch{
         const error:String = message.body;

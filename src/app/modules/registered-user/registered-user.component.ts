@@ -1,5 +1,5 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {catchError, map, of} from "rxjs";
 import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
 import {DriverService} from "../service/driver.service";
@@ -10,19 +10,22 @@ import {PassengerInfoDTO} from "../DTO/PassengerInfoDTO";
 import { PassengerSocketService } from '../service/passenger-socket.service';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { MatDialog } from '@angular/material/dialog';
+import { NotificationDialogComponent } from './components/registered-dialogs/notification-dialog/notification-dialog.component';
 
 @Component({
   selector: 'app-registered-user',
   templateUrl: './registered-user.component.html',
   styleUrls: ['./registered-user.component.css']
 })
-export class RegisteredUserComponent implements OnInit {
+export class RegisteredUserComponent implements OnInit,OnDestroy {
   private passengerInfo? :PassengerInfoDTO;
 
   constructor(private dialog:MatDialog,private userService:UserService,private passengerService:RegisteredService,private authService:AuthService,private passengerSocketService:PassengerSocketService) { }
+  ngOnDestroy(): void {
+    this.passengerSocketService.stompClient.disconnect();
+  }
 
   ngOnInit(): void {
-    
     this.userService.getUserByEmail(this.authService.getEmail()).subscribe(
       response=>{
         if(response.status == 200){
@@ -42,6 +45,15 @@ export class RegisteredUserComponent implements OnInit {
           subscribe(passengerResponse=>
           {
             this.passengerSocketService.initializeWebSocketConnection(this.authService.getUserId());
+            this.passengerSocketService.selectReturnNotification$.subscribe({next:(notification:string)=>{
+              if(Object.keys(notification).length !== 0){
+              const dialogRef = this.dialog.open(NotificationDialogComponent, {
+                width: '400px',
+                data: {msg:notification},
+                position: {top:"0px"}
+              });
+            }
+            }})
             this.passengerInfo = passengerResponse
             this.passengerService.id = passengerResponse?.id;
 
@@ -58,5 +70,7 @@ export class RegisteredUserComponent implements OnInit {
     )
 
   }
+
+  
 
 }

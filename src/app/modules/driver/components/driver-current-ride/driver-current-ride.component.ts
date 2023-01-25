@@ -241,6 +241,7 @@ export class DriverCurrentRideComponent implements OnInit {
                   width: '300px',
                   data: {msg:"Ride is canceled because " + result.reason}
                 });
+                this.goBackHome();
               })
             }
           })
@@ -253,6 +254,7 @@ export class DriverCurrentRideComponent implements OnInit {
               width: '300px',
               data: {msg:"Ride is canceled because " + result.reason}
             });
+            this.goBackHome();
 
           })
         }
