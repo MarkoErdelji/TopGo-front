@@ -1,5 +1,6 @@
 <div id="menu-buttons">
     <img [src] = "imageUrl" [routerLink]="['/driver/profile']" (click) = 'sendMessageToSocket()' id="profile-img">
+    <button mat-raised-button shadow [routerLink]="['/driver/home']" id="home">Home</button>
     <button mat-raised-button shadow [routerLink]="['/driver/inbox']" id="inbox">Inbox</button>
     <button mat-raised-button shadow [routerLink]="['/driver/history']" id="history">History</button>
     <button mat-raised-button shadow [routerLink]="['/driver/reports']" id="reports">Reports</button>

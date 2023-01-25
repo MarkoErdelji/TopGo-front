@@ -417,7 +417,10 @@ export class RegisteredRouteFormComponent implements OnInit {
     }})
 
     this.passengerSocketService.selectReturnNotification$.subscribe({next:(notification:string)=>{
-      console.log(notification)
+      const dialogRef = this.dialog.open(RideNotificationComponent, {
+        width: '300px',
+        data: {msg:notification}
+      });
     }})
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")

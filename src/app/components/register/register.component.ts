@@ -12,8 +12,8 @@ import { AuthService } from 'src/app/_service/auth.service';
 })
 export class RegisterComponent implements OnInit {
   registerForm = new FormGroup({
-    firstName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/gu)]),
-    lastName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/gu)]),
+    firstName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/u)]),
+    lastName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/u)]),
     email: new FormControl("",[Validators.required,Validators.email]),
     password: new FormControl("",[Validators.required,Validators.minLength(6)]),
     phoneNumber: new FormControl("",[Validators.required,Validators.pattern('^[0-9+].{8,11}$')]),

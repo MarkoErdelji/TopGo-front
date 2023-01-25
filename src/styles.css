@@ -20,6 +20,10 @@ html, body { height: 100%; padding:0; margin:0 }
   overflow: unset;
 }
 
+.mat-drawer-content{
+  overflow: unset !important;
+}
+
 .fas, .fa-classic, .fa-solid, .far, .fa-regular{
   font-family: 'Font Awesome 6 Free' !important;
 }
