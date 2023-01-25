@@ -20,6 +20,7 @@ import {
 import {PanicDialogComponent} from "../../dialogs/panic-dialog/panic-dialog.component";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {RejectionTextDTO} from "../../../DTO/RejectionTextDTO";
+import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -56,23 +57,26 @@ export class DriverCurrentRideComponent implements OnInit {
         this.setRideInfo(ride);
       }
       if(ride.status == "FINISHED"){
-        window.alert("Ride is finished")
-        this.isAccepted = false;
-        this.isStarted = false;
-        this.hasRides = false;
-        this.rideVisible = false;
-        this.routeFormService.clearRoute();
+        this.goBackHome();
 
       }
       if(ride.status == "PANIC"){
-        this.isAccepted = false;
-        this.isStarted = false;
-        this.hasRides = false;
-        this.rideVisible = false;
-        this.routeFormService.clearRoute();
+        this.goBackHome();
+
       }
+        if(ride.status == "CANCELED"){
+          this.goBackHome();
+        }
 
       }})
+  }
+
+  private goBackHome() {
+    this.isAccepted = false;
+    this.isStarted = false;
+    this.hasRides = false;
+    this.rideVisible = false;
+    this.routeFormService.clearRoute();
   }
 
   setRideInfo(ride: RideDTO) {
@@ -163,7 +167,10 @@ export class DriverCurrentRideComponent implements OnInit {
         if(rideDTO != null) {
           this.rideService.finishRide(rideDTO.id).subscribe(response=>{
             if(response != null){
-              console.log(response)
+              const dialogRef = this.dialog.open(RideNotificationComponent, {
+                width: '250px',
+                data: {msg:"Ride is finished."}
+              });
             }
           })
         }
@@ -172,7 +179,10 @@ export class DriverCurrentRideComponent implements OnInit {
     else{
       this.rideService.finishRide(this.rideId).subscribe(response=>{
         if(response != null){
-          console.log(response)
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"Ride is finished."}
+          });
         }
       })
     }
@@ -191,7 +201,10 @@ export class DriverCurrentRideComponent implements OnInit {
             if(rideDTO != null) {
               this.rideService.panicRide(rideDTO.id, result).subscribe(response=>{
                 console.log(response)
-                window.alert(response)
+                const dialogRef = this.dialog.open(RideNotificationComponent, {
+                  width: '300px',
+                  data: {msg:"Ride is canceled cause panic was pressed"}
+                });
               })
             }
           })
@@ -200,7 +213,47 @@ export class DriverCurrentRideComponent implements OnInit {
         else{
           this.rideService.panicRide(this.rideId, result).subscribe(response=>{
             console.log(response)
-            window.alert("Ride is canceled cause panic was pressed")
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '300px',
+              data: {msg:"Ride is canceled cause panic was pressed"}
+            });
+
+          })
+        }
+      }
+    })
+  }
+
+  cancelRide() {
+    const dialogRef = this.dialog.open(PanicDialogComponent, {
+      width: '250px',
+      data: {msg: "Canceling ride"}
+    });
+    dialogRef.afterClosed().subscribe(result=>{
+      if(result){
+        if(typeof this.rideId === "undefined"){
+
+          this.rideService.getDriverAcceptedRide(this.authService.getUserId()).subscribe(rideDTO=>{
+            if(rideDTO != null) {
+              this.rideService.cancelRide(rideDTO.id, result).subscribe(response=>{
+                console.log(response)
+                const dialogRef = this.dialog.open(RideNotificationComponent, {
+                  width: '300px',
+                  data: {msg:"Ride is canceled because " + result.reason}
+                });
+              })
+            }
+          })
+
+        }
+        else{
+          this.rideService.cancelRide(this.rideId, result).subscribe(response=>{
+            console.log(response)
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '300px',
+              data: {msg:"Ride is canceled because " + result.reason}
+            });
+
           })
         }
       }

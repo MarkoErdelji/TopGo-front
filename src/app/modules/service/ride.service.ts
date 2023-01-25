@@ -55,6 +55,11 @@ export class RideService {
     responseType: 'json'});
   }
 
+  cancelRide(rideId, rejectionTextDTO:RejectionTextDTO){
+    return this.http.put<any>(this.endpoint+"/"+rideId+"/cancel",JSON.stringify(rejectionTextDTO),{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
+
   panicRide(rideId, rejectionTextDTO:RejectionTextDTO){
     return this.http.put<any>(this.endpoint+"/"+rideId+"/panic",JSON.stringify(rejectionTextDTO),{'headers':this.headers,observe: 'response',
       responseType: 'json'});
