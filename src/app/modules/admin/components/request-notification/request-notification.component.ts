@@ -5,6 +5,8 @@ import {ProfileChangeRequestDTO} from "../../../DTO/ProfileChangeRequestDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
 import {Router} from "@angular/router";
 import {DriverService} from "../../../service/driver.service";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
 
 @Component({
   selector: 'app-request-notification',
@@ -33,7 +35,7 @@ export class RequestNotificationComponent implements OnInit {
   oldPhoneNumber?: string;
 
 
-  constructor(private profileChangesRequestServcice:ProfileChangesRequestService, private router: Router, private driverService:DriverService) { }
+  constructor(private dialog: MatDialog,private profileChangesRequestServcice:ProfileChangesRequestService, private router: Router, private driverService:DriverService) { }
 
   getData(){
     this.profileChangesRequestServcice.getAllRequests().subscribe(data=>{
@@ -114,7 +116,10 @@ export class RequestNotificationComponent implements OnInit {
       // @ts-ignore
       this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
       })
-      window.alert("Driver updated succesfully")
+      const dialogRef = this.dialog.open(RideNotificationComponent, {
+        width: '250px',
+        data: {msg:"Driver updated succesfully!"}
+      });
       this.router.navigate(['admin'])
 
     })

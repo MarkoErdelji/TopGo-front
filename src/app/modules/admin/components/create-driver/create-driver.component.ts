@@ -7,6 +7,9 @@ import {VehicleDTO} from "../../../DTO/VehicleDTO";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {elementSelectors} from "@angular/material/schematics/ng-update/data";
 import {VehicleInfoDTO} from "../../../DTO/VehicleInfoDTO";
+import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
+import {MatDialog, MatDialogRef} from "@angular/material/dialog";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-create-driver',
@@ -33,7 +36,7 @@ export class CreateDriverComponent implements OnInit {
   selectedVehicleType: any;
 
 
-  constructor(private adminService: AdminService, private mapService:MapService) {}
+  constructor(private adminService: AdminService, private mapService:MapService, private dialog:MatDialog, private router: Router) {}
 
   ngOnInit(): void {
   }
@@ -68,19 +71,25 @@ export class CreateDriverComponent implements OnInit {
       console.log(vehicleDTO.vehicleType)
       this.adminService.createDriver(driverDTO).subscribe(driverResponse =>{
         if(driverResponse.status == 200){
-          window.alert("Driver Created")
           this.adminService.getDriverByEmail(driverDTO.email).subscribe(driverInfoResponse =>{
             console.log(driverInfoResponse.id)
             this.adminService.createVehicle(vehicleDTO, driverInfoResponse.id).subscribe(vehicleResponse =>{
               if(vehicleResponse.status == 200){
-                window.alert("Vehicle Created")
+                const dialogRef = this.dialog.open(RideNotificationComponent, {
+                  width: '250px',
+                  data: {msg:"Driver created."}
+                });
+                this.router.navigate(['admin'])
               }
             })
           })
 
         }
         else{
-          window.alert("Something went wront")
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"Something went wrong."}
+          });
         }
       })
 
