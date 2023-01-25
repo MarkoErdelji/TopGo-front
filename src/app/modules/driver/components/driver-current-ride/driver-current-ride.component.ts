@@ -21,6 +21,8 @@ import {PanicDialogComponent} from "../../dialogs/panic-dialog/panic-dialog.comp
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {RejectionTextDTO} from "../../../DTO/RejectionTextDTO";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
+import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
+import {UserRef} from "../../../DTO/UserRef";
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -42,6 +44,8 @@ export class DriverCurrentRideComponent implements OnInit {
   isStarted: boolean = false;
   hasRides: boolean = false;
   rejectionTextDTO?: RejectionTextDTO;
+  profilePicture: string = '';
+  passengers: PassengerInfoDTO[] = [];
   constructor(private dialog:MatDialog ,private location:Location, private routeFormService:RouteFormService, private driverSocketSerivice:DriverSocketService, private mapService:MapService, private userService:UserService, private rideService:RideService, private authService:AuthService, private driverService:DriverService) { }
 
   ngOnInit(): void {
@@ -81,11 +85,13 @@ export class DriverCurrentRideComponent implements OnInit {
 
   setRideInfo(ride: RideDTO) {
     this.hasRides = true;
-    this.userService.getUserById(String(ride.passengers[0].id)).subscribe(passenger => {
-      this.name = passenger.name + ' ' + passenger.surname;
-      this.phoneNumber = passenger.telephoneNumber;
-      this.email = passenger.email;
-    })
+    this.passengers.splice(0, this.passengers.length);
+    for(let item of ride.passengers){
+      this.userService.getUserById(String(item.id)).subscribe(passenger => {
+        this.passengers.push(passenger);
+      })
+    }
+
     this.time = ride.estimatedTimeInMinutes;
     this.status = ride.status;
     this.money = ride.totalCost;
