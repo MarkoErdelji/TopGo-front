@@ -1,21 +1,24 @@
 <div id="ride-container" *ngIf="rideVisible">
   <div id="ride-info">
-    <div id="passenger-info">
-      <img src="assets/images/tate.png" id="passenger-profile-picture">
-      <div id="passenger-identity">
-        <div id="passenger-name">
-          <p>{{name}}</p>
-        </div>
-        <div id="passenger-phone-number">
-          <p>{{phoneNumber}}</p>
-        </div>
-        <div id="passenger-mail">
-          <p>{{email}}</p>
-        </div>
+    <div id = "all-passengers">
+      <div [ngClass]="'passengers-container'">
+        <ng-template  ngFor let-item [ngForOf]="passengers" let-i="index">
+          <div class="passenger-info shadow">
+            <img [src]="item.profilePicture" id="passenger-profile-picture">
+            <div id="passenger-identity">
+              <div id="passenger-name">
+                <p>{{item.name +' '+ item.surname}}</p>
+              </div>
+              <div id="passenger-mail">
+                <p>{{item.email}}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
       </div>
     </div>
     <hr id="orange-line">
-    <div id="rest-ride-info"><
+    <div id="rest-ride-info">
       <div id="ride-details">
         <div id="row1">
           <div id="distance" class="details">
