@@ -45,7 +45,6 @@ import { PanicDialogComponent } from './dialogs/panic-dialog/panic-dialog.compon
     DriverCurrentRideComponent,
     PanicDialogComponent,
     DriverInboxComponent
-
   ],
   imports: [
     AppRoutingModule,

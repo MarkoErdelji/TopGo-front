@@ -26,6 +26,7 @@ import { UserService } from 'src/app/_service/user.service';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import {PanicDialogComponent} from "./registered-route-form-dialogs/panic-dialog/panic-dialog.component";
 import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
+import { NotificationDialogComponent } from '../registered-dialogs/notification-dialog/notification-dialog.component';
 
 
 @Component({
@@ -414,10 +415,6 @@ export class RegisteredRouteFormComponent implements OnInit {
             data: {msg:"No more drivers are left for your ride!"}
           });
         }
-    }})
-
-    this.passengerSocketService.selectReturnNotification$.subscribe({next:(notification:string)=>{
-      console.log(notification)
     }})
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")

@@ -153,7 +153,7 @@ export class AuthService {
     return decodedToken.role;
   }
   changeUserPassword(userId,newPassword,oldPassword){
-    let passwordObject = {new_password:newPassword,old_password:oldPassword}
+    let passwordObject = {newPassword:newPassword,oldPassword:oldPassword}
     return this.http
       .put<any>(`http://localhost:8000/api/user/`+userId+'/changePassword', JSON.stringify(passwordObject), { 'headers': this.headers,
       observe: 'response',

@@ -8,6 +8,8 @@ import { DriverService } from '../service/driver.service';
 import {Stomp} from '@stomp/stompjs';
 import * as SockJS from 'sockjs-client';
 import { DriverSocketService } from '../service/driver-socket.service';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-driver',
@@ -21,7 +23,7 @@ export class DriverComponent implements OnInit {
 
 
 
-  constructor(private userService:UserService,private driverService:DriverService,private authService:AuthService,private driverSocketService:DriverSocketService) { }
+  constructor(private dialog:MatDialog,private userService:UserService,private driverService:DriverService,private authService:AuthService,private driverSocketService:DriverSocketService) { }
 
 
   ngOnInit(): void {
@@ -52,7 +54,10 @@ export class DriverComponent implements OnInit {
             })
         }
         else{
-          window.alert("Error: Email no longer in database");
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"Error: Email no longer in database"}
+          });
         }
       }
     )

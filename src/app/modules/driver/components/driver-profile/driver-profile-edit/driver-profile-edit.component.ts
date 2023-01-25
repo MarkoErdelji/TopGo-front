@@ -20,8 +20,8 @@ import { DriverChangePasswordDialogComponent } from '../driver-profile-dialogs/d
 export class DriverProfileEditComponent implements OnInit {
 
   editForm = new FormGroup({
-    firstName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/gu)]),
-    lastName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/gu)]),
+    firstName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/u)]),
+    lastName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/u)]),
     email: new FormControl("",[Validators.required,Validators.email]),
     phoneNumber: new FormControl("",[Validators.required,Validators.pattern('^[0-9+].{8,11}$')]),
     adress: new FormControl("",[Validators.required,Validators.pattern(/[\p{L}\p{N} ,]*/gu)])

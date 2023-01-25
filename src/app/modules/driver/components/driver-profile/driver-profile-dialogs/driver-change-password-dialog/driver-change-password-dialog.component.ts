@@ -37,20 +37,20 @@ export class DriverChangePasswordDialogComponent implements OnInit {
           response=>{
             if(response.status == 204){
               const dialogRef = this.dialog.open(RideNotificationComponent, {
-                width: '250px',
+                width: '350px',
                 data: {msg:"Password successfuly changed!"}
               });
               this.dialogRef.close();
             }
             else if(response.status == 400){
               const dialogRef = this.dialog.open(RideNotificationComponent, {
-                width: '250px',
+                width: '350px',
                 data: {msg:"Please enter the correct old password!"}
               });
             }
             else if (response.status == 404){
               const dialogRef = this.dialog.open(RideNotificationComponent, {
-                width: '250px',
+                width: '350px',
                 data: {msg:"No such user exists!"}
               });
             }

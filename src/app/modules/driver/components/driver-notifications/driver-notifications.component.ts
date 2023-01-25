@@ -22,7 +22,8 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
   secondsLeft!: number;
   passengerUsernameProfile?:any[];
   timerSubscription!: Subscription;
-
+  dateEnd!:Date;
+  endDate!:String;
   constructor(private dialog:MatDialog,@Inject(MAT_SNACK_BAR_DATA) public data: any,private rideService:RideService,private userService:UserService) {}
 
   ngOnInit(): void {
@@ -31,6 +32,8 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
     this.ride.estimatedTimeInMinutes = Math.floor(this.ride.estimatedTimeInMinutes*100)/100;
     this.secondsLeft = this.data.duration /1000;
     this.startTimer();
+    let dateEnd = new Date( this.data.ride.startTime)
+    this.endDate = dateEnd.toLocaleString()
   }
 
   ngAfterViewInit(): void {
@@ -87,9 +90,11 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
       )
     ).subscribe((res: any) => {
       if(res != null){
-        this.rideService.simulateRide(this.ride.id).subscribe(res=>{
-          console.log(res);
-        })
+        if(res.status == "ACCEPTED"){
+          this.rideService.simulateRide(this.ride.id).subscribe(res=>{
+            console.log(res);
+          })
+        }
         console.log(res);
         this.data.snackBarRef.dismiss();
       }

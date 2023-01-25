@@ -9,6 +9,12 @@
   background-color: white;
   }
   
+  .flex-startTime{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
   .ride-info {
     display: flex;
     flex-direction: column;
@@ -234,7 +240,13 @@ mat-checkbox
   background-color: white;
   margin :10px;
 }
+.flex-startTime>p{
+  font-size: large;
+}
 
+.flex-startTime>img{
+  margin-left:0 !important;
+}
 
 #confirm-ride-info
 {

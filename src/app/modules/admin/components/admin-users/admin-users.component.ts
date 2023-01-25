@@ -100,7 +100,7 @@ export class AdminUsersComponent implements OnInit {
         user.blocked = false;
         const dialogRef = this.dialog.open(RideNotificationComponent, {
           width: '250px',
-          data: "User successfuly unblocked!"
+          data: {msg:"User successfuly unblocked!"}
         });
       }
     })
