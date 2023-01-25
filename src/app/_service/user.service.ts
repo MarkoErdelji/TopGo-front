@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { catchError, of } from 'rxjs';
 import { UserListBlockedDTO, UserListDTO, UserListResponseBlockedDTO, UserListResponseDTO } from '../modules/DTO/UserListDTO';
 import { UserNoteListDTO } from '../modules/DTO/UserNoteListDTO';
+import { UserRidesListDTO } from '../modules/DTO/UserRidesListDTO';
 
 @Injectable({
   providedIn: 'root'
@@ -58,6 +59,10 @@ export class UserService {
   }
   addUserNote(userId,dto){
     return this.http.post<UserListBlockedDTO>('http://localhost:8000/api/user/'+userId+"/note",dto,   {observe: 'response',
+    responseType: 'json' },)
+  }
+  getUsersRides(userId,page,size,sort){
+    return this.http.get<UserRidesListDTO>('http://localhost:8000/api/user/'+userId+"/ride", { params: { page: page, size: size,sort:sort },   observe: 'response',
     responseType: 'json' },)
   }
 }

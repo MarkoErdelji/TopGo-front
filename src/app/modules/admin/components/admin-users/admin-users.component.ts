@@ -3,6 +3,7 @@ import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { catchError, of } from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { UserListDTO } from 'src/app/modules/DTO/UserListDTO';
@@ -27,13 +28,16 @@ export class AdminUsersComponent implements OnInit {
   size = 10;
   totalCount = 0;
 
-  constructor(private userService:UserService,private dialog: MatDialog) {}
+  constructor(private router:Router,private userService:UserService,private dialog: MatDialog) {}
 
   ngOnInit() {
     this.dataSource.paginator = this.paginator;
     this.fetchUsers();
   }
 
+  showRides(userId){
+    this.router.navigate([ '/admin/history',userId])
+  }
 
   fetchUsers(event?: PageEvent) {
     if(event){

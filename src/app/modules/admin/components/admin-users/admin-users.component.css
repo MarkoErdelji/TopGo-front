@@ -13,6 +13,10 @@ mat-icon{
   margin:10px;
   font-family: 'Material Icons' !important;
 }
+
+.seeUsersRides{
+  color:#ff9642
+}
 mat-icon:hover{
   cursor: pointer;
 }
@@ -77,6 +81,14 @@ mat-table {
   .email{
     text-align: center;
     vertical-align:middle;
+    max-width:250px;
+    min-width:250px;
+  }
+  td{
+    overflow: auto;
+    overflow-x: scroll;
+  }
+  .actions{
     max-width:250px;
     min-width:250px;
   }

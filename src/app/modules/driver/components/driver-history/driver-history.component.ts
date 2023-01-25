@@ -10,7 +10,7 @@ import { RegisteredService } from 'src/app/modules/service/registered.service';
 import { ReviewService } from 'src/app/modules/service/review.service';
 import { RideService } from 'src/app/modules/service/ride.service';
 import { UserService } from 'src/app/_service/user.service';
-import { HistoryInstanceComponent } from './history-instance/history-instance.component';
+import { HistoryInstanceComponent } from '../../../history-instance/history-instance/history-instance.component';
 
 @Component({
   selector: 'app-driver-history',
