@@ -5,6 +5,7 @@ import {RejectionTextDTO} from "../DTO/RejectionTextDTO";
 import {UpdatePassengerDTO} from "../DTO/UpdatePassengerDTO";
 import {PassengerInfoDTO} from "../DTO/PassengerInfoDTO";
 import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
+import {UserRidesListDTO} from "../DTO/UserRidesListDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,10 @@ export class RegisteredService {
     return this.http.get<any>(this.endpoint+"/"+id)
   }
 
+  getPassengerRides(passengerId,sortParam){
+    return this.http.get<UserRidesListDTO>(this.endpoint+"/"+passengerId+"/ride?sort="+sortParam.toLowerCase(),{observe: 'response',
+      responseType: 'json'});
+  }
   editProfile(id, info:UpdatePassengerDTO){
     return this.http.put<PassengerInfoDTO>(this.endpoint+"/"+id,info,{'headers':this.headers,observe: 'response',
       responseType: 'json'});

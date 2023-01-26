@@ -36,6 +36,10 @@ export class RideService {
     responseType: 'json'});
   }
 
+  getRide(rideId){
+    return this.http.get<any>(this.endpoint+"/"+rideId);
+  }
+
   simulateRide(rideId){
     return this.http.put<any>(this.endpoint+"/simulate/"+rideId,{'headers':this.headers,observe: 'response',
     responseType: 'json'});
