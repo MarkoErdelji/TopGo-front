@@ -1,0 +1,94 @@
+#main-div
+{
+  width: 100%;
+  height: 100%;
+  min-width: 1500px;
+}
+#graph-div
+{
+  width: 100%;
+  height: 85%;
+}
+.graph-container
+{
+  display: inline-block;
+  width: 33%;
+  height: 100%;
+  position: relative;
+  min-width: 430px;
+}
+.graph
+{
+  border-radius: 10px;
+  width: 400px;
+  height: 400px;
+  background-color: #F4F4F4;
+}
+.options
+{
+  border-radius: 10px 10px 0px 0px;
+  width: 500px;
+  height: 100%;
+  background-color: #F4F4F4;
+}
+
+#options-div
+{
+  width: 100%;
+  height: 15%;
+  position: relative;
+}
+.button-holder{
+  display:flex;
+  bottom:0;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  align-items: center;
+  width: 100%;
+  justify-content: center;
+}
+
+
+.gray-background{
+  padding: 20px;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 10px 10px 0px 0px;
+  background-color: #F2F2F2;
+}
+
+
+#print-button{
+  background-color:#D2D2D2;
+  color:black;
+  border-radius: 10px;
+}
+
+#download-button{
+  background-color:#FF9642;
+  color:white;
+  border-radius: 10px;
+}
+
+#submit-button{
+  background-color:#FF9642;
+  color:white;
+  border-radius: 10px;
+}
+
+#date-change-div{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-right:20px;
+}
+
+#actions-div{
+  display:flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
