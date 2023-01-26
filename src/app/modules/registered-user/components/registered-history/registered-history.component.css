@@ -1,0 +1,20 @@
+#side-bar{
+  height: 100%;
+  width: 350px;
+  float: right;
+  background-color: #D2D2D2;
+}
+#title{
+  width: 350px;
+  height: 100px;
+  background: #FF9642;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#title>h1{
+  font-size: xx-large;
+  color:white;
+}
+
+
