@@ -4,7 +4,7 @@
             [xAxis]="xAxis"
             [yAxis]="yAxis"
             align="center"
-            [view] = [1000,650]
+            [view] = "view"
             [customColors]="colorScheme"
             [xAxisLabel]="xAxisLabel"
             [yAxisLabel]="yAxisLabel"
@@ -14,4 +14,5 @@
             (activate)="onActivate($event)"
             (deactivate)="onDeactivate($event)"
             >
-            </ngx-charts-line-chart>
+</ngx-charts-line-chart>
+<p id="total">Total: {{total}}</p>
