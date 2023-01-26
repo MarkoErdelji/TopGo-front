@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
@@ -6,6 +6,10 @@ import {RegisteredService} from "../../../service/registered.service";
 import {AuthService} from "../../../../_service/auth.service";
 import {RideDTO} from "../../../DTO/RideDTO";
 import {RideDayGraphComponent} from "../graphs/ride-day-graph/ride-day-graph.component";
+import {KmPerDayGraphComponent} from "../graphs/km-per-day-graph/km-per-day-graph.component";
+import {MoneySpentGraphComponent} from "../graphs/money-spent-graph/money-spent-graph.component";
+import jsPDF from 'jspdf';
+import html2canvas from "html2canvas";
 
 @Component({
   selector: 'app-registered-reports',
@@ -15,6 +19,11 @@ import {RideDayGraphComponent} from "../graphs/ride-day-graph/ride-day-graph.com
 export class RegisteredReportsComponent implements OnInit {
   rides:RideDTO[] =[];
   @ViewChild(RideDayGraphComponent) rideGraph!: RideDayGraphComponent;
+  @ViewChild(KmPerDayGraphComponent) kmGraph!: KmPerDayGraphComponent;
+  @ViewChild(MoneySpentGraphComponent) moneyGraph!: MoneySpentGraphComponent;
+  @ViewChild('moneyGraph', {static: true}) moneyGraphPrint!: ElementRef;
+  @ViewChild('rideGraph', {static: true}) rideGraphPrint!: ElementRef;
+  @ViewChild('kmGraph', {static: true}) kmGraphPrint!: ElementRef;
 
 
   constructor(private dialog:MatDialog,private passengerService:RegisteredService,private authService:AuthService) {
@@ -62,12 +71,35 @@ export class RegisteredReportsComponent implements OnInit {
 
   }
   changeGraphData() {
+    if(this.kmGraph){
+      this.kmGraph.updateRides(this.rides);
+    }
     if(this.rideGraph){
-    // code to retrieve updated rides array
     this.rideGraph.updateRides(this.rides);
       }
-    else{
-      console.log("ass")
+    if(this.moneyGraph){
+      this.moneyGraph.updateRides(this.rides);
     }
+  }
+  async generateAllPdf() {
+    const doc = new jsPDF('p', 'mm', 'a4');
+    const options = {
+      pagesplit: true
+    };
+    await html2canvas(this.moneyGraphPrint.nativeElement, { scale: 1 }).then(function (canvas) {
+      doc.addImage(canvas.toDataURL('image/png'), 'JPEG', 10, 50, 200, 150);
+      doc.addPage();
+    });
+    await html2canvas(this.kmGraphPrint.nativeElement, { scale: 1 }).then(function (canvas) {
+      doc.addImage(canvas.toDataURL('image/png'), 'JPEG', 10, 50, 200, 150);
+      doc.addPage();
+    });
+    await html2canvas(this.rideGraphPrint.nativeElement, { scale: 1 }).then(function (canvas) {
+      doc.addImage(canvas.toDataURL('image/png'), 'JPEG', 10, 50, 200, 150);
+      doc.addPage();
+    });
+    // download the pdf with all charts
+    doc.save('Allcharts' + Date.now() + '.pdf');
+    console.log(doc.path)
   }
 }
