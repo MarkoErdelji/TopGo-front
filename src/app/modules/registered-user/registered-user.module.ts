@@ -2,12 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegisteredUserComponent } from './registered-user.component';
 import { RegisteredUserMenuComponent } from './components/registered-user-menu/registered-user-menu.component';
-import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { NavbarModule } from '../../components/navbar/navbar.module';
 import { MaterialModule } from 'src/infrastructure/material.module';
 import { AppRoutingModule } from 'src/app/app-routing.module';
 import { MapModule } from 'src/app/components/map/map.module';
-import { MapComponent } from 'src/app/components/map/map.component';
 import {RegisteredRouteFormComponent} from "./components/registered-route-form/registered-route-form.component";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { RegisteredProfileComponent } from './components/registered-profile/registered-profile.component';
@@ -18,8 +16,10 @@ import { NotificationDialogComponent } from './components/registered-dialogs/not
 import { EditProfileDialogComponent } from './components/registered-profile/registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component';
 import { PanicDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/panic-dialog/panic-dialog.component';
 import { FriendInviteDialogComponent } from './components/dialogs/friend-invite-dialog/friend-invite-dialog.component';
-import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { FavouriteNameDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/favourite-name-dialog/favourite-name-dialog.component';
+import { RegisteredReportsComponent } from './components/registered-reports/registered-reports.component';
+import {NgxChartsModule} from "@swimlane/ngx-charts";
+import { RideDayGraphComponent } from './components/graphs/ride-day-graph/ride-day-graph.component';
 
 
 
@@ -37,7 +37,9 @@ import { FavouriteNameDialogComponent } from './components/registered-route-form
         EditProfileDialogComponent,
         PanicDialogComponent,
         FriendInviteDialogComponent,
-        FavouriteNameDialogComponent
+        FavouriteNameDialogComponent,
+        RegisteredReportsComponent,
+        RideDayGraphComponent
     ],
 
   imports: [
@@ -48,7 +50,8 @@ import { FavouriteNameDialogComponent } from './components/registered-route-form
     ReactiveFormsModule,
     NavbarModule,
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgxChartsModule
 
   ],
   exports: [

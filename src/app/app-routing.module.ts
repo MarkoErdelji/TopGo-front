@@ -33,6 +33,9 @@ import {
   RegisteredInboxComponent
 } from "./modules/registered-user/components/registered-inbox/registered-inbox.component";
 import {DriverHomeComponent} from "./modules/driver/components/driver-home/driver-home.component";
+import {
+  RegisteredReportsComponent
+} from "./modules/registered-user/components/registered-reports/registered-reports.component";
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -46,6 +49,7 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                               { path: 'profile', component: RegisteredProfileComponent},
                               { path: 'home', component: RegisteredHomeComponent},
                               { path: 'inbox', component: RegisteredInboxComponent},
+                              { path: 'reports', component: RegisteredReportsComponent},
                               { path: '', redirectTo: 'home', pathMatch: 'full' }
                             ],
                           canActivate: [UserGuard]},
