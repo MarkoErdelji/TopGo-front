@@ -23,6 +23,11 @@ import { DriverHomeComponent } from './components/driver-home/driver-home.compon
 import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 import { PanicDialogComponent } from './dialogs/panic-dialog/panic-dialog.component';
 import { HistoryInstanceModule } from '../history-instance/history-instance.module';
+import {NgxChartsModule} from'@swimlane/ngx-charts';
+import { DriverPriceDateGraphComponent } from './components/driver-graphs/driver-price-date-graph/driver-price-date-graph.component';
+import { DriverKmDateGraphComponent } from './components/driver-graphs/driver-km-date-graph/driver-km-date-graph.component';
+import { DriverNumOfRidesDateGraphComponent } from './components/driver-graphs/driver-num-of-rides-date-graph/driver-num-of-rides-date-graph.component';
+import { DriverEarnedPerMonthGraphComponent } from './components/driver-graphs/driver-earned-per-month-graph/driver-earned-per-month-graph.component';
 
 
 
@@ -43,13 +48,18 @@ import { HistoryInstanceModule } from '../history-instance/history-instance.modu
     DriverHomeComponent,
     DriverCurrentRideComponent,
     PanicDialogComponent,
-    DriverInboxComponent
+    DriverInboxComponent,
+    DriverPriceDateGraphComponent,
+    DriverKmDateGraphComponent,
+    DriverNumOfRidesDateGraphComponent,
+    DriverEarnedPerMonthGraphComponent
   ],
   imports: [
     AppRoutingModule,
     MaterialModule,
     HistoryInstanceModule,
     FormsModule,
+    NgxChartsModule,
     MapModule,
     ReactiveFormsModule,
     NavbarModule,
