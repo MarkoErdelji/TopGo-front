@@ -10,7 +10,34 @@
 
 
 }
-
+#fav-route-select-back
+{
+  width: fit-content;
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.459);
+  position :fixed;
+  top: 60%;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+}
+#fav-route-select
+{
+  width: fit-content;
+  height: fit-content;
+  background-color: white;
+  border-radius: 5px;
+  margin: 10px;
+  display: flex;
+  align-content: center;
+  padding: 20px 5px 5px 15px;
+}
+#enter-fav-button
+{
+  height: 100%;
+  margin: 10px;
+  background-color: #FF9642;
+  color: white;
+}
 #location,#destination
 {
   margin-left: 10px;
@@ -387,6 +414,31 @@ mat-checkbox
 .white-bck {
   background-color: white;
   border-radius: 5px;
+}
+#favourite-button
+{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  opacity: 100%;
+  right: 0;
+  background-color: white;
+  margin: 15px;
+  border: none;
+  border-radius: 50%;
+
+}
+#favourite-button:hover
+{
+  background-color: yellow;
+}
+.yellow{
+  background-color: yellow !important;
+}
+#star-icon
+{
+  width: 50px;
+  height: 50px;
 }
 #active-ride-div
 {

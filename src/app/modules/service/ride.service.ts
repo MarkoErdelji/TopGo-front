@@ -6,6 +6,8 @@ import {AllDriversDTO} from "../DTO/AllDriversDTO";
 import {CreateRideDTO} from "../DTO/CreateRideDTO";
 import {RejectionTextDTO} from "../DTO/RejectionTextDTO";
 import { RideDTO } from '../DTO/RideDTO';
+import {FavouriteRideDTO} from "../DTO/FavouriteRideDTO";
+import {FavouriteRideInfoDTO} from "../DTO/FavouriteRideInfoDTO";
 
 
 @Injectable({
@@ -20,6 +22,13 @@ export class RideService {
   createRide(ride:CreateRideDTO): Observable<any> {
     return this.http.post<any>(this.endpoint,ride,{'headers':this.headers,observe: 'response',
       responseType: 'json'});
+  }
+  favouriteRide(ride:FavouriteRideDTO): Observable<any> {
+    return this.http.post<FavouriteRideInfoDTO>(this.endpoint+"/favorites",ride,{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
+  getFavouriteRide(): Observable<any> {
+    return this.http.get<any>(this.endpoint+"/favorites");
   }
 
   acceptRide(rideId){

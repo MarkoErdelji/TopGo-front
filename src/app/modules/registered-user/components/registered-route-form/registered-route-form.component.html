@@ -3,7 +3,19 @@
 
 </div>
 
-
+<div id = "fav-route-select-back" [hidden]="favVisible" >
+  <form [formGroup]="favForm" (ngSubmit)="favouriteEntered()">
+  <div id = "fav-route-select">
+    <mat-form-field appearance="fill">
+      <mat-label>Favourite Routes</mat-label>
+      <mat-select formControlName = "favRouteSelect">
+        <mat-option *ngFor="let ride of favouriteRides" [value]="ride">{{ride.favoriteName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button  id="enter-fav-button" type="submit" mat-button >Enter</button>
+  </div>
+  </form>
+</div>
 
 <div id="test" #formDiv >
   <form [formGroup]="goForm" (ngSubmit)="go($event.submitter.id)">
@@ -23,7 +35,7 @@
       <mat-form-field appearance="fill">
         <mat-label>Car type</mat-label>
         <mat-select formControlName="carType">
-          <mat-option value="1">Standard</mat-option>
+          <mat-option value="1" >Standard</mat-option>
           <mat-option value="2">Luxury</mat-option>
           <mat-option value="3">Van</mat-option>
         </mat-select>
@@ -50,7 +62,7 @@
           <mat-label>Enter Friend Email</mat-label>
           <input matInput name="friendEmail" formControlName="friendEmail" >
         </mat-form-field>
-        <button  id="invite-button" type="button" (click)="inviteFriend()" mat-raised-button >Invite</button>
+        <button  id="invite-button" type="button" (click)="inviteFriend('')" mat-raised-button >Invite</button>
       </div>
       <div id ='invited-friends' >
         <div class = "friend-div" *ngFor="let friend of friends">
@@ -66,6 +78,7 @@
 
       <button  id="order-button" type="submit" mat-raised-button>Order</button>
         <button  id="cancel-button" type="submit" mat-raised-button >Cancel</button>
+        <button  id="favourite-button" type="submit" [disabled]="addedToFav" [ngClass]="{'yellow': addedToFav}"><img class = "center"id = "star-icon" src ="assets/images/star_icon.png"></button>
 
       </div>
 
