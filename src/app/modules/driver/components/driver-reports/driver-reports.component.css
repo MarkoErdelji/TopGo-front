@@ -25,6 +25,40 @@
     height: 600px;
 }
 
+::ng-deep .mat-select {
+    color: #FF9642; /* or any other color of your choice */
+  }
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+color: #FF9642;
+}
+    ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #FF9642;
+    }
+
+    ::ng-deep .mat-focused .mat-form-field-required-marker {
+    color: #FF9642 !important;
+    }
+    ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple{
+        background-color: #FF9642 !important;
+    }
+    ::ng-deep .mat-focused .mat-select-arrow {
+        color: #FF9642 !important;
+    }
+
+ ::ng-deep .mat-select-arrow-wrapper{
+    color: #FF9642 !important;
+    }
+ 
+ ::ng-deep .mat-focused .mat-select-underline {
+    color: #FF9642 !important;
+ }
+
+ ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
+    color: #FF9642 !important;
+ }
+ .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: #FF9642 !important;
+}
 .button-holder{
     display:flex;
     bottom:0;
@@ -72,6 +106,30 @@
     color:white;
     border-radius: 10px;
 }
+
+::ng-deep .mat-calendar-body-selected{
+    background-color: #FF9642 !important;
+  }
+  
+  ::ng-deep .mat-calendar-body-cell:hover{
+    background-color: white !important;
+  }
+  ::ng-deep .mat-calendar-body-cell-content:hover{
+    background-color: rgba(255, 150, 66, 0.4) !important;
+  }
+  ::ng-deep .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content{
+    background-color: rgba(255, 150, 66, 0.4) !important;
+  }
+  mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
+    background-color: white;
+    border-radius: 5px;
+  }
+
 #actions-div{
     display:flex;
     flex-direction: column;

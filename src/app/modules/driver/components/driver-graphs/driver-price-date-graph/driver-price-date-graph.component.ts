@@ -24,6 +24,9 @@ export class DriverPriceDateGraphComponent implements OnInit {
       let dateStart = new Date( res.startTime)
       if(dateStart.toDateString() == lastStart.toDateString()){
         value+=res.totalCost;
+        if(this.driverData.data.indexOf(res) == this.driverData.data.length-1){
+          this.driverInstance.series.push({name:dateStart.toDateString(),value:value})
+        }
         return
       }
       else{
@@ -48,6 +51,8 @@ export class DriverPriceDateGraphComponent implements OnInit {
   showXAxisLabel: boolean = true;
   xAxisLabel: string = 'Time';
   yAxisLabel: string = 'Earned';
+  @Input() view!:[number,number];
+
   timeline: boolean = true;
   @Input()  driverData!:DriverGraphDTO;
 

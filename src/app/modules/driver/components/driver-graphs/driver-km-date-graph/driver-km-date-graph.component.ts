@@ -23,6 +23,9 @@ export class DriverKmDateGraphComponent implements OnInit {
       let dateStart = new Date( res.startTime)
       if(dateStart.toDateString() == lastStart.toDateString()){
         value+=res.locations[0].lenght;
+        if(this.driverData.data.indexOf(res) == this.driverData.data.length-1){
+          this.driverInstance.series.push({name:dateStart.toDateString(),value:value})
+        }
         return
       }
       else{
@@ -43,6 +46,7 @@ export class DriverKmDateGraphComponent implements OnInit {
   animations: boolean = true;
   xAxis: boolean = true;
   yAxis: boolean = true;
+  @Input() view!:[number,number];
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
   xAxisLabel: string = 'Time';

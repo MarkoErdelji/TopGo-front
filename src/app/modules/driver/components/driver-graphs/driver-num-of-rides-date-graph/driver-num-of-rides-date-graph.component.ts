@@ -23,6 +23,9 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
       let dateStart = new Date( res.startTime)
       if(dateStart.toDateString() == lastStart.toDateString()){
         numOfRides+=1;
+        if(this.driverData.data.indexOf(res) == this.driverData.data.length-1){
+          this.driverInstance.series.push({name:dateStart.toDateString(),value:numOfRides})
+        }
         return
       }
       else{
@@ -46,8 +49,9 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
   xAxisLabel: string = 'Time';
-  yAxisLabel: string = 'Earned';
+  yAxisLabel: string = 'Num of rides';
   timeline: boolean = true;
+  @Input() view!:[number,number];
   @Input()  driverData!:DriverGraphDTO;
 
   graphData:Object[] = [];
