@@ -20,6 +20,8 @@ import { FavouriteNameDialogComponent } from './components/registered-route-form
 import { RegisteredReportsComponent } from './components/registered-reports/registered-reports.component';
 import {NgxChartsModule} from "@swimlane/ngx-charts";
 import { RideDayGraphComponent } from './components/graphs/ride-day-graph/ride-day-graph.component';
+import { KmPerDayGraphComponent } from './components/graphs/km-per-day-graph/km-per-day-graph.component';
+import { MoneySpentGraphComponent } from './components/graphs/money-spent-graph/money-spent-graph.component';
 
 
 
@@ -39,7 +41,9 @@ import { RideDayGraphComponent } from './components/graphs/ride-day-graph/ride-d
         FriendInviteDialogComponent,
         FavouriteNameDialogComponent,
         RegisteredReportsComponent,
-        RideDayGraphComponent
+        RideDayGraphComponent,
+        KmPerDayGraphComponent,
+        MoneySpentGraphComponent
     ],
 
   imports: [
