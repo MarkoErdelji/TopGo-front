@@ -70,7 +70,7 @@
                 <div id="main-passenger-holder" class="vertical-flex">
                     <p class="title-text">Passengers:</p>
                     <div id="passenger-holder" class="horizontal-flex">
-                        <div class="passenger-holder-instance horizontal-flex" *ngFor="let item of passengerInfo">
+                        <div class="passenger-holder-instance horizontal-flex shadow" *ngFor="let item of passengerInfo">
                             <img class="passenger-image" src={{item.profilePicture}}>
                             <p class="value-text">{{item.name}} {{item.surname}}</p>
                         </div>
@@ -80,7 +80,7 @@
                     <div id="main-driver-review-holder" class="vertical-flex">
                         <p class="title-text">Driver reviews:</p>
                         <div class="review-holder">
-                            <div class="review-instance vertical-flex" *ngFor="let item of driverReviews">
+                            <div class="review-instance vertical-flex shadow" *ngFor="let item of driverReviews">
                                 <div class="horizontal-flex">
                                     <img class="passenger-image" src={{item.passenger.profilePicture}}>
                                     <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>
@@ -108,7 +108,7 @@
                     <div id="main-vehicle-review-holder" class="vertical-flex">
                         <p class="title-text">Vehicle reviews:</p>
                         <div class="review-holder">
-                            <div class="review-instance vertical-flex" *ngFor="let item of vehicleReviews">
+                            <div class="review-instance vertical-flex shadow" *ngFor="let item of vehicleReviews">
                                 <div class="horizontal-flex">
                                     <img class="passenger-image" src={{item.passenger.profilePicture}}>
                                     <p class="title-text">{{item.passenger.name}} {{item.passenger.surname}}</p>
@@ -140,25 +140,46 @@
     <div id="list-holder-wrapper">
         <div id="list-holder">
             <div id="list-holder-header"><h1>History</h1>
-                <div class="white-background">
-                    <mat-form-field>
-                        <mat-label>Sort by</mat-label>
-                        <mat-select [(ngModel)]="selectedSortParam" (ngModelChange)="onOptionSelected()">
-                           <mat-option *ngFor="let sortParam of sortParams" [value]="sortParam" defa>
-                                {{ sortParam }}
-                            </mat-option>
-                        </mat-select>
-                        <!-- <mat-form-field>
-                            <mat-label>Choose a date</mat-label>
-                            <input matInput [matDatepicker]="picker" [(ngModel)]="selectedDatetime">
-                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                            <mat-datepicker #picker></mat-datepicker>
-                          </mat-form-field> -->
-                    </mat-form-field>
-                </div>
             </div>
             <div class="history-instance" id="instance-container" *ngIf="ridesLoaded" ngClass="" >
             <app-history-instance class="instance" *ngFor="let item of rideDtos" (click)="selectRide(item); selectedRide = item" [rideDTO]="item" [ngClass]="{'highlight': selectedRide === item}"></app-history-instance>
+            </div>
+            <div  id="sortingDiv" class="sort-width-div">
+                <div class="white-background">
+                    <form [formGroup]="sortForm" (ngSubmit)="sort()" id = "editForm">
+                    <mat-form-field>
+                        <mat-label>Sort by</mat-label>
+                        <mat-select (valueChange) = sort() [(ngModel)]="selectedSortParam" formControlName="selectControl">
+                        <mat-option *ngFor="let sortParam of sortParams" [value]="sortParam" default>
+                                {{ sortParam }}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                        <mat-form-field id="date-input-field">
+                          <input matInput onchange="sort()"id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Start date" formControlName="startControl" >
+                          <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                          <ngx-mat-datetime-picker [disabled]=false #picker [showSpinners]="true" [showSeconds]="true"
+                             [stepHour]="1" [stepMinute]="1"
+                             [touchUi]="true"
+                             (valueChange) = sort()  [enableMeridian]="false"
+                             [hideTime]="false">
+                          </ngx-mat-datetime-picker>
+                       </mat-form-field>
+                        <mat-form-field id="date-input-field">
+                          <input matInput onchange="sort()" id="date-input"[ngxMatDatetimePicker]="picker2" [disabled] = true placeholder="End date" formControlName="endControl" >
+                          <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
+                          <ngx-mat-datetime-picker 
+                            [disabled]=false #picker2 [showSpinners]="true" [showSeconds]="true"
+                             [stepHour]="1" [stepMinute]="1"
+                             [touchUi]="true"  [enableMeridian]="false"
+                             [hideTime]="false">
+                          </ngx-mat-datetime-picker>
+                        </mat-form-field>
+                        <div id="edit-buttons">
+                            <button mat-raised-button shadow id="sort-button" >Sort</button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

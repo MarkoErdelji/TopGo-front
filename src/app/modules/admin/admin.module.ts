@@ -13,6 +13,7 @@ import { RequestNotificationComponent } from './components/request-notification/
 import { AdminUsersComponent } from './components/admin-users/admin-users.component';
 import { AdminNoteDialogComponent } from './components/admin-note-dialog/admin-note-dialog.component';
 import { AdminCreateNoteDialogComponent } from './components/admin-create-note-dialog/admin-create-note-dialog.component';
+import { HistoryInstanceModule } from '../history-instance/history-instance.module';
 
 
 
@@ -24,6 +25,7 @@ import { AdminCreateNoteDialogComponent } from './components/admin-create-note-d
     FormsModule,
     ReactiveFormsModule,
     NavbarModule,
+    HistoryInstanceModule,
     CommonModule
   ],
   exports: [AdminComponent]
