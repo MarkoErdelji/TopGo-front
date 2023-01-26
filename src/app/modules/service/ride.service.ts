@@ -77,6 +77,9 @@ export class RideService {
   getPassengerPendingRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/pending")
   }
+  getPassengerFinishedRide(id:number){
+    return this.http.get<RideDTO[]>(this.endpoint+"/passenger/"+id+"/finished")
+  }
   getPassengerAcceptedRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/accepted")
   }
