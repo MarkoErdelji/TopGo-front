@@ -149,25 +149,27 @@
                     <form [formGroup]="sortForm" (ngSubmit)="sort()" id = "editForm">
                     <mat-form-field>
                         <mat-label>Sort by</mat-label>
-                        <mat-select [(ngModel)]="selectedSortParam" formControlName="selectControl">
+                        <mat-select (valueChange) = sort() [(ngModel)]="selectedSortParam" formControlName="selectControl">
                         <mat-option *ngFor="let sortParam of sortParams" [value]="sortParam" default>
                                 {{ sortParam }}
                             </mat-option>
                         </mat-select>
                     </mat-form-field>
                         <mat-form-field id="date-input-field">
-                          <input matInput id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Start date" formControlName="startControl" >
+                          <input matInput onchange="sort()"id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Start date" formControlName="startControl" >
                           <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
                           <ngx-mat-datetime-picker [disabled]=false #picker [showSpinners]="true" [showSeconds]="true"
                              [stepHour]="1" [stepMinute]="1"
-                             [touchUi]="true"  [enableMeridian]="false"
+                             [touchUi]="true"
+                             (valueChange) = sort()  [enableMeridian]="false"
                              [hideTime]="false">
                           </ngx-mat-datetime-picker>
                        </mat-form-field>
                         <mat-form-field id="date-input-field">
-                          <input matInput id="date-input"[ngxMatDatetimePicker]="picker2" [disabled] = true placeholder="End date" formControlName="endControl" >
+                          <input matInput onchange="sort()" id="date-input"[ngxMatDatetimePicker]="picker2" [disabled] = true placeholder="End date" formControlName="endControl" >
                           <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
-                          <ngx-mat-datetime-picker [disabled]=false #picker2 [showSpinners]="true" [showSeconds]="true"
+                          <ngx-mat-datetime-picker 
+                            [disabled]=false #picker2 [showSpinners]="true" [showSeconds]="true"
                              [stepHour]="1" [stepMinute]="1"
                              [touchUi]="true"  [enableMeridian]="false"
                              [hideTime]="false">
