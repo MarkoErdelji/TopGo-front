@@ -61,8 +61,22 @@ export class UserService {
     return this.http.post<UserListBlockedDTO>('http://localhost:8000/api/user/'+userId+"/note",dto,   {observe: 'response',
     responseType: 'json' },)
   }
-  getUsersRides(userId,page,size,sort){
-    return this.http.get<UserRidesListDTO>('http://localhost:8000/api/user/'+userId+"/ride", { params: { page: page, size: size,sort:sort },   observe: 'response',
-    responseType: 'json' },)
+  getUsersRides(userId,page,size,sort,begintime,endtime){
+    if(begintime != null && endtime != null){
+      return this.http.get<UserRidesListDTO>('http://localhost:8000/api/user/'+userId+"/ride", { params: { page: page, size: size,sort:sort,beginDateInterval:begintime,endDateInterval:endtime },   observe: 'response',
+      responseType: 'json' },)
+    }
+    else if(begintime != null){
+      return this.http.get<UserRidesListDTO>('http://localhost:8000/api/user/'+userId+"/ride", { params: { page: page, size: size,sort:sort,beginDateInterval:begintime },   observe: 'response',
+      responseType: 'json' },)
+    }
+    else if(endtime != null){
+      return this.http.get<UserRidesListDTO>('http://localhost:8000/api/user/'+userId+"/ride", { params: { page: page, size: size,sort:sort,endDateInterval:endtime },   observe: 'response',
+      responseType: 'json' },)
+    }
+    else{
+      return this.http.get<UserRidesListDTO>('http://localhost:8000/api/user/'+userId+"/ride", { params: { page: page, size: size,sort:sort},   observe: 'response',
+      responseType: 'json' },)
+    }
   }
 }

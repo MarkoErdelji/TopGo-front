@@ -54,9 +54,24 @@ export class DriverService {
     return this.http.get<any>(this.endpoint+"/"+id+"/documents");
   }
 
-  getDriverRides(driverId,sortParam){
-    return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride?sort="+sortParam.toLowerCase(),{observe: 'response',
+  getDriverRides(driverId,page,size,sortParamm,begintime,endtime){
+    if(begintime != null && endtime != null){
+      return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size,sort:sortParamm.toLowerCase(),beginDateInterval:begintime,endDateInterval:endtime },observe: 'response',
       responseType: 'json'});
+    }
+    else if(begintime != null){
+      return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size,sort:sortParamm.toLowerCase(),beginDateInterval:begintime },observe: 'response',
+      responseType: 'json'});
+    }
+    else if(endtime != null){
+      return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size,sort:sortParamm.toLowerCase(),endDateInterval:endtime },observe: 'response',
+      responseType: 'json'});
+    }
+    else{
+      return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size,sort:sortParamm.toLowerCase()},observe: 'response',
+      responseType: 'json'});
+    }
+    
   }
 
   setImageUrl(url: string) {

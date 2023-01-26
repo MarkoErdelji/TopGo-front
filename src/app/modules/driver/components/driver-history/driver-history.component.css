@@ -97,10 +97,37 @@
     width: 100%;
     height: 100%;
 }
-
-#list-holder{
+#instance-container{
     overflow: auto;
     overflow-y: visible;
+    width: 100%;
+    height: 50%;
+
+}
+form{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+#sort-button{
+    background-color: #FF9642;
+    color: white;
+}
+#edit-buttons{
+    display:flex;
+    width:100%;
+    margin-top:20px;
+    justify-content: center;
+}
+
+#edit-profile{
+    background-color:#FF9642;
+    color:white;
+    margin-left:2%;
+    border-radius: 10px;
+}
+
+#list-holder{
     display: flex;
     flex-direction: column;
     height: 100%;
@@ -110,7 +137,9 @@
 .history-instance{
     display: flex;
     flex-direction: column;
-    margin-top: 20px;
+    padding-top: 20px;
+    align-items: center;
+
     width: 90%;
     height: 100%;
     border-radius: 15px;
@@ -119,7 +148,7 @@
 .instance{
     border-radius: 15px;
     margin-bottom: 25px;
-    width: 100%;
+    width: 80%;
 }
 
 .instance:hover{
@@ -225,6 +254,66 @@ h1{
     margin-top:50px;
 }
 .passenger-image{
+    width: 50px;
+    margin-right: 16px;
+    border: 1px solid black;
+    border-radius: 100px;
+    height: 50px;
+    object-fit: cover;
+}
+#driver-info-ride-text
+{
+  display: inline-block;
+  vertical-align: top;
+  font-size: large;
+  margin: 15px 5px 15px 15px;
+
+}
+#main-driver-holder{
+    margin-top:30px;
+}
+.driver-instance{
+    background-color: #F4F4F4;
+    height: 70%;
+    width: 90%;
+    padding-left: 15px;
+    padding-right:15px;
+    margin-left:10px;
+    margin-right:10px;
+    border-radius: 15px;
+}
+.sort-width-div{
+    display:flex;
+    justify-content: center;
+}
+#sortingDiv{
+    position: absolute;
+    bottom:0;
+}
+#driver-holder{
+    display: flex;
+    justify-content: center;
+    overflow: auto;
+    overflow-x: visible;
+    width: 100%;
+    height:240px;
+    width: 400px;
+    margin-top: 20px;
+    border-radius: 15px;
+    background-color: #F4F4F4;
+}
+#driver-image-ride
+{
+
+  border-radius: 100px;
+  width: 100px;
+  height: 100px;
+  stroke: black;
+  margin: 10px;
+  display:inline-block;
+  border: 2px solid black;
+}
+.driver-image{
     width: 50px;
     margin-right: 16px;
     border: 1px solid black;
@@ -344,9 +433,9 @@ h1{
 #history-instance-content{
     display: flex;
     flex-direction: column;
-    align-items: center;
     width:80%;
     height: 90%;
+    align-items: center;
     overflow: auto;
     overflow-y: visible;
     overflow-x:hidden;

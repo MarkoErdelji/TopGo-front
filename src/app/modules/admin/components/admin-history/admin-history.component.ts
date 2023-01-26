@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DisplayReviewDTO } from 'src/app/modules/DTO/DisplayReviewDTO';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { RideDTO } from 'src/app/modules/DTO/RideDTO';
@@ -24,6 +27,16 @@ export class AdminHistoryComponent implements OnInit {
   startDateOnlyDate:string = '';
   startDate:string = '';
   endDate:string = '';
+  selectedStart: Date | undefined;
+  selectedEnd: Date | undefined;
+
+  sortForm = new FormGroup({
+    selectControl: new FormControl(),
+    startControl: new FormControl(),
+    endControl: new FormControl(),
+  });
+
+
   driver!:DriverInfoDTO;
   passengerInfo:UserListResponseDTO[] = [];
   driverReviews:DisplayReviewDTO[] = [];
@@ -34,7 +47,7 @@ export class AdminHistoryComponent implements OnInit {
   sortParams: (string | SortParameters)[] | undefined;
 
 
-  constructor(private route:ActivatedRoute,private rideService:RideService,private driverService:DriverService,private reviewService:ReviewService,private userService:UserService) {
+  constructor(private dialog:MatDialog,private route:ActivatedRoute,private rideService:RideService,private driverService:DriverService,private reviewService:ReviewService,private userService:UserService) {
     this.sortParams = Object.keys(SortParameters).filter(key => !isNaN(Number(SortParameters[key])));
     this.selectedSortParam = SortParameters[0]; }
 
@@ -43,7 +56,7 @@ export class AdminHistoryComponent implements OnInit {
       this.userid = params['id'];
       });
       console.log(this.userid);
-    this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase()).subscribe(response=>{
+    this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase(),null,null).subscribe(response=>{
       console.log(response)
       response.body!.results.forEach((element)=>{
         if(element.status == "FINISHED"){
@@ -55,6 +68,38 @@ export class AdminHistoryComponent implements OnInit {
   }
 
 
+  sort(){
+    if(this.sortForm.controls.endControl.value!= null && this.sortForm.controls.startControl.value!=null){
+      if(this.sortForm.controls.endControl.value < this.sortForm.controls.startControl.value){
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"Start time can not be before end time!"}
+        });
+        return
+      }
+    }
+    let utcDateEnd:Date|null = null;
+    if(this.sortForm.controls.endControl.value != null){
+      utcDateEnd = new Date(Date.UTC(this.sortForm.controls.endControl.value.getFullYear(),this.sortForm.controls.endControl.value.getMonth(),this.sortForm.controls.endControl.value.getDate(),this.sortForm.controls.endControl.value.getHours(),this.sortForm.controls.endControl.value.getMinutes(),this.sortForm.controls.endControl.value.getSeconds()));
+
+    }
+    let utcDateStart:Date|null = null
+    if(this.sortForm.controls.startControl.value !=null){
+      utcDateStart = new Date(Date.UTC(this.sortForm.controls.startControl.value.getFullYear(),this.sortForm.controls.startControl.value.getMonth(),this.sortForm.controls.startControl.value.getDate(),this.sortForm.controls.startControl.value.getHours(),this.sortForm.controls.startControl.value.getMinutes(),this.sortForm.controls.startControl.value.getSeconds()));
+
+    }
+    console.log(utcDateEnd)
+    console.log(utcDateStart)
+    this.ridesLoaded = false;
+    this.rideDtos = [];
+    this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase(),utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
+      console.log(response)
+      response.body!.results.forEach((element)=>{
+          this.rideDtos.push(element);
+      })
+      this.ridesLoaded = true;
+    })
+  }
   selectRide(rideDto:RideDTO){
     if(rideDto.id == this.selectedRide?.id){
       return
@@ -98,18 +143,6 @@ export class AdminHistoryComponent implements OnInit {
     })
   }
 
-
-  onOptionSelected() {
-    this.ridesLoaded = false;
-    this.rideDtos = [];
-    this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase()).subscribe(response=>{
-      console.log(response)
-      response.body!.results.forEach((element)=>{
-          this.rideDtos.push(element);
-      })
-      this.ridesLoaded = true;
-    })
-  }
 
 
 }
