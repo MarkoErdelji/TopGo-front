@@ -70,7 +70,7 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                           children:[
                             {path: 'users',component:AdminUsersComponent},
                             {path: 'createDriver', component: CreateDriverComponent},
-                            {path: 'history', component: AdminHistoryComponent},
+                            {path: 'history/:id', component: AdminHistoryComponent},
                             {path: 'inbox', component: AdminInboxComponent},
                             {path: 'requests', component: RequestNotificationComponent}],
                           canActivate: [AdminGuard]}];

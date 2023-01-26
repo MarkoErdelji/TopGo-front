@@ -17,12 +17,12 @@ import { DriverProfileEditComponent } from './components/driver-profile/driver-p
 import { DriverChangePasswordDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-change-password-dialog/driver-change-password-dialog.component';
 import { DriverChangeImageDialogComponent } from './components/driver-profile/driver-profile-dialogs/driver-change-image-dialog/driver-change-image-dialog.component';
 import { DriverNotificationsComponent } from './components/driver-notifications/driver-notifications.component';
-import { HistoryInstanceComponent } from './components/driver-history/history-instance/history-instance.component';
 import { MapModule } from 'src/app/components/map/map.module';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { DriverHomeComponent } from './components/driver-home/driver-home.component';
 import { DriverCurrentRideComponent } from './components/driver-current-ride/driver-current-ride.component';
 import { PanicDialogComponent } from './dialogs/panic-dialog/panic-dialog.component';
+import { HistoryInstanceModule } from '../history-instance/history-instance.module';
 
 
 
@@ -40,7 +40,6 @@ import { PanicDialogComponent } from './dialogs/panic-dialog/panic-dialog.compon
     DriverChangePasswordDialogComponent,
     DriverChangeImageDialogComponent,
     DriverNotificationsComponent,
-    HistoryInstanceComponent,
     DriverHomeComponent,
     DriverCurrentRideComponent,
     PanicDialogComponent,
@@ -49,6 +48,7 @@ import { PanicDialogComponent } from './dialogs/panic-dialog/panic-dialog.compon
   imports: [
     AppRoutingModule,
     MaterialModule,
+    HistoryInstanceModule,
     FormsModule,
     MapModule,
     ReactiveFormsModule,
