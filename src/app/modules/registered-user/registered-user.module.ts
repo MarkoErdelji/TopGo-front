@@ -20,6 +20,8 @@ import { PanicDialogComponent } from './components/registered-route-form/registe
 import { FriendInviteDialogComponent } from './components/dialogs/friend-invite-dialog/friend-invite-dialog.component';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { RegisteredHistoryComponent } from './components/registered-history/registered-history.component';
+import { FavouriteNameDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/favourite-name-dialog/favourite-name-dialog.component';
+
 
 
 
@@ -37,7 +39,9 @@ import { RegisteredHistoryComponent } from './components/registered-history/regi
         EditProfileDialogComponent,
         PanicDialogComponent,
         FriendInviteDialogComponent,
-        RegisteredHistoryComponent
+        RegisteredHistoryComponent,
+        FavouriteNameDialogComponent
+
     ],
 
   imports: [

@@ -27,6 +27,11 @@ import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notif
 import {PanicDialogComponent} from "./registered-route-form-dialogs/panic-dialog/panic-dialog.component";
 import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
 import { NotificationDialogComponent } from '../registered-dialogs/notification-dialog/notification-dialog.component';
+import {FavouriteRideDTO} from "../../../DTO/FavouriteRideDTO";
+import {
+  FavouriteNameDialogComponent
+} from "./registered-route-form-dialogs/favourite-name-dialog/favourite-name-dialog.component";
+import {FavouriteRideInfoDTO} from "../../../DTO/FavouriteRideInfoDTO";
 
 
 @Component({
@@ -56,6 +61,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   departureP?:string;
   driverNameRide?:string;
   driverPhoneRide?:string;
+  addedToFav:boolean = false;
   driverEmailRide?:string;
   vehicleNameRide?:string;
   vehicleTypeRide?:string;
@@ -68,6 +74,9 @@ export class RegisteredRouteFormComponent implements OnInit {
   msg?:string;
   friends:PassengerInfoDTO[]=[];
   acceptedFriends:UserRef[]=[];
+  favouriteRides:FavouriteRideInfoDTO[]=[];
+
+  allInvitedFriends:UserRef[]=[];
   friendInvites = new Map<number, string>();
 
   forBabies?:boolean;
@@ -90,7 +99,14 @@ export class RegisteredRouteFormComponent implements OnInit {
     async go(id: string) {
 
       if (id == "go-button") {
-        this.GoPressed(id);
+        if (this.goForm.valid) {
+          let locationDTO: LocationDTO = <LocationDTO>{
+            location: this.goForm.get("location")?.value!,
+            destination: this.goForm.get("destination")?.value!
+          }
+            this.GoPressed(locationDTO);
+          }
+
       }
       if (id == "order-button")
       {
@@ -101,8 +117,95 @@ export class RegisteredRouteFormComponent implements OnInit {
       {
         this.cancelPressed();
       }
+      if (id == "favourite-button")
+      {
+        this.openDialogName();
+
+      }
 
 
+
+    }
+    public favouriteRide(name:string)
+    {
+
+      let favRide:FavouriteRideDTO
+      favRide = <FavouriteRideDTO>
+        {
+          favoriteName: name,
+          locations: [],
+          passengers: this.allInvitedFriends,
+          vehicleType: '',
+          babyTransport: false,
+          petTransport: false
+        };
+
+      let forBabies :boolean = this.goForm.get("forBabies")?.value
+      let forPets:boolean = this.goForm.get("forPets")?.value
+      if (this.goForm.get("forBabies")?.value == undefined)
+        forBabies = false;
+      if (this.goForm.get("forPets")?.value == undefined)
+        forPets = false;
+      favRide!.babyTransport = forBabies;
+      favRide!.petTransport = forPets;
+      let carType:string;
+      if(this.goForm.get("carType")?.value == "1")
+      {
+        carType = "STANDARD"
+      }
+      if(this.goForm.get("carType")?.value == "2")
+      {
+        carType = "LUXURY"
+      }
+      if(this.goForm.get("carType")?.value == "3")
+      {
+        carType = "VAN"
+      }
+      favRide!.vehicleType = carType!;
+
+
+      this.subscriptions.push(this.mapService.search(this.currentLocation!.location).subscribe({
+        next: (departure) => {
+          let geo:GeoLocationDTO = <GeoLocationDTO>{
+            address:  this.currentLocation!.location,
+            longitude : departure[0].lon,
+            latitude: departure[0].lat
+
+          };
+          favRide!.locations.push(<RouteForCreateRideDTO>{});
+          favRide!.locations[0].departure = geo!;
+          console.log(location)
+          this.subscriptions.push(this.mapService.search(this.currentLocation!.destination).subscribe({
+            next: (destination) => {
+              let geo:GeoLocationDTO = <GeoLocationDTO>
+                {
+                  address:this.currentLocation!.destination,
+                  longitude : destination[0].lon,
+                  latitude : destination[0].lat
+                };
+              favRide!.locations[0].destination = geo;
+              console.log(favRide)
+              this.rideService.favouriteRide(favRide).pipe(
+                catchError((error) => {
+                  if (error.status === 400) {
+                    this.dialog.open(RideNotificationComponent, {
+                      width: '250px',
+                      data: {msg:"You must select a car type!"}
+                    });
+                    return EMPTY;
+                  }
+                  return of(null);
+                })
+              ).subscribe(response =>
+              {
+                this.addedToFav = true;
+                console.log(response)
+              })
+
+
+            }
+          }))
+        }}));
 
     }
 
@@ -112,18 +215,12 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.popupContent.nativeElement.style.display = 'none';
   }
 
-  private GoPressed(id: string) {
+  private GoPressed(locationDTO:LocationDTO) {
       this.passengerSocketService.initializeWebSocketConnectionFriendResponse(this.authService.getUserId());
     this.routeFormService.RemoveAllMarkers();
     this.isDisabled = true;
     // @ts-ignore
     this.popupContent.nativeElement.style.display = 'none';
-    if (this.goForm.valid) {
-      console.log((id));
-      let locationDTO: LocationDTO = <LocationDTO>{
-        location: this.goForm.get("location")?.value!,
-        destination: this.goForm.get("destination")?.value!
-      }
       this.currentLocation = locationDTO;
       this.routeFormService.setLocation(locationDTO)
       // @ts-ignore
@@ -131,7 +228,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       document.getElementById("test")!.style.top = "60%"
 
 
-    }
+
   }
 
   private orderPressed() {
@@ -226,15 +323,6 @@ export class RegisteredRouteFormComponent implements OnInit {
                 latitude : destination[0].lat
               };
             ride!.locations[0].destination = geo;
-            this.subscriptions.push(this.passengerService.getPassengerById(this.passengerService.id!).subscribe(passenger =>
-            {
-              let userRef:UserRef = <UserRef>
-                {
-                  id : passenger.id,
-                  email : passenger.email
-
-                }
-              ride!.passengers.push(userRef);
 
 
               this.subscriptions.push(this.rideService.createRide(ride!).pipe(
@@ -256,8 +344,6 @@ export class RegisteredRouteFormComponent implements OnInit {
                   this.SetRide(response.body);
                 }
 
-
-              }));
             }));
           }
         }))
@@ -361,6 +447,10 @@ export class RegisteredRouteFormComponent implements OnInit {
     forPets: new FormControl(),
     friendEmail : new FormControl()
   });
+  favForm = new FormGroup({
+    favRouteSelect: new FormControl("",[Validators.required])
+  });
+  favVisible: boolean = false;
 
 
 
@@ -370,6 +460,21 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.passengerSocketService.stompClient.disconnect()
   }
   ngOnInit(): void {
+    this.rideService.getFavouriteRide().subscribe(response =>
+    {
+      this.favouriteRides = response
+    })
+    this.subscriptions.push(this.passengerService.getPassengerById(this.authService.getUserId()).subscribe(passenger => {
+      let userRef: UserRef = <UserRef>
+        {
+          id: passenger.id,
+          email: passenger.email
+
+        }
+      this.allInvitedFriends.push(userRef);
+      this.acceptedFriends.push(userRef);
+    }));
+
     this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
         if(ride.id) {
           this.currentRide = ride;
@@ -597,10 +702,28 @@ export class RegisteredRouteFormComponent implements OnInit {
 
 
   }
+  openDialogName() {
+    let name:string = 'null'
+    const dialogRef = this.dialog.open(FavouriteNameDialogComponent, {
+      width: '400px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.favouriteRide(result);
+      }
+    });
 
 
-  inviteFriend() {
-    this.userService.getUserByEmail(this.goForm.get("friendEmail")?.value).subscribe(result =>
+
+
+  }
+
+
+  inviteFriend(email:string) {
+    if(email == "")email = this.goForm.get("friendEmail")?.value;
+    this.userService.getUserByEmail(email).subscribe(result =>
     {
       this.goForm.get("friendEmail")?.setValue("")
       this.passengerService.getPassengerById(result.body.id).subscribe(pass =>
@@ -612,6 +735,12 @@ export class RegisteredRouteFormComponent implements OnInit {
               console.log(pass.id)
               this.passengerService.invite(pass.id).subscribe(response =>
               {
+                let invUserRef:UserRef =
+                  {
+                    id : pass.id,
+                    email: pass.email
+                  }
+                this.allInvitedFriends.push(invUserRef)
                 this.friends.push(pass);
                 this.friendInvites.set(pass.id,"PENDING");
                 this.passengerSocketService.selectResponse$.subscribe(friendResponse =>
@@ -640,6 +769,44 @@ export class RegisteredRouteFormComponent implements OnInit {
       })
 
     })
+
+  }
+
+  favouriteEntered() {
+    if (this.favForm.valid)
+    {
+      let favRoute:FavouriteRideInfoDTO = JSON.parse(JSON.stringify(this.favForm.get("favRouteSelect")?.value!));
+      this.favVisible = true;
+      let locationDTO: LocationDTO = <LocationDTO>{
+        location: favRoute.locations[0].departure.address,
+        destination: favRoute.locations[0].destination.address,
+      }
+      this.GoPressed(locationDTO);
+      // @ts-ignore
+      this.goForm.get("location")?.setValue(favRoute.locations[0].departure.address)
+      // @ts-ignore
+      this.goForm.get("destination")?.setValue(favRoute.locations[0].destination.address)
+      let carType:string = "";
+      if(favRoute.vehicleType == "STANDARD")
+      {
+        carType = "1"
+      }
+      if(favRoute.vehicleType == "LUXURY")
+      {
+        carType = "2"
+      }
+      if(favRoute.vehicleType == "VAN")
+      {
+        carType = "3"
+      }
+      this.goForm.get("carType")?.setValue(carType);
+      this.goForm.get("forPets")?.setValue(favRoute.petTransport);
+      this.goForm.get("forBabies")?.setValue(favRoute.babyTransport);
+      favRoute.passengers.forEach(passenger =>
+      {
+        this.inviteFriend(passenger.email);
+      })
+    }
 
   }
 }
