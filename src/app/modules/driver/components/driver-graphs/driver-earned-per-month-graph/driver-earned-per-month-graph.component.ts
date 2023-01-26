@@ -19,6 +19,7 @@ export class DriverEarnedPerMonthGraphComponent implements OnInit {
   xAxisLabel: string = 'Time';
   yAxisLabel: string = 'Earned';
   timeline: boolean = true;
+  @Input() view!:[number,number];
   @Input()  driverData!:DriverGraphDTO;
 
   graphData:Object[] = [];
@@ -37,6 +38,46 @@ export class DriverEarnedPerMonthGraphComponent implements OnInit {
   {name:'November',value:0},
   {name:'December',value:0}]
   
+  colorScheme:Object[] = [
+    { 
+      name: 'January',
+      value: '#FF9642'
+    }
+    ,{ 
+      name: 'February',
+      value: '#FF9642'
+    },{ 
+      name: 'March',
+      value: '#FF9642'
+    },{ 
+      name: 'April',
+      value: '#FF9642'
+    },{ 
+      name: 'May',
+      value: '#FF9642'
+    },{ 
+      name: 'June',
+      value: '#FF9642'
+    },{ 
+      name: 'July',
+      value: '#FF9642'
+    },{ 
+      name: 'August',
+      value: '#FF9642'
+    },{ 
+      name: 'September',
+      value: '#FF9642'
+    },{ 
+      name: 'October',
+      value: '#FF9642'
+    },{ 
+      name: 'November',
+      value: '#FF9642'
+    },{ 
+      name: 'December',
+      value: '#FF9642'
+    }
+  ];
   ngOnInit(): void {
     this.driverData.data.forEach((res)=>{
       let dateStart = new Date( res.startTime)
@@ -44,13 +85,11 @@ export class DriverEarnedPerMonthGraphComponent implements OnInit {
       let currentYearEnd = new Date(new Date().getFullYear(),11,31,23,59,59,999).getTime();
       if(dateStart.getTime() >= currentYearStart && dateStart.getTime() <= currentYearEnd) {
         let month = dateStart.getMonth();
-        console.log(month);
         this.monthData[month].value+=res.totalCost;
       }
       }
       
     )
-    this.graphData.push(this.monthData);
   }
 
 }

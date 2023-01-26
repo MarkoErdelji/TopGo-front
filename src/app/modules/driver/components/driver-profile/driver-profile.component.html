@@ -39,7 +39,11 @@
         <button mat-raised-button shadow id="edit-profile" [routerLink]="['/driver/profile/edit']">Edit profile</button>
     </div>
     <div id="report-content">
-        <div class="shadow" id="report-box"> </div>
-        <div class="shadow" id="report-box-end"> </div>
+        <div class="shadow" id="report-box">
+            <app-driver-price-date-graph *ngIf="dataLoaded" [driverData]="driverData" [view]="[420,300]"></app-driver-price-date-graph>
+        </div>
+        <div class="shadow" id="report-box-end">
+            <app-driver-earned-per-month-graph *ngIf="dataLoaded" [driverData]="driverData" [view]="[420,330]"></app-driver-earned-per-month-graph>        
+        </div>
     <div>
 </div>
