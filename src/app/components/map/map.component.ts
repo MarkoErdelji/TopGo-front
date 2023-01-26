@@ -130,19 +130,21 @@ export class MapComponent implements AfterViewInit {
     }))
 
   }
-  
+
 
 
   ngAfterViewInit(): void {
     this.initMap();
     this.subscriptions.push(this.routeFormService.vehicleLocationSubject$.subscribe(vehicle =>
       {
-        console.log(vehicle);
-        let marker = new L.Marker([vehicle.latitude, vehicle.longitude],{icon: greenIcon});
-        marker.addTo(this._map);
-        this._markerList.push(marker)
+        if(vehicle) {
+          console.log(vehicle);
+          let marker = new L.Marker([vehicle.latitude, vehicle.longitude], {icon: greenIcon});
+          marker.addTo(this._map);
+          this._markerList.push(marker)
+        }
       }))
-    this.subscriptions.push(this.routeFormService.routeRemovalSubject$.subscribe({next:(value)=>{ 
+    this.subscriptions.push(this.routeFormService.routeRemovalSubject$.subscribe({next:(value)=>{
       this.clearCurrentRoute();
     }}))
     this.subscriptions.push(this.routeFormService.selectLocation$.subscribe({next:(location)=>{

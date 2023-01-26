@@ -55,6 +55,15 @@ export class DriverService {
   }
 
   getDriverRides(driverId,page,size,sortParamm,begintime,endtime){
+    if(page == null){
+      page = 0
+    }
+    if(size == null){
+      size = 10000
+    }
+    if(sortParamm == null){
+      sortParamm = 'START';
+    }
     if(begintime != null && endtime != null){
       return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size,sort:sortParamm.toLowerCase(),beginDateInterval:begintime,endDateInterval:endtime },observe: 'response',
       responseType: 'json'});
@@ -67,8 +76,12 @@ export class DriverService {
       return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size,sort:sortParamm.toLowerCase(),endDateInterval:endtime },observe: 'response',
       responseType: 'json'});
     }
-    else{
+    else if(sortParamm != null){
       return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size,sort:sortParamm.toLowerCase()},observe: 'response',
+      responseType: 'json'});
+    }
+    else{
+      return this.http.get<UserRidesListDTO>(this.endpoint+"/"+driverId+"/ride",{params: { page: page, size: size},observe: 'response',
       responseType: 'json'});
     }
     
