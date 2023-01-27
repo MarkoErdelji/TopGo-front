@@ -1,5 +1,5 @@
 import { Dialog } from '@angular/cdk/dialog';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { RideDTO } from 'src/app/modules/DTO/RideDTO';
@@ -7,6 +7,15 @@ import { DriverService } from 'src/app/modules/service/driver.service';
 import { AuthService } from 'src/app/_service/auth.service';
 import { LineGraphDTO, NameValueInstance } from 'src/app/modules/DTO/LineGraphDTO';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+
+declare var require: any;
+
+import * as pdfMake from "pdfmake/build/pdfmake";
+import * as pdfFonts from "pdfmake/build/vfs_fonts";
+const htmlToPdfmake = require("html-to-pdfmake");
+(pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
 @Component({
   selector: 'app-driver-reports',
@@ -24,6 +33,10 @@ export class DriverReportsComponent implements OnInit {
   driverData:DriverGraphDTO = <DriverGraphDTO> {fullName:'',data:[]};
   driverDataForChart:DriverGraphDTO = <DriverGraphDTO> {fullName:'',data:[]};
   dataLoaded:boolean = false;
+  chartDataLoaded:boolean = false;
+
+  @ViewChild('printable')
+  pdfTable!: ElementRef;
 
   ngOnInit(): void {
     this.driverService.getDriverById(this.authService.getUserId()).subscribe((res)=>{
@@ -38,9 +51,12 @@ export class DriverReportsComponent implements OnInit {
       this.driverData.data.reverse();
       this.driverDataForChart.data.reverse();
       this.dataLoaded = true;
+      this.chartDataLoaded = true;
     }) }
 
   changeGraphs(){
+    this.dataLoaded = false;
+    this.driverData =  <DriverGraphDTO> {fullName:'',data:[]};
     if(this.dateForm.controls.endControl.value!= null && this.dateForm.controls.startControl.value!=null){
       if(this.dateForm.controls.endControl.value < this.dateForm.controls.startControl.value){
         const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -60,6 +76,26 @@ export class DriverReportsComponent implements OnInit {
       utcDateStart = new Date(Date.UTC(this.dateForm.controls.startControl.value.getFullYear(),this.dateForm.controls.startControl.value.getMonth(),this.dateForm.controls.startControl.value.getDate(),this.dateForm.controls.startControl.value.getHours(),this.dateForm.controls.startControl.value.getMinutes(),this.dateForm.controls.startControl.value.getSeconds()));
 
     }
-    
+    this.driverService.getDriverRides(this.authService.getUserId(),0,9000,null,utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
+      response.body!.results.forEach((element)=>{
+          this.driverData.data.push(element);
+          this.driverDataForChart.data.push(element);
+      })
+      this.driverData.data.reverse();
+      this.driverDataForChart.data.reverse();
+      this.dataLoaded = true;
+    })
+  }
+
+  public downloadAsPDF() {
+    let reportContent = document.getElementById("report-content");
+    reportContent!.style.border = "0px";
+    html2canvas(reportContent!)
+  .then((canvas) => {
+    const pdf = new jsPDF();
+    pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
+    pdf.save('report.pdf');
+  });
+     
   }
 }

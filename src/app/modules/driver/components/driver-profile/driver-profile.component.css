@@ -62,7 +62,8 @@
 
 }
 #report-box-end{
-    width:100%;
+    width:430px;
+    height:300px;
     border-radius:10px;
     flex-basis:45%;
     margin-top:10%;
@@ -70,7 +71,8 @@
     justify-self:flex-end;
 }
 #report-box{
-    width:100%;
+    width:430px;
+    height:300px;
     border-radius:10px;
     margin-bottom:10%;
     flex-basis:45%;

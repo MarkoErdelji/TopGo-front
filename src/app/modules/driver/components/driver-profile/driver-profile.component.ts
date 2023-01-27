@@ -2,8 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { map } from 'rxjs';
+import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
+import { RideDTO } from 'src/app/modules/DTO/RideDTO';
 import { DriverService } from 'src/app/modules/service/driver.service';
+import { AuthService } from 'src/app/_service/auth.service';
 import { DriverDocumentsDialogComponent } from './driver-profile-dialogs/driver-documents-dialog/driver-documents-dialog.component';
 import { DriverVehicleDialogComponent } from './driver-profile-dialogs/driver-vehicle-dialog/driver-vehicle-dialog.component';
 
@@ -20,12 +23,15 @@ export class DriverProfileComponent implements OnInit {
   username?:string
   address?:string
   phone?:string
+  dataLoaded:boolean = false;
+  driverData:DriverGraphDTO= <DriverGraphDTO> {fullName:'',data:[]};;
 
-  constructor(private route: ActivatedRoute,private driverService:DriverService,private dialog: MatDialog) { }
+  constructor(private route: ActivatedRoute,private authService:AuthService,private driverService:DriverService,private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.driverService.getImageUrl().subscribe(url => this.imageUrl = url)
     
+
     this.driverService.getDriverById(this.driverService.id || 0).pipe(
       map(data => {
         if (data) {
@@ -39,6 +45,12 @@ export class DriverProfileComponent implements OnInit {
       this.username = response?.email
       this.address = response?.address
       this.phone = response?.telephoneNumber
+      this.driverService.getDriverRides(this.authService.getUserId(),0,9000,null,null,null).subscribe(res=>{
+        this.driverData.data = res.body?.results || [];
+        this.driverData.data.reverse();
+        this.driverData.fullName = this.firstName +" "+ this.lastName
+        this.dataLoaded = true;
+      })
     })
   
   }
