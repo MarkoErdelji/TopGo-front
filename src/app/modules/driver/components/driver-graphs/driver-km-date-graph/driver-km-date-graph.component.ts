@@ -20,7 +20,14 @@ export class DriverKmDateGraphComponent implements OnInit {
       name: this.driverData.fullName,
       value: '#FF9642'
     })
+<<<<<<< Updated upstream
     let lastStart:Date = new Date(1970,12,10);
+=======
+    if(this.driverData.data.length == 0){
+      return;
+    }
+    let lastStart:Date =  new Date(this.driverData.data[0].startTime);
+>>>>>>> Stashed changes
     let value = 0; 
     this.driverData.data.forEach((res)=>{
       let dateStart = new Date( res.startTime)
@@ -74,16 +81,5 @@ export class DriverKmDateGraphComponent implements OnInit {
   graphData:Object[] = [];
   driverInstance!:LineGraphDTO;
 
-  onSelect(rideDtos): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(rideDtos)));
-  }
-
-  onActivate(rideDtos): void {
-    console.log('Activate', JSON.parse(JSON.stringify(rideDtos)));
-  }
-
-  onDeactivate(rideDtos): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(rideDtos)));
-  }
 }
 

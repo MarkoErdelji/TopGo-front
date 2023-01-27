@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
-import { LineGraphDTO, NameValueInstance } from 'src/app/modules/DTO/LineGraphDTO';
+import { NameValueInstance, LineGraphDTO } from 'src/app/modules/DTO/LineGraphDTO';
 
 @Component({
-  selector: 'app-driver-num-of-rides-date-graph',
-  templateUrl: './driver-num-of-rides-date-graph.component.html',
-  styleUrls: ['./driver-num-of-rides-date-graph.component.css']
+  selector: 'app-admin-seperate-users-num-of-rides-graph',
+  templateUrl: './admin-seperate-users-num-of-rides-graph.component.html',
+  styleUrls: ['./admin-seperate-users-num-of-rides-graph.component.css']
 })
-export class DriverNumOfRidesDateGraphComponent implements OnInit {
+export class AdminSeperateUsersNumOfRidesGraphComponent implements OnInit {
 
   constructor() { }
 
@@ -20,32 +20,36 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
       name: this.driverData.fullName,
       value: '#FF9642'
     })
-<<<<<<< Updated upstream
-    let lastStart:Date = new Date(1970,12,10);
-=======
     if(this.driverData.data.length == 0){
       return;
     }
     let lastStart:Date =  new Date(this.driverData.data[0].startTime);
->>>>>>> Stashed changes
     let value = 0; 
-    this.driverData.data.forEach((res)=>{
-      let dateStart = new Date( res.startTime)
-      if(dateStart.toDateString() == lastStart.toDateString()){
-        value+=1;
-        if(this.driverData.data.indexOf(res) == this.driverData.data.length-1){
-          this.driverInstance.series.push({name:dateStart.toDateString(),value:value})
-        }
-        return
+    var dateValues = {};
+    this.driverData.data.forEach((element) => {
+      let date = new Date(element.startTime);
+      let day:string = date.getDate().toString();
+      let month:string = (date.getMonth()+1).toString();
+      let year:string = date.getFullYear().toString();
+      let value = 1;
+      if(month.toString().length == 1){
+        month = "0"+month;
       }
-      else{
-        lastStart = dateStart;
-        if(value == 0){
-          value = 1
-        }
-        this.driverInstance.series.push({name:dateStart.toDateString(),value:value})
-
-        value = 0}
+      if(day.toString().length == 1){
+        day = "0"+day;
+      }
+      let key = `${month}-${day}-${year}`;
+      if (!dateValues[key]) {
+        dateValues[key] = value;
+      } else {
+        dateValues[key] += value;
+      }
+    });
+    let dateValueList = Object.entries(dateValues).map(([date, value]) => {
+      return {date: date, value: value};
+    });
+    dateValueList.forEach((res)=>{
+        this.driverInstance.series.push({name:res.date,value:res.value as number})
       }
       
     )
@@ -66,16 +70,16 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
   colorScheme:Object[] = [];
   showLabels: boolean = true;
   animations: boolean = true;
-  total:number = 0;
   xAxis: boolean = true;
   yAxis: boolean = true;
+  total:number = 0;
+  @Input() view!:[number,number];
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
   averageLine!: LineGraphDTO;
   xAxisLabel: string = 'Time';
   yAxisLabel: string = 'Num of rides';
   timeline: boolean = true;
-  @Input() view!:[number,number];
   @Input()  driverData!:DriverGraphDTO;
 
   graphData:Object[] = [];
