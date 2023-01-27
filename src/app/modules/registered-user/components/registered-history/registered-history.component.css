@@ -28,7 +28,7 @@
 }
 
 .round-wrapper{
-  width: 90%;
+  width: 85%;
   min-height: 20%;
   height: auto;
   margin: 20px;
@@ -41,6 +41,15 @@
 .items{
   height: 90%;
   overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+#sorting{
+  width: 90%;
+  height: 30%;
+  background-color: white;
+
 }
 
 .round-wrapper:hover{
@@ -52,7 +61,7 @@
   justify-content:center;
   display:flex;
   flex-direction: column;
-  padding: 20px;
+
 }
 #history-item{
   padding: 15px;
@@ -341,6 +350,7 @@
   border-radius: 15px;
   background-color: white;
   height: 90px;
+
 }
 
 .passenger-holder-instance{
@@ -426,4 +436,93 @@
 
 #review-value-holder{
   margin-top:10px;
+}
+
+#sortingDiv{
+  position: absolute;
+  bottom:0;
+  margin-left: 50px;
+}
+
+.sort-width-div{
+  display:flex;
+  justify-content: center;
+}
+
+.white-background{
+  padding: 10px;
+  margin-bottom:10px;
+  border-radius: 15px;
+  background-color: white;
+  width: 80%;
+}
+#editForm{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+::ng-deep .mat-select {
+  color: #FF9642; /* or any other color of your choice */
+}
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #FF9642;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #FF9642;
+}
+
+::ng-deep .mat-focused .mat-form-field-required-marker {
+  color: #FF9642 !important;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple{
+  background-color: #FF9642 !important;
+}
+::ng-deep .mat-focused .mat-select-arrow {
+  color: #FF9642 !important;
+}
+
+::ng-deep .mat-select-arrow-wrapper{
+  color: #FF9642 !important;
+}
+
+::ng-deep .mat-focused .mat-select-underline {
+  color: #FF9642 !important;
+}
+
+::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
+  color: #FF9642 !important;
+}
+.mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+  color: #FF9642 !important;
+}
+::ng-deep .mat-datepicker-content{
+  display:inline !important;
+  font-family: 'Material Icons' !important;
+
+
+}
+
+::ng-deep .mat-calendar-body-selected{
+  background-color: #FF9642 !important;
+}
+
+::ng-deep .mat-calendar-body-cell:hover{
+  background-color: white !important;
+}
+::ng-deep .mat-calendar-body-cell-content:hover{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
+::ng-deep .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
+
+#edit-buttons{
+  display:flex;
+  width:100%;
+  justify-content: center;
+}
+#sort-button{
+  background-color: #FF9642;
+  color: white;
 }
