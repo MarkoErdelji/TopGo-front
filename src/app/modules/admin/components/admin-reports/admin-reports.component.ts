@@ -7,8 +7,10 @@ import jsPDF from 'jspdf';
 import { forkJoin, Observable } from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
+
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { UserListResponseBlockedDTO } from 'src/app/modules/DTO/UserListDTO';
+
 import { UserRidesListDTO } from 'src/app/modules/DTO/UserRidesListDTO';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { AuthService } from 'src/app/_service/auth.service';
@@ -26,6 +28,7 @@ export class AdminReportsComponent implements OnInit {
     startControl: new FormControl(),
     endControl: new FormControl(),
   });
+
   userSelect = new FormControl()
   graphData:Object[] = [];
   userData!:UserListResponseBlockedDTO[];
@@ -34,6 +37,7 @@ export class AdminReportsComponent implements OnInit {
   allData:DriverGraphDTO[] = [];
   dataLoaded:boolean = false;
   selectedValue!:number;
+
   chartDataLoaded:boolean = false;
   
 
@@ -97,6 +101,7 @@ export class AdminReportsComponent implements OnInit {
       this.dataLoaded = true;
     })
   }
+
   changeGraphs(){
     this.dataLoaded = false;
     this.driverData =  <DriverGraphDTO> {fullName:'',data:[]};
@@ -118,7 +123,7 @@ export class AdminReportsComponent implements OnInit {
         return
       }
     }
-    
+
     let utcDateEnd:Date|null = null;
     if(this.dateForm.controls.endControl.value != null){
       utcDateEnd = new Date(Date.UTC(this.dateForm.controls.endControl.value.getFullYear(),this.dateForm.controls.endControl.value.getMonth(),this.dateForm.controls.endControl.value.getDate(),this.dateForm.controls.endControl.value.getHours(),this.dateForm.controls.endControl.value.getMinutes(),this.dateForm.controls.endControl.value.getSeconds()));
@@ -143,7 +148,6 @@ export class AdminReportsComponent implements OnInit {
       });
       forkJoin(driverRidesObservables).subscribe((responses) => {
         responses.forEach((response,index) => {
-          console.log(responses);
           this.driverData = <DriverGraphDTO> {fullName:'',data:[]}; 
           response.body!.results.forEach((element) => {
             this.driverData.data.push(element);

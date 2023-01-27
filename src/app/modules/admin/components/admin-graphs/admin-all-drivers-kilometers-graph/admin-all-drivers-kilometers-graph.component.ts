@@ -75,6 +75,7 @@ export class AdminAllDriversKilometersGraphComponent implements OnInit {
       this.graphData.push(instance);
     })
     this.graphData.push(this.averageLine);
+
   }
 
   colorScheme:Object[] = [];
@@ -95,5 +96,6 @@ export class AdminAllDriversKilometersGraphComponent implements OnInit {
   graphData:Object[] = [];
   allInstances:LineGraphDTO[] = [];
   driverInstance!:LineGraphDTO;
+
 
 }

@@ -11,6 +11,10 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {FriendInviteDialogComponent} from "../registered-user/components/dialogs/friend-invite-dialog/friend-invite-dialog.component";
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import {InviteFriendDTO} from "../DTO/InviteFriendDTO";
+import {
+  ReviewDialogComponent
+} from "../registered-user/components/registered-route-form/registered-route-form-dialogs/review-dialog/review-dialog.component";
+import {ReviewService} from "./review.service";
 
 
 
@@ -22,7 +26,7 @@ export class PassengerSocketService {
   notificationDisplayed: boolean = false;
   notificationQueue: RideDTO[] = [];
 
-  constructor(private snackBar:MatSnackBar,public dialog: MatDialog,private routeService:RouteFormService ) {}
+  constructor(private reviewService:ReviewService,private snackBar:MatSnackBar,public dialog: MatDialog,private routeService:RouteFormService ) {}
 
   public stompClient;
   public msg:any = [];
@@ -96,7 +100,7 @@ export class PassengerSocketService {
       const ride: RideDTO = JSON.parse(message.body);
       console.log(ride);
       this.setReturnRide(ride);
-      this.openDialog(ride.status);
+      this.openDialog(ride);
       }
       catch{
         const error:String = message.body;
@@ -162,8 +166,9 @@ export class PassengerSocketService {
   sendMessage(message) {
     this.stompClient.send('/app/send' , {}, message);
   }
-  openDialog(message:string): void {
+  openDialog(ride:RideDTO): void {
     let msg = ''
+    let message = ride.status;
     if (message == "ACCEPTED")
     {
       msg = "Your Ride Was Accepted!"
@@ -179,6 +184,12 @@ export class PassengerSocketService {
     if (message == "ACTIVE")
     {
       msg = "Your Ride has Started!"
+    }
+    if (message == "FINISHED")
+    {
+      msg = "Your Ride has Started!"
+      this.openDialogReview(ride.id);
+      return
     }
     const dialogRef = this.dialog.open(RideNotificationComponent, {
       width: '250px',
@@ -196,5 +207,25 @@ export class PassengerSocketService {
 
     })
   };
+
+  openDialogReview(id: number) {
+    const dialogRef = this.dialog.open(ReviewDialogComponent, {
+      width: '400px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.reviewService.addDriverReviews(id,result[1]).subscribe(res =>
+        {
+          console.log(res)
+        });
+        this.reviewService.addVehicleReviews(id,result[0]).subscribe(res =>
+        {
+          console.log(res)
+        });
+      }
+    });
+  }
 
 }

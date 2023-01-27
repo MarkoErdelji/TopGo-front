@@ -14,8 +14,6 @@ import { AdminUsersComponent } from './components/admin-users/admin-users.compon
 import { AdminNoteDialogComponent } from './components/admin-note-dialog/admin-note-dialog.component';
 import { AdminCreateNoteDialogComponent } from './components/admin-create-note-dialog/admin-create-note-dialog.component';
 import { HistoryInstanceModule } from '../history-instance/history-instance.module';
-<<<<<<< Updated upstream
-=======
 import { AdminReportsComponent } from './components/admin-reports/admin-reports.component';
 import { AdminAllDriversEarnGraphComponent } from './components/admin-graphs/admin-all-drivers-earn-graph/admin-all-drivers-earn-graph.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
@@ -24,21 +22,20 @@ import { AdminAllDriversKilometersGraphComponent } from './components/admin-grap
 import { AdminSeperateUsersGraphComponent } from './components/admin-graphs/admin-seperate-users-graph/admin-seperate-users-graph.component';
 import { AdminSeperateUsersEarnedGraphComponent } from './components/admin-graphs/admin-seperate-users-earned-graph/admin-seperate-users-earned-graph.component';
 import { AdminSeperateUsersNumOfRidesGraphComponent } from './components/admin-graphs/admin-seperate-users-num-of-rides-graph/admin-seperate-users-num-of-rides-graph.component';
->>>>>>> Stashed changes
+
+
 
 
 
 @NgModule({
-<<<<<<< Updated upstream
-  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent],
-=======
+
   declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent, AdminReportsComponent, AdminAllDriversEarnGraphComponent, AdminAllDriversRidesGraphComponent, AdminAllDriversKilometersGraphComponent, AdminSeperateUsersGraphComponent, AdminSeperateUsersEarnedGraphComponent, AdminSeperateUsersNumOfRidesGraphComponent],
->>>>>>> Stashed changes
   imports: [
     AppRoutingModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
+    NgxChartsModule,
     NavbarModule,
     HistoryInstanceModule,
     CommonModule

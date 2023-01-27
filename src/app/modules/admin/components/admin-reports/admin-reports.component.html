@@ -1,5 +1,6 @@
 <div id="report-content" #printable>
 
+
     <div class="graph-holder shadow">
         <app-admin-seperate-users-earned-graph *ngIf="dataLoaded" [driverData]="seperateDriverData" [view]="[970,570]"></app-admin-seperate-users-earned-graph>
     </div>
@@ -17,6 +18,7 @@
         </mat-select>
       </mat-form-field>
     <div class="graph-holder shadow">
+
         <app-admin-all-drivers-earn-graph *ngIf="dataLoaded" [driverData]="allData" [view]="[970,570]"></app-admin-all-drivers-earn-graph>
     </div>
     <div class="graph-holder shadow">

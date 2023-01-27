@@ -130,9 +130,11 @@ color: #FF9642;
     border-radius: 5px;
   }
 
+
   #selector{
     margin-bottom:20px;
   }
+
 #actions-div{
     display:flex;
     flex-direction: column;

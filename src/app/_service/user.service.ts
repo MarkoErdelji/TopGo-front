@@ -62,6 +62,9 @@ export class UserService {
     responseType: 'json' },)
   }
   getUsersRides(userId,page,size,sort,begintime,endtime){
+    if(sort == null){
+      sort = 'start';
+    }
     if(begintime != null && endtime != null){
       return this.http.get<UserRidesListDTO>('http://localhost:8000/api/user/'+userId+"/ride", { params: { page: page, size: size,sort:sort,beginDateInterval:begintime,endDateInterval:endtime },   observe: 'response',
       responseType: 'json' },)
