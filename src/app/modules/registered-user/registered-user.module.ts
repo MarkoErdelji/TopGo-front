@@ -22,6 +22,7 @@ import {NgxChartsModule} from "@swimlane/ngx-charts";
 import { RideDayGraphComponent } from './components/graphs/ride-day-graph/ride-day-graph.component';
 import { KmPerDayGraphComponent } from './components/graphs/km-per-day-graph/km-per-day-graph.component';
 import { MoneySpentGraphComponent } from './components/graphs/money-spent-graph/money-spent-graph.component';
+import { ReviewDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/review-dialog/review-dialog.component';
 
 
 
@@ -43,7 +44,8 @@ import { MoneySpentGraphComponent } from './components/graphs/money-spent-graph/
         RegisteredReportsComponent,
         RideDayGraphComponent,
         KmPerDayGraphComponent,
-        MoneySpentGraphComponent
+        MoneySpentGraphComponent,
+        ReviewDialogComponent
     ],
 
   imports: [
