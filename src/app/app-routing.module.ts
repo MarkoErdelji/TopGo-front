@@ -36,6 +36,11 @@ import {DriverHomeComponent} from "./modules/driver/components/driver-home/drive
 import {
   RegisteredHistoryComponent
 } from "./modules/registered-user/components/registered-history/registered-history.component";
+import {
+  RegisteredReportsComponent
+} from "./modules/registered-user/components/registered-reports/registered-reports.component";
+import { AdminReportsComponent } from './modules/admin/components/admin-reports/admin-reports.component';
+
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -50,7 +55,8 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                               { path: 'home', component: RegisteredHomeComponent},
                               { path: 'inbox', component: RegisteredInboxComponent},
                               { path: 'history', component: RegisteredHistoryComponent},
-                              { path: '', redirectTo: 'home', pathMatch: 'full' }
+                              { path: 'reports', component: RegisteredReportsComponent},
+                       { path: '', redirectTo: 'home', pathMatch: 'full' }
                             ],
                           canActivate: [UserGuard]},
                         {
@@ -72,7 +78,8 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                             {path: 'createDriver', component: CreateDriverComponent},
                             {path: 'history/:id', component: AdminHistoryComponent},
                             {path: 'inbox', component: AdminInboxComponent},
-                            {path: 'requests', component: RequestNotificationComponent}],
+                            {path: 'requests', component: RequestNotificationComponent},
+                            {path: 'reports',component: AdminReportsComponent}],
                           canActivate: [AdminGuard]}];
 
 @NgModule({

@@ -2,9 +2,11 @@
     <img [src]='pfp' id="profile-img"  [routerLink]="['/registered/profile']">
     <button mat-raised-button shadow id="home" [routerLink]="['/registered/home']">Home</button>
     <button mat-raised-button shadow id="inbox"[routerLink]="['/registered/inbox']">Inbox</button>
+
     <button mat-raised-button shadow id="history"[routerLink]="['/registered/history']">History</button>
     <button mat-raised-button shadow id="routes">Routes</button>
-    <button mat-raised-button shadow id="reports">Reports</button>
+    <button mat-raised-button shadow id="reports" [routerLink]="['/registered/reports']">Reports</button>
+
 </div>
 
 <div id="logout-container">

@@ -32,6 +32,7 @@ import {
   FavouriteNameDialogComponent
 } from "./registered-route-form-dialogs/favourite-name-dialog/favourite-name-dialog.component";
 import {FavouriteRideInfoDTO} from "../../../DTO/FavouriteRideInfoDTO";
+import {ReviewDialogComponent} from "./registered-route-form-dialogs/review-dialog/review-dialog.component";
 
 
 @Component({
@@ -218,6 +219,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   private GoPressed(locationDTO:LocationDTO) {
       this.passengerSocketService.initializeWebSocketConnectionFriendResponse(this.authService.getUserId());
     this.routeFormService.RemoveAllMarkers();
+    this.favVisible = true;
     this.isDisabled = true;
     // @ts-ignore
     this.popupContent.nativeElement.style.display = 'none';
@@ -261,7 +263,8 @@ export class RegisteredRouteFormComponent implements OnInit {
         utcDate = new Date(Date.UTC(scheduleDate.getFullYear(),scheduleDate.getMonth(),scheduleDate.getDate(),scheduleDate.getHours(),scheduleDate.getMinutes(),scheduleDate.getSeconds()));
       }
 
-      let ride:CreateRideDTO
+      let ride:CreateRideDTO;
+
       ride = <CreateRideDTO>
           {
             locations: [],
@@ -324,7 +327,7 @@ export class RegisteredRouteFormComponent implements OnInit {
               };
             ride!.locations[0].destination = geo;
 
-
+              console.log(ride);
               this.subscriptions.push(this.rideService.createRide(ride!).pipe(
                 catchError((error) => {
                   if (error.status === 404) {
@@ -359,15 +362,16 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.currentRide = ride;
     this.rideStatus = ride.status;
     console.log(ride)
-    this.driverService.getDriverById(ride.driver.id).subscribe(driver => {
+    this.subscriptions.push(this.driverService.getDriverById(ride.driver.id).subscribe(driver => {
       this.selectedDriver = driver;
       this.showDriverInfo(this.selectedDriver!);
       this.driverService.setLocation(this.selectedDriver!);
       this.InitConfirmRide();
-    });
+    }));
   }
 
   rideActive(ride: RideDTO) {
+
     this.activeBtn = false;
     this.acceptedBtn = true;
     // @ts-ignore
@@ -456,20 +460,23 @@ export class RegisteredRouteFormComponent implements OnInit {
 
 
   ngOnDestroy() {
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
-    this.passengerSocketService.stompClient.disconnect()
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
   ngOnInit(): void {
+
     let location = this.routeFormService.getLocation()
     let destination = this.routeFormService.getDestination()
     this.goForm.controls.location.setValue(location)
     this.goForm.controls.destination.setValue(destination)
     this.routeFormService.setForm("", "")
-
     this.rideService.getFavouriteRide().subscribe(response =>
+    this.subscriptions.push(this.rideService.getFavouriteRide().subscribe(response =>
+
     {
       this.favouriteRides = response
-    })
+    })));
     this.subscriptions.push(this.passengerService.getPassengerById(this.authService.getUserId()).subscribe(passenger => {
       let userRef: UserRef = <UserRef>
         {
@@ -481,7 +488,7 @@ export class RegisteredRouteFormComponent implements OnInit {
       this.acceptedFriends.push(userRef);
     }));
 
-    this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
+    this.subscriptions.push(this.passengerSocketService.selectReturnRide$.subscribe({next:(ride:RideDTO)=>{
         if(ride.id) {
           this.currentRide = ride;
           this.rideStatus = ride.status;
@@ -504,6 +511,18 @@ export class RegisteredRouteFormComponent implements OnInit {
           {
             this.rideActive(ride);
           }
+          if (ride.status == "FINISHED")
+          {
+            this.activeBtn = true;
+          }
+          if (ride.status == "PANIC")
+          {
+            this.activeBtn = true;
+          }
+          if (ride.status == "CANCELED")
+          {
+            this.acceptedBtn = true;
+          }
           if (ride.status == "SCHEDULED"){
             const dialogRef = this.dialog.open(RideNotificationComponent, {
               width: '250px',
@@ -516,9 +535,33 @@ export class RegisteredRouteFormComponent implements OnInit {
         }
 
       }
-    })
+    }));
+    this.subscriptions.push(this.passengerSocketService.selectResponse$.subscribe(friendResponse =>
+    {
+      console.log("OVO")
+      console.log(friendResponse)
+      console.log("OVO")
+      if(friendResponse.status == "ACCEPTED")
+      {
+        this.friendInvites.set(friendResponse.invitedId,"ACCEPTED");
+        this.passengerService.getPassengerById(friendResponse.invitedId).subscribe(pass =>
+        {
+          let userRef:UserRef =
+            {
+              id : pass.id,
+              email: pass.email
+            }
+          this.acceptedFriends.push(userRef);
+        })
 
-    this.passengerSocketService.selectReturnError$.subscribe({next:(error:string)=>{
+      }
+      if(friendResponse.status == "REJECTED")
+      {
+        this.friendInvites.set(friendResponse.invitedId,"REJECTED");
+      }
+    }))
+
+    this.subscriptions.push(this.passengerSocketService.selectReturnError$.subscribe({next:(error:string)=>{
         if(error == "No drivers left!"){
           this.closeOrder();
           const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -526,11 +569,11 @@ export class RegisteredRouteFormComponent implements OnInit {
             data: {msg:"No more drivers are left for your ride!"}
           });
         }
-    }})
+    }}))
     this.selectedFormInput = this.goForm.get("location")
     this.notSelectedFormInput = this.goForm.get("destination")
 
-    this.mapService.selectDistanceAndAverage$.subscribe({next:(distance:DistanceAndAverageDTO)=>{
+    this.subscriptions.push(this.mapService.selectDistanceAndAverage$.subscribe({next:(distance:DistanceAndAverageDTO)=>{
       this.distance = distance.distance;
       this.average = distance.average;
       let vehType:string = "1"
@@ -550,7 +593,7 @@ export class RegisteredRouteFormComponent implements OnInit {
     })
 
 
-      } })
+      } }))
 
     this.subscriptions.push(this.mapService.selectMapClick$.subscribe({next:(adress:string)=>{
       if(adress != "[object Object]") {
@@ -571,7 +614,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   private CheckForRides() {
-    this.rideService.getPassengerPendingRide(this.authService.getUserId()).pipe(
+    this.subscriptions.push(this.rideService.getPassengerPendingRide(this.authService.getUserId()).pipe(
       catchError((error) => {
         if (error.status === 404) {
           console.log("no ride!")
@@ -592,10 +635,11 @@ export class RegisteredRouteFormComponent implements OnInit {
         this.SetRide(ride);
         this.currentLocation = locationDTO;
         this.routeFormService.setLocation(locationDTO)
+        this.favVisible = true;
         console.log(this.currentRide);
       }
-    })
-    this.rideService.getPassengerAcceptedRide(this.authService.getUserId()).pipe(
+    }))
+    this.subscriptions.push(this.rideService.getPassengerAcceptedRide(this.authService.getUserId()).pipe(
       catchError((error) => {
         if (error.status === 404) {
           console.log("no ride!")
@@ -615,10 +659,11 @@ export class RegisteredRouteFormComponent implements OnInit {
         this.currentLocation = locationDTO;
         this.routeFormService.setLocation(locationDTO)
         this.currentRide = ride;
+        this.favVisible = true;
         console.log(this.currentRide);
       }
-    })
-    this.rideService.getPassengerActiveRide(this.authService.getUserId()).pipe(
+    }))
+    this.subscriptions.push(this.rideService.getPassengerActiveRide(this.authService.getUserId()).pipe(
       catchError((error) => {
         if (error.status === 404) {
           console.log("no ride!")
@@ -638,9 +683,10 @@ export class RegisteredRouteFormComponent implements OnInit {
         this.currentLocation = locationDTO;
         this.routeFormService.setLocation(locationDTO)
         this.currentRide = ride;
+        this.favVisible = true;
         console.log(this.currentRide);
       }
-    })
+    }))
   }
 
   private showDriverInfo(driver: DriverInfoDTO) {
@@ -685,7 +731,7 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
 
   withdrawRide() {
-    this.rideService.withdraw(this.currentRide?.id).subscribe(ride => this.currentRide);
+    this.subscriptions.push(this.rideService.withdraw(this.currentRide?.id).subscribe(ride => this.currentRide));
 
   }
 
@@ -705,16 +751,14 @@ export class RegisteredRouteFormComponent implements OnInit {
       data: {ride: this.currentRide}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(result)
         this.rideStatus = result.body.ride.status;
       }
-    });
-
-
-
+    }));
   }
+
   openDialogName() {
     let name:string = 'null'
     const dialogRef = this.dialog.open(FavouriteNameDialogComponent, {
@@ -722,11 +766,11 @@ export class RegisteredRouteFormComponent implements OnInit {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.favouriteRide(result);
       }
-    });
+    }));
 
 
 
@@ -736,7 +780,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   inviteFriend(email:string) {
     if(email == "")email = this.goForm.get("friendEmail")?.value;
-    this.userService.getUserByEmail(email).subscribe(result =>
+    this.subscriptions.push(this.userService.getUserByEmail(email).subscribe(result =>
     {
       this.goForm.get("friendEmail")?.setValue("")
       this.passengerService.getPassengerById(result.body.id).subscribe(pass =>
@@ -756,23 +800,7 @@ export class RegisteredRouteFormComponent implements OnInit {
                 this.allInvitedFriends.push(invUserRef)
                 this.friends.push(pass);
                 this.friendInvites.set(pass.id,"PENDING");
-                this.passengerSocketService.selectResponse$.subscribe(friendResponse =>
-                {
-                  if(friendResponse.status == "ACCEPTED")
-                  {
-                    this.friendInvites.set(friendResponse.invitedId,"ACCEPTED");
-                    let userRef:UserRef =
-                      {
-                        id : pass.id,
-                        email: pass.email
-                      }
-                      this.acceptedFriends.push(userRef);
-                  }
-                  if(friendResponse.status == "REJECTED")
-                  {
-                    this.friendInvites.set(friendResponse.invitedId,"REJECTED");
-                  }
-                })
+
               })
 
 
@@ -781,7 +809,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
       })
 
-    })
+    }))
 
   }
 

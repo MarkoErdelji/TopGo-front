@@ -66,7 +66,7 @@ export class RegisteredHistoryComponent implements OnInit {
       this.userid = params['id'];
     });
 
-    this.passengerService.getPassengerRides(this.authService.getUserId(), "").subscribe(response => {
+    this.passengerService.getPassengerRides(this.authService.getUserId(), 0, 100000, null, null).subscribe(response => {
       for(let ride of response.body!.results){
         if(ride.status == "FINISHED"){
           this.lista.push(ride)
@@ -239,7 +239,7 @@ export class RegisteredHistoryComponent implements OnInit {
       latitude: this.selectedRide!.locations[0].destination.latitude,
       longitude: this.selectedRide!.locations[0].destination.longitude,
     }
-    geoLocations.push({departure:departure, destination: destination})
+    geoLocations.push({departure:departure, destination: destination, lenght: this.selectedRide!.locations[0].lenght})
     favRide = <FavouriteRideDTO>
       {
         favoriteName: name,

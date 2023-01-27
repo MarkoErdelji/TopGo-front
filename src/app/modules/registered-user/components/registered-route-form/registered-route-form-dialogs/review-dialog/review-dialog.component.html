@@ -1,0 +1,37 @@
+
+<span
+  *ngFor="let star of stars; let i = index"
+  (click)="rateCar(i + 1)"
+>
+  <ng-container *ngIf="star; else noStar">⭐</ng-container>
+  <ng-template #noStar>★</ng-template>
+</span>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="route-form-field" >
+    <mat-label>Leave a review for a vehicle</mat-label>
+    <input matInput name="message"  [(ngModel)]="msgCar">
+  </mat-form-field>
+</mat-dialog-content>
+
+<span
+  *ngFor="let star of starsDriver; let i = index"
+  (click)="rateDriver(i + 1)"
+>
+  <ng-container *ngIf="star; else noStar">⭐</ng-container>
+  <ng-template #noStar>★</ng-template>
+</span>
+
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="route-form-field" >
+    <mat-label>Leave a review for a driver</mat-label>
+    <input matInput name="message"  [(ngModel)]="msgDriver">
+  </mat-form-field>
+</mat-dialog-content>
+
+<div id = "button-div">
+  <mat-dialog-actions>
+    <button id = "cancel-btn" mat-button (click)="onNoClick()">Cancel</button>
+    <button id = "send-btn"mat-button (click)="onSendClick()"  cdkFocusInitial>Rate</button>
+  </mat-dialog-actions>
+</div>
