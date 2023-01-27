@@ -7,6 +7,10 @@ import jsPDF from 'jspdf';
 import { forkJoin, Observable } from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
+
+import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
+import { UserListResponseBlockedDTO } from 'src/app/modules/DTO/UserListDTO';
+
 import { UserRidesListDTO } from 'src/app/modules/DTO/UserRidesListDTO';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { AuthService } from 'src/app/_service/auth.service';
@@ -24,10 +28,16 @@ export class AdminReportsComponent implements OnInit {
     startControl: new FormControl(),
     endControl: new FormControl(),
   });
+
+  userSelect = new FormControl()
   graphData:Object[] = [];
+  userData!:UserListResponseBlockedDTO[];
   driverData:DriverGraphDTO = <DriverGraphDTO> {fullName:'',data:[]};
+  seperateDriverData:DriverGraphDTO = <DriverGraphDTO> {fullName:'',data:[]};
   allData:DriverGraphDTO[] = [];
   dataLoaded:boolean = false;
+  selectedValue!:number;
+
   chartDataLoaded:boolean = false;
   
 
@@ -36,7 +46,7 @@ export class AdminReportsComponent implements OnInit {
 
   ngOnInit(): void {
     this.userService.getUsers(0,9000).subscribe((res) => {
-      console.log(res);
+      this.userData=res.body!.results
       let driverRidesObservables:Observable<HttpResponse<UserRidesListDTO>>[]= [];
       res.body!.results.forEach((driver) => {
           let currentDriver = driver;
@@ -53,15 +63,16 @@ export class AdminReportsComponent implements OnInit {
           this.allData.push(this.driverData);
         });
         this.dataLoaded = true;
-        console.log(this.allData);
       });
+      this.userService.getUsersRides(this.userData[0].id,0,9000,null,null,null).subscribe((userRides)=>{
+        this.seperateDriverData.fullName = this.userData[0].name + " " + this.userData[0].surname;
+        this.seperateDriverData.data = userRides.body?.results || [];
+      })
     });
   }
 
-  changeGraphs(){
-    this.dataLoaded = false;
-    this.driverData =  <DriverGraphDTO> {fullName:'',data:[]};
-    this.allData = [];
+  onSelect(id){
+    this.dataLoaded = false
     if(this.dateForm.controls.endControl.value!= null && this.dateForm.controls.startControl.value!=null){
       if(this.dateForm.controls.endControl.value < this.dateForm.controls.startControl.value){
         const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -71,6 +82,7 @@ export class AdminReportsComponent implements OnInit {
         return
       }
     }
+    
     let utcDateEnd:Date|null = null;
     if(this.dateForm.controls.endControl.value != null){
       utcDateEnd = new Date(Date.UTC(this.dateForm.controls.endControl.value.getFullYear(),this.dateForm.controls.endControl.value.getMonth(),this.dateForm.controls.endControl.value.getDate(),this.dateForm.controls.endControl.value.getHours(),this.dateForm.controls.endControl.value.getMinutes(),this.dateForm.controls.endControl.value.getSeconds()));
@@ -81,8 +93,54 @@ export class AdminReportsComponent implements OnInit {
       utcDateStart = new Date(Date.UTC(this.dateForm.controls.startControl.value.getFullYear(),this.dateForm.controls.startControl.value.getMonth(),this.dateForm.controls.startControl.value.getDate(),this.dateForm.controls.startControl.value.getHours(),this.dateForm.controls.startControl.value.getMinutes(),this.dateForm.controls.startControl.value.getSeconds()));
 
     }
+    let user = this.userData.find((obj)=>obj.id === id)
+    this.userService.getUsersRides(id,0,9000,null,utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe((userRides)=>{
+      this.seperateDriverData.fullName = user!.name + " " + user!.surname;
+      this.seperateDriverData.data = userRides.body?.results || [];
+      this.seperateDriverData.data.reverse()
+      this.dataLoaded = true;
+    })
+  }
+
+  changeGraphs(){
+    this.dataLoaded = false;
+    this.driverData =  <DriverGraphDTO> {fullName:'',data:[]};
+    this.allData = [];
+    let userId;
+    if(this.selectedValue == null){
+      userId = 0
+    }
+    else{
+      userId = this.selectedValue;
+    }
+    console.log(userId);
+    if(this.dateForm.controls.endControl.value!= null && this.dateForm.controls.startControl.value!=null){
+      if(this.dateForm.controls.endControl.value < this.dateForm.controls.startControl.value){
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"Start time can not be before end time!"}
+        });
+        return
+      }
+    }
+
+    let utcDateEnd:Date|null = null;
+    if(this.dateForm.controls.endControl.value != null){
+      utcDateEnd = new Date(Date.UTC(this.dateForm.controls.endControl.value.getFullYear(),this.dateForm.controls.endControl.value.getMonth(),this.dateForm.controls.endControl.value.getDate(),this.dateForm.controls.endControl.value.getHours(),this.dateForm.controls.endControl.value.getMinutes(),this.dateForm.controls.endControl.value.getSeconds()));
+
+    }
+    let utcDateStart:Date|null = null
+    if(this.dateForm.controls.startControl.value !=null){
+      utcDateStart = new Date(Date.UTC(this.dateForm.controls.startControl.value.getFullYear(),this.dateForm.controls.startControl.value.getMonth(),this.dateForm.controls.startControl.value.getDate(),this.dateForm.controls.startControl.value.getHours(),this.dateForm.controls.startControl.value.getMinutes(),this.dateForm.controls.startControl.value.getSeconds()));
+
+    }
+    let user = this.userData.find((obj)=>obj.id === userId)
+    this.userService.getUsersRides(userId,0,9000,null,utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe((userRides)=>{
+      this.seperateDriverData.fullName = user!.name + " " + user!.surname;
+      this.seperateDriverData.data = userRides.body?.results || [];
+      this.seperateDriverData.data.reverse()
+    })
     this.driverService.getAll().subscribe((res) => {
-      console.log(res);
       let driverRidesObservables:Observable<HttpResponse<UserRidesListDTO>>[]= [];
       res.body!.results.forEach((driver) => {
           let currentDriver = driver;
@@ -99,7 +157,6 @@ export class AdminReportsComponent implements OnInit {
           this.allData.push(this.driverData);
         });
         this.dataLoaded = true;
-        console.log(this.allData);
       });
     });
   }

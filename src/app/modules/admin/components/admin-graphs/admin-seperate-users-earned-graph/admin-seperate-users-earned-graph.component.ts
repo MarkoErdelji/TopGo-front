@@ -1,14 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
-import { LineGraphDTO, NameValueInstance } from 'src/app/modules/DTO/LineGraphDTO';
+import { NameValueInstance, LineGraphDTO } from 'src/app/modules/DTO/LineGraphDTO';
 
 @Component({
-  selector: 'app-driver-num-of-rides-date-graph',
-  templateUrl: './driver-num-of-rides-date-graph.component.html',
-  styleUrls: ['./driver-num-of-rides-date-graph.component.css']
+  selector: 'app-admin-seperate-users-earned-graph',
+  templateUrl: './admin-seperate-users-earned-graph.component.html',
+  styleUrls: ['./admin-seperate-users-earned-graph.component.css']
 })
-export class DriverNumOfRidesDateGraphComponent implements OnInit {
+export class AdminSeperateUsersEarnedGraphComponent implements OnInit {
 
+  
   constructor() { }
 
   ngOnInit(): void {
@@ -20,12 +21,10 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
       name: this.driverData.fullName,
       value: '#FF9642'
     })
-
     if(this.driverData.data.length == 0){
       return;
     }
     let lastStart:Date =  new Date(this.driverData.data[0].startTime);
-
     let value = 0; 
     var dateValues = {};
     this.driverData.data.forEach((element) => {
@@ -33,7 +32,7 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
       let day:string = date.getDate().toString();
       let month:string = (date.getMonth()+1).toString();
       let year:string = date.getFullYear().toString();
-      let value = 1;
+      let value = element.totalCost;
       if(month.toString().length == 1){
         month = "0"+month;
       }
@@ -72,20 +71,19 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
   colorScheme:Object[] = [];
   showLabels: boolean = true;
   animations: boolean = true;
-  total:number = 0;
   xAxis: boolean = true;
   yAxis: boolean = true;
+  total:number = 0;
+  @Input() view!:[number,number];
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
   averageLine!: LineGraphDTO;
   xAxisLabel: string = 'Time';
-  yAxisLabel: string = 'Num of rides';
+  yAxisLabel: string = 'Earned (Driver)/Spent (Passenger)';
   timeline: boolean = true;
-  @Input() view!:[number,number];
   @Input()  driverData!:DriverGraphDTO;
 
   graphData:Object[] = [];
   driverInstance!:LineGraphDTO;
-
 
 }
