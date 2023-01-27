@@ -226,7 +226,7 @@
         </div>
         <div id="button-holder">
           <button mat-raised-button id="order-button" (click)="orderAgain()">Order again</button>
-          <button mat-raised-button id="rate-button" *ngIf="canRate">Rate</button>
+          <button mat-raised-button id="rate-button" (click)="rateRide()" *ngIf="canRate">Rate</button>
           <button  id="favourite-button" (click)="addToFavourite()" [disabled]="addedToFav" [ngClass]="{'yellow': addedToFav}"><img id = "star-icon" src ="assets/images/star_icon.png"></button>
         </div>
 

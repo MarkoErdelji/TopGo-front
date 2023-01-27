@@ -23,6 +23,9 @@ import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {catchError} from "rxjs/operators";
 import {EMPTY, of} from "rxjs";
 import {RouteFormService} from "../../../service/route-form.service";
+import {
+  ReviewDialogComponent
+} from "../registered-route-form/registered-route-form-dialogs/review-dialog/review-dialog.component";
 
 @Component({
   selector: 'app-registered-history',
@@ -267,5 +270,27 @@ export class RegisteredHistoryComponent implements OnInit {
       console.log(response)
     })
 
+  }
+
+  rateRide() {
+    const dialogRef = this.dialog.open(ReviewDialogComponent, {
+      width: '400px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.reviewService.addDriverReviews(this.selectedRide!.id,result[1]).subscribe(res =>
+        {
+
+          console.log(res)
+        });
+        this.reviewService.addVehicleReviews(this.selectedRide!.id,result[0]).subscribe(res =>
+        {
+
+          console.log(res)
+        });
+      }
+    });
   }
 }

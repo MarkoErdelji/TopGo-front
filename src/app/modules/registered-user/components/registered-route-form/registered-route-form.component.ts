@@ -608,10 +608,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   }
 
-  public fillLocationAndDestination(location:string, destination:string){
-    this.goForm.get("location")?.setValue(location)
-    this.goForm.get("destination")?.setValue(destination)
-  }
+
 
   private CheckForRides() {
     this.subscriptions.push(this.rideService.getPassengerPendingRide(this.authService.getUserId()).pipe(
