@@ -11,9 +11,18 @@ import {UserService} from "../../../service/user.service";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
 import {FormControl, FormGroup} from "@angular/forms";
 import {SortParameters} from "../../../DTO/SortParameters";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
 import {MatDialog} from "@angular/material/dialog";
+import {
+  FavouriteNameDialogComponent
+} from "../registered-route-form/registered-route-form-dialogs/favourite-name-dialog/favourite-name-dialog.component";
+import {FavouriteRideDTO} from "../../../DTO/FavouriteRideDTO";
+import {RouteForCreateRideDTO} from "../../../DTO/RouteForCreateRideDTO";
+import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
+import {catchError} from "rxjs/operators";
+import {EMPTY, of} from "rxjs";
+import {RouteFormService} from "../../../service/route-form.service";
 
 @Component({
   selector: 'app-registered-history',
@@ -44,8 +53,10 @@ export class RegisteredHistoryComponent implements OnInit {
   });
   selectedSortParam:string = "";
   sortParams: (string | SortParameters)[] | undefined;
+  addedToFav:boolean = false;
+  canRate: boolean = true;
 
-  constructor(private dialog:MatDialog, private route:ActivatedRoute, private userService:UserService, private rideService:RideService, private authService: AuthService, private passengerService:RegisteredService, private reviewService:ReviewService) {
+  constructor(private routeFormService: RouteFormService, private router: Router,private dialog:MatDialog, private route:ActivatedRoute, private userService:UserService, private rideService:RideService, private authService: AuthService, private passengerService:RegisteredService, private reviewService:ReviewService) {
     this.sortParams = Object.keys(SortParameters).filter(key => !isNaN(Number(SortParameters[key])));
     this.selectedSortParam = SortParameters[0];
   }
@@ -83,6 +94,8 @@ export class RegisteredHistoryComponent implements OnInit {
     this.currentHistoryItem = this.historyItems[i];
     this.passengerInfo.splice(0, this.passengerInfo.length)
     this.selectedRide = this.lista[i]
+    this.checkIfCanRate(this.selectedRide)
+    this.checkIfFavourite(this.selectedRide)
     let dateStart = new Date( this.selectedRide.startTime)
     this.startDate = dateStart.toLocaleString()
     let stringDate = this.selectedRide.startTime;
@@ -121,6 +134,46 @@ export class RegisteredHistoryComponent implements OnInit {
 
   }
 
+  checkIfCanRate(ride:RideDTO){
+  this.reviewService.getRideReviews(ride.id).subscribe(response=>{
+    for(let review of response){
+      if(review.passenger.id == this.authService.getUserId()){
+        this.canRate = false;
+        return
+      }
+    }
+  })
+
+    let dateStart= new Date(ride.startTime)
+    let compareDate = new Date(dateStart.setDate(dateStart.getDate() + 3))
+    let currentDate = new Date()
+    console.log(currentDate>compareDate)
+    if(currentDate>compareDate){
+      this.canRate = false;
+      return
+
+    }
+    else{
+      this.canRate = true;
+    }
+
+  }
+
+  checkIfFavourite(ride:RideDTO){
+    this.rideService.getFavouriteRide().subscribe(favouriteRides=>{
+      for(let favouriteRide of favouriteRides){
+        if(favouriteRide.locations[0].departure.address == ride.locations[0].departure.address && favouriteRide.locations[0].destination.address == ride.locations[0].destination.address){
+          this.addedToFav = true;
+          return
+        }
+        else{
+          this.addedToFav = false;
+        }
+      }
+    })
+
+  }
+
   sort() {
     if(this.sortForm.controls.endControl.value!= null && this.sortForm.controls.startControl.value!=null){
       if(this.sortForm.controls.endControl.value < this.sortForm.controls.startControl.value){
@@ -151,5 +204,68 @@ export class RegisteredHistoryComponent implements OnInit {
       })
     })
     this.lista = this.rideDtos;
+  }
+
+  orderAgain() {
+    this.routeFormService.setForm(this.selectedRide!.locations[0].departure.address, this.selectedRide!.locations[0].destination.address)
+    this.router.navigate(["registered/home"])
+  }
+
+  addToFavourite() {
+    let name:string = 'null'
+    const dialogRef = this.dialog.open(FavouriteNameDialogComponent, {
+      width: '400px',
+      data: {}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.favouriteRide(result);
+      }
+    });
+  }
+
+  private favouriteRide(name:string) {
+    let favRide:FavouriteRideDTO
+
+      let geoLocations:RouteForCreateRideDTO[] = []
+      let departure: GeoLocationDTO= {
+        address: this.selectedRide!.locations[0].departure.address,
+        latitude: this.selectedRide!.locations[0].departure.latitude,
+        longitude: this.selectedRide!.locations[0].departure.longitude,
+      }
+    let destination: GeoLocationDTO= {
+      address: this.selectedRide!.locations[0].destination.address,
+      latitude: this.selectedRide!.locations[0].destination.latitude,
+      longitude: this.selectedRide!.locations[0].destination.longitude,
+    }
+    geoLocations.push({departure:departure, destination: destination})
+    favRide = <FavouriteRideDTO>
+      {
+        favoriteName: name,
+        locations: geoLocations,
+        passengers: this.selectedRide!.passengers,
+        vehicleType: this.selectedRide!.vehicleType,
+        babyTransport: this.selectedRide!.babyTransport,
+        petTransport: this.selectedRide!.petTransport
+      };
+
+    this.rideService.favouriteRide(favRide).pipe(
+      catchError((error) => {
+        if (error.status === 400) {
+          this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"You must select a car type!"}
+          });
+          return EMPTY;
+        }
+        return of(null);
+      })
+    ).subscribe(response =>
+    {
+      this.addedToFav = true;
+      console.log(response)
+    })
+
   }
 }

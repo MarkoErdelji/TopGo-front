@@ -4,33 +4,34 @@
     <div id="title">
       <h1>History</h1>
     </div>
-
-    <div [ngClass]="'items'">
-      <ng-template  ngFor let-item [ngForOf]="lista" let-i="index">
-        <div (click)="historyItemClick(i)"  class="round-wrapper">
-          <div id="content-holder">
-            <div id="history-item" >
-              <div id="title-container">
-                <p id="date-value">{{item.startTime.toString().split("T")[0]}}</p>
-              </div>
-              <div class="value-container" id="departure-container">
-                <div class="title-img-container">
-                  <img src="assets/images/departure-marker.png" class="icon">
-                  <p id="departure-title">Departure:</p>
+    <div id="wrapper">
+      <div [ngClass]="'items'">
+        <ng-template  ngFor let-item [ngForOf]="lista" let-i="index">
+          <div (click)="historyItemClick(i)"  class="round-wrapper">
+            <div id="content-holder">
+              <div id="history-item" >
+                <div id="title-container">
+                  <p id="date-value">{{item.startTime.toString().split("T")[0]}}</p>
                 </div>
-                <p id="departure-value" class="text-value">{{item.locations[0].departure.address}}</p>
-              </div>
-              <div class="value-container" id="destination-container">
-                <div class="title-img-container">
-                  <img src="assets/images/destination-marker.png" class="destination-icon">
-                  <p id="destination-title">Destination:</p>
+                <div class="value-container" id="departure-container">
+                  <div class="title-img-container">
+                    <img src="assets/images/departure-marker.png" class="icon">
+                    <p id="departure-title">Departure:</p>
+                  </div>
+                  <p id="departure-value" class="text-value">{{item.locations[0].departure.address}}</p>
                 </div>
-                <p id="destination-value" class="text-value">{{item.locations[0].destination.address}}</p>
+                <div class="value-container" id="destination-container">
+                  <div class="title-img-container">
+                    <img src="assets/images/destination-marker.png" class="destination-icon">
+                    <p id="destination-title">Destination:</p>
+                  </div>
+                  <p id="destination-value" class="text-value">{{item.locations[0].destination.address}}</p>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </ng-template>
+        </ng-template>
+      </div>
     </div>
     <div  id="sortingDiv" class="sort-width-div">
     <div class="white-background">
@@ -223,8 +224,11 @@
             </div>
           </div>
         </div>
-
-
+        <div id="button-holder">
+          <button mat-raised-button id="order-button" (click)="orderAgain()">Order again</button>
+          <button mat-raised-button id="rate-button" *ngIf="canRate">Rate</button>
+          <button  id="favourite-button" (click)="addToFavourite()" [disabled]="addedToFav" [ngClass]="{'yellow': addedToFav}"><img id = "star-icon" src ="assets/images/star_icon.png"></button>
+        </div>
 
       </div>
     </div>

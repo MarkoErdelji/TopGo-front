@@ -27,10 +27,15 @@
   color:white;
 }
 
+#wrapper{
+  height: 60%;
+  overflow: scroll;
+}
+
 .round-wrapper{
   width: 85%;
-  min-height: 20%;
-  height: auto;
+
+  height: 100%;
   margin: 20px;
 
   background-color: white;
@@ -39,8 +44,7 @@
   justify-content: center;
 }
 .items{
-  height: 90%;
-  overflow: scroll;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -525,4 +529,46 @@
 #sort-button{
   background-color: #FF9642;
   color: white;
+}
+
+#star-icon
+{
+  width: 50px;
+  height: 50px;
+
+}
+
+#button-holder{
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+#button-holder>button{
+  text-align: center;
+
+}
+
+#order-button, #rate-button{
+  background-color: #FF9642 !important;
+  width: 125px;
+  height: 50px;
+  color: white;
+  margin: 10px;
+  font-size: large;
+}
+
+#favourite-button{
+  border: none;
+  border-radius: 50px;
+  padding: 5px;
+}
+
+#favourite-button:hover
+{
+  background-color: yellow;
+}
+.yellow{
+  background-color: yellow !important;
 }
