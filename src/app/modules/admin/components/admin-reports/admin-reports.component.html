@@ -1,8 +1,24 @@
 <div id="report-content" #printable>
+
+
     <div class="graph-holder shadow">
+        <app-admin-seperate-users-earned-graph *ngIf="dataLoaded" [driverData]="seperateDriverData" [view]="[970,570]"></app-admin-seperate-users-earned-graph>
     </div>
     
     <div class="graph-holder shadow">
+        <app-admin-seperate-users-num-of-rides-graph *ngIf="dataLoaded" [driverData]="seperateDriverData" [view]="[970,570]"></app-admin-seperate-users-num-of-rides-graph>
+    </div>
+    <div class="graph-holder shadow">
+        <app-admin-seperate-users-graph *ngIf="dataLoaded" [driverData]="seperateDriverData" [view]="[970,570]"></app-admin-seperate-users-graph>
+    </div>
+    <mat-form-field appearance="fill" id="selector">
+        <mat-label>Select user</mat-label>
+        <mat-select formControlName = "userSelect" [(value)]="selectedValue" (selectionChange)="onSelect($event.value)">
+          <mat-option *ngFor="let user of userData" [value]="user.id">{{user.id}} {{user.name}} {{user.surname}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    <div class="graph-holder shadow">
+
         <app-admin-all-drivers-earn-graph *ngIf="dataLoaded" [driverData]="allData" [view]="[970,570]"></app-admin-all-drivers-earn-graph>
     </div>
     <div class="graph-holder shadow">

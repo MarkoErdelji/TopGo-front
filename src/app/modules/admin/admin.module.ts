@@ -19,11 +19,17 @@ import { AdminAllDriversEarnGraphComponent } from './components/admin-graphs/adm
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { AdminAllDriversRidesGraphComponent } from './components/admin-graphs/admin-all-drivers-rides-graph/admin-all-drivers-rides-graph.component';
 import { AdminAllDriversKilometersGraphComponent } from './components/admin-graphs/admin-all-drivers-kilometers-graph/admin-all-drivers-kilometers-graph.component';
+import { AdminSeperateUsersGraphComponent } from './components/admin-graphs/admin-seperate-users-graph/admin-seperate-users-graph.component';
+import { AdminSeperateUsersEarnedGraphComponent } from './components/admin-graphs/admin-seperate-users-earned-graph/admin-seperate-users-earned-graph.component';
+import { AdminSeperateUsersNumOfRidesGraphComponent } from './components/admin-graphs/admin-seperate-users-num-of-rides-graph/admin-seperate-users-num-of-rides-graph.component';
+
+
 
 
 
 @NgModule({
-  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent, AdminReportsComponent, AdminAllDriversEarnGraphComponent, AdminAllDriversRidesGraphComponent, AdminAllDriversKilometersGraphComponent],
+
+  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent, AdminReportsComponent, AdminAllDriversEarnGraphComponent, AdminAllDriversRidesGraphComponent, AdminAllDriversKilometersGraphComponent, AdminSeperateUsersGraphComponent, AdminSeperateUsersEarnedGraphComponent, AdminSeperateUsersNumOfRidesGraphComponent],
   imports: [
     AppRoutingModule,
     MaterialModule,

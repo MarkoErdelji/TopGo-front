@@ -73,8 +73,6 @@ export class AdminAllDriversRidesGraphComponent implements OnInit {
       this.graphData.push(instance);
     })
     this.graphData.push(this.averageLine);
-    console.log(this.allInstances)
-    console.log(this.graphData)
   }
 
   colorScheme:Object[] = [];
@@ -96,15 +94,4 @@ export class AdminAllDriversRidesGraphComponent implements OnInit {
   allInstances:LineGraphDTO[] = [];
   driverInstance!:LineGraphDTO;
 
-  onSelect(rideDtos): void {
-    console.log('Item clicked', JSON.parse(JSON.stringify(rideDtos)));
-  }
-
-  onActivate(rideDtos): void {
-    console.log('Activate', JSON.parse(JSON.stringify(rideDtos)));
-  }
-
-  onDeactivate(rideDtos): void {
-    console.log('Deactivate', JSON.parse(JSON.stringify(rideDtos)));
-  }
 }

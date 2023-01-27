@@ -1,13 +1,13 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
-import { LineGraphDTO, NameValueInstance } from 'src/app/modules/DTO/LineGraphDTO';
+import { NameValueInstance, LineGraphDTO } from 'src/app/modules/DTO/LineGraphDTO';
 
 @Component({
-  selector: 'app-driver-num-of-rides-date-graph',
-  templateUrl: './driver-num-of-rides-date-graph.component.html',
-  styleUrls: ['./driver-num-of-rides-date-graph.component.css']
+  selector: 'app-admin-seperate-users-num-of-rides-graph',
+  templateUrl: './admin-seperate-users-num-of-rides-graph.component.html',
+  styleUrls: ['./admin-seperate-users-num-of-rides-graph.component.css']
 })
-export class DriverNumOfRidesDateGraphComponent implements OnInit {
+export class AdminSeperateUsersNumOfRidesGraphComponent implements OnInit {
 
   constructor() { }
 
@@ -20,12 +20,10 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
       name: this.driverData.fullName,
       value: '#FF9642'
     })
-
     if(this.driverData.data.length == 0){
       return;
     }
     let lastStart:Date =  new Date(this.driverData.data[0].startTime);
-
     let value = 0; 
     var dateValues = {};
     this.driverData.data.forEach((element) => {
@@ -72,16 +70,16 @@ export class DriverNumOfRidesDateGraphComponent implements OnInit {
   colorScheme:Object[] = [];
   showLabels: boolean = true;
   animations: boolean = true;
-  total:number = 0;
   xAxis: boolean = true;
   yAxis: boolean = true;
+  total:number = 0;
+  @Input() view!:[number,number];
   showYAxisLabel: boolean = true;
   showXAxisLabel: boolean = true;
   averageLine!: LineGraphDTO;
   xAxisLabel: string = 'Time';
   yAxisLabel: string = 'Num of rides';
   timeline: boolean = true;
-  @Input() view!:[number,number];
   @Input()  driverData!:DriverGraphDTO;
 
   graphData:Object[] = [];
