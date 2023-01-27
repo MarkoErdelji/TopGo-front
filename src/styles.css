@@ -28,8 +28,8 @@ html, body { height: 100%; padding:0; margin:0 }
   font-family: 'Font Awesome 6 Free' !important;
 }
 ::-webkit-scrollbar-thumb {
-  background-color: #FF9642; 
-  border-radius: 6px; 
+  background-color: #FF9642;
+  border-radius: 6px;
 }
 
 .mat-icon{
@@ -37,11 +37,11 @@ html, body { height: 100%; padding:0; margin:0 }
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background-color: #FF9642; 
+  background-color: #FF9642;
 }
 
 ::-webkit-scrollbar {
-  width: 0.7em; 
+  width: 0.7em;
   height:0.7em;
   background-color: transparent;
 }
@@ -59,6 +59,13 @@ html, body { height: 100%; padding:0; margin:0 }
   -moz-box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.75);
   box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.75);
 }
+.shadow2
+{
+  -webkit-box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.95);
+  -moz-box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.95);
+  box-shadow: 0px 0px 7px -1px rgba(0,0,0,0.95);
+}
+
 .content-holder {
   z-index: -2;
   height: 100%;

@@ -36,6 +36,10 @@ export class RideService {
     responseType: 'json'});
   }
 
+  getRide(rideId){
+    return this.http.get<any>(this.endpoint+"/"+rideId);
+  }
+
   simulateRide(rideId){
     return this.http.put<any>(this.endpoint+"/simulate/"+rideId,{'headers':this.headers,observe: 'response',
     responseType: 'json'});
@@ -76,6 +80,9 @@ export class RideService {
 
   getPassengerPendingRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/pending")
+  }
+  getPassengerFinishedRide(id:number){
+    return this.http.get<RideDTO[]>(this.endpoint+"/passenger/"+id+"/finished")
   }
   getPassengerAcceptedRide(id:number){
     return this.http.get<RideDTO>(this.endpoint+"/passenger/"+id+"/accepted")

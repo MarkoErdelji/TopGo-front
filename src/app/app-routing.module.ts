@@ -34,9 +34,13 @@ import {
 } from "./modules/registered-user/components/registered-inbox/registered-inbox.component";
 import {DriverHomeComponent} from "./modules/driver/components/driver-home/driver-home.component";
 import {
+  RegisteredHistoryComponent
+} from "./modules/registered-user/components/registered-history/registered-history.component";
+import {
   RegisteredReportsComponent
 } from "./modules/registered-user/components/registered-reports/registered-reports.component";
 import { AdminReportsComponent } from './modules/admin/components/admin-reports/admin-reports.component';
+
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
@@ -50,8 +54,9 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                               { path: 'profile', component: RegisteredProfileComponent},
                               { path: 'home', component: RegisteredHomeComponent},
                               { path: 'inbox', component: RegisteredInboxComponent},
+                              { path: 'history', component: RegisteredHistoryComponent},
                               { path: 'reports', component: RegisteredReportsComponent},
-                              { path: '', redirectTo: 'home', pathMatch: 'full' }
+                       { path: '', redirectTo: 'home', pathMatch: 'full' }
                             ],
                           canActivate: [UserGuard]},
                         {

@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
 import { LocationDTO } from '../unregistered-user/components/route-form/LocationDTO';
+import {FormGroup} from "@angular/forms";
 
 @Injectable({
   providedIn: 'root'
 })
 
 export class RouteFormService {
+  location:string = '';
+  destination:string ='';
+
   private Location$ = new BehaviorSubject<any>({});
   selectLocation$ = this.Location$.asObservable();
 
@@ -24,6 +28,18 @@ export class RouteFormService {
   }
   RemoveAllMarkers() {
     this.Cancel$.next(true);
+  }
+
+  setForm(location:string, destination:string) {
+    this.location = location
+    this.destination = destination
+  }
+
+  getLocation() {
+    return this.location
+  }
+  getDestination(){
+    return this.destination
   }
 
 

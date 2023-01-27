@@ -466,10 +466,17 @@ export class RegisteredRouteFormComponent implements OnInit {
   }
   ngOnInit(): void {
 
+    let location = this.routeFormService.getLocation()
+    let destination = this.routeFormService.getDestination()
+    this.goForm.controls.location.setValue(location)
+    this.goForm.controls.destination.setValue(destination)
+    this.routeFormService.setForm("", "")
+    this.rideService.getFavouriteRide().subscribe(response =>
     this.subscriptions.push(this.rideService.getFavouriteRide().subscribe(response =>
+
     {
       this.favouriteRides = response
-    }));
+    })));
     this.subscriptions.push(this.passengerService.getPassengerById(this.authService.getUserId()).subscribe(passenger => {
       let userRef: UserRef = <UserRef>
         {
@@ -601,6 +608,8 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   }
 
+
+
   private CheckForRides() {
     this.subscriptions.push(this.rideService.getPassengerPendingRide(this.authService.getUserId()).pipe(
       catchError((error) => {
@@ -702,6 +711,8 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.confirmRide.nativeElement.style.display = 'none';
 
   }
+
+
 
 
   destinaionInFocus() {
