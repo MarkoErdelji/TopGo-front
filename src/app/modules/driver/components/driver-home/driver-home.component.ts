@@ -59,7 +59,10 @@ export class DriverHomeComponent implements OnInit {
               isActive: false
             }
             this.driverService.updateDriverActivity(driverActivity, driver.id).subscribe(res=>{
-              window.alert("Presao si 8 sati brapiceeeeeeee")
+              const dialogRef = this.dialog.open(RideNotificationComponent, {
+                width: '250px',
+                data: {msg:"You exceeded 8 hours of work!\nYou cannot accept any rides for today."}
+              });
             })
 
           })

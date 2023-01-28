@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ContentChild, ElementRef, Input, OnInit, Output } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import {catchError, Observable, Subject, throwError} from 'rxjs';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { DriverSocketService } from 'src/app/modules/service/driver-socket.service';
 import { DriverService } from 'src/app/modules/service/driver.service';
@@ -31,13 +31,15 @@ export class DriverMenuComponent implements OnInit {
           let endDTO:EndTimeDTO={
             end:utcDateStart.toISOString()
           }
-          this.driverService.updateWorkingHour(workingHour.id, endDTO).subscribe(response=>{
+          this.driverService.updateWorkingHour(workingHour.id, endDTO)
+            .subscribe(response=>{
             console.log(response)
-            AuthService.doLogout();
+
           })
         }
       }
     })
+    AuthService.doLogout();
 
   }
 
