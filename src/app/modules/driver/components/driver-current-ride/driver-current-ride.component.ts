@@ -81,9 +81,11 @@ export class DriverCurrentRideComponent implements OnInit {
     this.hasRides = false;
     this.rideVisible = false;
     this.routeFormService.clearRoute();
+    this.driverService.updateToggle(true)
   }
 
   setRideInfo(ride: RideDTO) {
+    this.driverService.updateToggle(false);
     this.hasRides = true;
     this.passengers.splice(0, this.passengers.length);
     for(let item of ride.passengers){
