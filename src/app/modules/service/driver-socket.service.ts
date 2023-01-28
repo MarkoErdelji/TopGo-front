@@ -8,6 +8,7 @@ import { DriverService } from './driver.service';
 import {BehaviorSubject} from "rxjs";
 import { GeoLocationDTO } from '../DTO/GeoLocationDTO';
 import { RouteFormService } from './route-form.service';
+import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -28,6 +29,7 @@ export class DriverSocketService {
     this.stompClient.connect({}, function() {
       that.openSocket(driverId);
       that.openVehicleLocationSocket(driverId);
+      that.openDriverWorkHourSocket(driverId);
     });
   }
 
@@ -56,6 +58,31 @@ export class DriverSocketService {
 
 
       });
+  }
+
+  openDriverWorkHourSocket(driverId){
+    this.stompClient.subscribe('/topic/work-hour/driver/'+driverId, (message) => {
+      try{
+          const driverInfoDTO: DriverInfoDTO = JSON.parse(message.body);
+          if(driverInfoDTO != null){
+            this.setReturnDriver(driverInfoDTO)
+          }
+        }
+
+      catch{
+        const error:String = message.body;
+        console.log(error);
+        this.setReturnError(error);
+      }
+
+
+    });
+  }
+
+  private returnDriver$ = new BehaviorSubject<any>({});
+  selectReturnDriver$ = this.returnDriver$.asObservable();
+  setReturnDriver(driver: DriverInfoDTO) {
+    this.returnDriver$.next(driver);
   }
 
   openVehicleLocationSocket(driverId){
