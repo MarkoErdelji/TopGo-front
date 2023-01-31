@@ -6,6 +6,7 @@ import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
 import {CreateRideDTO} from "../DTO/CreateRideDTO";
 import {Observable} from "rxjs";
 import {SendMessageDTO} from "../DTO/SendMessageDTO";
+import {ChangePasswordDTO} from "../DTO/ChangePasswordDTO";
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,10 @@ export class UserService {
   }
   sendMessage(id:number,message:SendMessageDTO): Observable<any> {
     return this.http.post<SendMessageDTO>(this.endpoint+"/"+id+'/message',message,{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
+  }
+  changePassword(id:number,pass:ChangePasswordDTO): Observable<any> {
+    return this.http.put<any>(this.endpoint+"/"+id+'/changePassword',pass,{'headers':this.headers,observe: 'response',
       responseType: 'json'});
   }
 

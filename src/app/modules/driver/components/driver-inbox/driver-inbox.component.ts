@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserMessagesDTO} from "../../../DTO/UserMessagesDTO";
 import {DriverInfoDTO} from "../../../DTO/DriverInfoDTO";
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {UserService} from "../../../service/user.service";
 import {RegisteredService} from "../../../service/registered.service";
 import {UserSocketService} from "../../../service/user-socket.service";
@@ -24,7 +24,7 @@ export class DriverInboxComponent implements OnInit {
   chat:UserMessagesDTO[] =[]
 
   sendForm = new FormGroup({
-    messageLabel: new FormControl(""),
+    messageLabel: new FormControl("",Validators.required),
   });
 
   constructor(private userService:UserService,private authService:AuthService,private userSocketService:UserSocketService) { }
@@ -143,18 +143,18 @@ export class DriverInboxComponent implements OnInit {
   sendMessage() {
     console.log(this.sendForm.get("messageLabel")?.value)
 
-    let messageToSend:SendMessageDTO = {
-      message: this.sendForm.get("messageLabel")?.value || '',
-      type: "RIDE",
-      // @ts-ignore
-      rideId: 1
+    if (this.sendForm.valid) {
+      let messageToSend: SendMessageDTO = {
+        message: this.sendForm.get("messageLabel")?.value || '',
+        type: "RIDE",
+        // @ts-ignore
+        rideId: 1
+      }
+
+      this.userService.sendMessage(this.selectedUser.id, messageToSend!).subscribe(response => {
+        this.sendForm.get("messageLabel")?.setValue("");
+      });
     }
-
-    this.userService.sendMessage(this.selectedUser.id,messageToSend!).subscribe(response =>
-    {
-
-    });
-
   }
 }
 
