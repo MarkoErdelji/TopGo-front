@@ -25,9 +25,14 @@
       </div>
     </div>
     <button mat-raised-button shadow id="edit-profile" (click)="openDialog()">Edit profile</button>
+    <p id = "change-password" (click)="openPasswordDialog()" >Change Password</p>
   </div>
   <div id="report-content">
-    <div class="shadow" id="report-box"> </div>
-    <div class="shadow" id="report-box-end"> </div>
+    <div class="shadow" id="report-box">
+      <app-km-per-day-graph *ngIf="rides && rides.length > 0" [rides]="rides"></app-km-per-day-graph>
+    </div>
+    <div class="shadow" id="report-box-end">
+      <app-ride-day-graph *ngIf="rides && rides.length > 0" [rides]="rides"></app-ride-day-graph>
+    </div>
     <div>
     </div>

@@ -6,6 +6,12 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   EditProfileDialogComponent
 } from "./registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component";
+import {RideDTO} from "../../../DTO/RideDTO";
+import {RideService} from "../../../service/ride.service";
+import {AuthService} from "../../../../_service/auth.service";
+import {
+  ChangePasswordDialogComponent
+} from "./registered-profile-dialogs/change-password-dialog/change-password-dialog.component";
 
 @Component({
   selector: 'app-registered-profile',
@@ -20,10 +26,17 @@ export class RegisteredProfileComponent implements OnInit {
   phone: any;
   pfp: any;
   user?:PassengerInfoDTO;
+  rides:RideDTO[] = [];
 
-  constructor(public dialog: MatDialog,private passengerService:RegisteredService) { }
+  constructor(public dialog: MatDialog,private passengerService:RegisteredService,private authService:AuthService) { }
 
   ngOnInit(): void {
+    this.passengerService.getPassengerRides(this.authService.getUserId(),0,9000,null,null).subscribe(res =>
+      {
+        this.rides = res.body?.results!
+        console.log(this.rides)
+
+      })
     this.passengerService.getPassengerById(this.passengerService.id || 0).subscribe(passenger =>
     {
       console.log(passenger)
@@ -37,7 +50,13 @@ export class RegisteredProfileComponent implements OnInit {
     });
 
   }
+  openPasswordDialog() :void
+{
+  const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
+    data: {}
+  });
 
+}
   openDialog(): void {
     let msg = ''
     const dialogRef = this.dialog.open(EditProfileDialogComponent, {
