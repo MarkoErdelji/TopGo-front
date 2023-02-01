@@ -28,6 +28,7 @@ import { DriverPriceDateGraphComponent } from './components/driver-graphs/driver
 import { DriverKmDateGraphComponent } from './components/driver-graphs/driver-km-date-graph/driver-km-date-graph.component';
 import { DriverNumOfRidesDateGraphComponent } from './components/driver-graphs/driver-num-of-rides-date-graph/driver-num-of-rides-date-graph.component';
 import { DriverEarnedPerMonthGraphComponent } from './components/driver-graphs/driver-earned-per-month-graph/driver-earned-per-month-graph.component';
+import { DriverChatComponent } from './dialogs/driver-chat/driver-chat.component';
 
 
 
@@ -52,7 +53,8 @@ import { DriverEarnedPerMonthGraphComponent } from './components/driver-graphs/d
     DriverPriceDateGraphComponent,
     DriverKmDateGraphComponent,
     DriverNumOfRidesDateGraphComponent,
-    DriverEarnedPerMonthGraphComponent
+    DriverEarnedPerMonthGraphComponent,
+    DriverChatComponent
   ],
   imports: [
     AppRoutingModule,
