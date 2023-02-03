@@ -27,7 +27,7 @@ export class DriverComponent implements OnInit {
 
 
   ngOnInit(): void {
-  
+
     this.userService.getUserByEmail(this.authService.getEmail()).subscribe(
       response=>{
         if(response.status == 200){
@@ -62,9 +62,12 @@ export class DriverComponent implements OnInit {
       }
     )
 
-    
+
   }
 
+  ngOnDestroy() {
+    this.driverSocketService.stompClient.disconnect();
+  }
 
   sendBase64(data:string) {
     const base64Data = data;
