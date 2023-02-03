@@ -63,7 +63,6 @@ export class DriverPriceDateGraphComponent implements OnInit {
       this.total+= res.value
     })
     average = this.total/len;
-    alert(average + "and this is total" + this.total)
     this.driverInstance.series.forEach((res)=>{
       this.averageLine.series.push(<NameValueInstance>{name:res.name,value:average})
     })

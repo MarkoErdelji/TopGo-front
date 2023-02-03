@@ -1,6 +1,6 @@
 import { Dialog } from '@angular/cdk/dialog';
 import { HttpResponse } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
@@ -19,7 +19,7 @@ import { UserService } from 'src/app/_service/user.service';
   templateUrl: './admin-reports.component.html',
   styleUrls: ['./admin-reports.component.css']
 })
-export class AdminReportsComponent implements OnInit {
+export class AdminReportsComponent implements OnInit,OnDestroy {
 
   constructor(private dialog:Dialog,private userService:UserService,private driverService:DriverService,private authService:AuthService) { }
   dateForm = new FormGroup({

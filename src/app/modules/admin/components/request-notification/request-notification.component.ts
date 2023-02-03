@@ -7,12 +7,7 @@ import {Router} from "@angular/router";
 import {DriverService} from "../../../service/driver.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
-<<<<<<< HEAD
 import { Subscription } from 'rxjs';
-=======
-import {Subscription} from "rxjs";
-
->>>>>>> ceb28cc0350e9e7cb2419c6bcf65a248a10bc042
 
 @Component({
   selector: 'app-request-notification',
