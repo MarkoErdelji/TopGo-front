@@ -303,4 +303,6 @@ export class DriverCurrentRideComponent implements OnInit {
       data: {ride: this.currentRide}
     });
   }
+
+
 }

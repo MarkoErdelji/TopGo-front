@@ -14,6 +14,7 @@ import { RegisteredService } from 'src/app/modules/service/registered.service';
 import { ReviewService } from 'src/app/modules/service/review.service';
 import { RideService } from 'src/app/modules/service/ride.service';
 import { UserService } from 'src/app/_service/user.service';
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-driver-history',
@@ -45,6 +46,7 @@ export class DriverHistoryComponent implements OnInit {
   selectedSortParam:string;
   selectedDatetime: Date | undefined;
   sortParams: (string | SortParameters)[] | undefined;
+  private subscriptions: Subscription[] = [];
 
 
   constructor(private dialog:MatDialog,private route:ActivatedRoute,private rideService:RideService,private driverService:DriverService,private reviewService:ReviewService,private userService:UserService) {
@@ -52,6 +54,7 @@ export class DriverHistoryComponent implements OnInit {
     this.selectedSortParam = SortParameters[0]; }
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.driverService.getDriverRides(this.driverService.id,0,9000,this.selectedSortParam.toLowerCase(),null,null).subscribe(response=>{
       console.log(response)
       response.body!.results.forEach((element)=>{
@@ -60,7 +63,7 @@ export class DriverHistoryComponent implements OnInit {
         }
       })
       this.ridesLoaded = true;
-    })
+    }))
   }
 
 
@@ -88,19 +91,20 @@ export class DriverHistoryComponent implements OnInit {
     console.log(utcDateStart)
     this.ridesLoaded = false;
     this.rideDtos = [];
+    this.subscriptions.push(
     this.driverService.getDriverRides(this.driverService.id,0,9000,this.selectedSortParam.toLowerCase(),utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
       console.log(response)
       response.body!.results.forEach((element)=>{
           this.rideDtos.push(element);
       })
       this.ridesLoaded = true;
-    })
+    }))
   }
   selectRide(rideDto:RideDTO){
     if(rideDto.id == this.selectedRide?.id){
       return
     }
-    
+
     let dateStart = new Date( rideDto.startTime)
     this.startDate = dateStart.toLocaleString()
     let stringDate = rideDto.startTime;
@@ -115,13 +119,16 @@ export class DriverHistoryComponent implements OnInit {
     this.passengerInfo = [];
     this.selectedRide = rideDto;
     this.selectedRide.passengers.forEach((passenger)=>{
+      this.subscriptions.push(
       this.userService.getUserById(passenger.id).subscribe((response)=>
       {
         this.passengerInfo.push(response.body!);
-      })
+      }))
     })
+    this.subscriptions.push(
     this.reviewService.getRideReviews(this.selectedRide.id).subscribe((review)=>{
       review.forEach(element => {
+        this.subscriptions.push(
         this.userService.getUserById(element.passenger.id).subscribe(passengerInfo=>{
           if(element.type == "DRIVER"){
             this.driverReviews.push({passenger:passengerInfo.body!,review:element})
@@ -129,11 +136,16 @@ export class DriverHistoryComponent implements OnInit {
           else if(element.type == "VEHICLE"){
             this.vehicleReviews.push({passenger:passengerInfo.body!,review:element})
           }
-        })
+        }))
 
       });
       this.itemLoaded=true;
-    })
+    }))
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 
 

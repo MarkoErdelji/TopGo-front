@@ -2,6 +2,7 @@ import {Component, Inject, OnInit} from '@angular/core';
 import {UserService} from "../../../service/user.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {SendMessageDTO} from "../../../DTO/SendMessageDTO";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-driver-chat',
@@ -11,6 +12,7 @@ import {SendMessageDTO} from "../../../DTO/SendMessageDTO";
 export class DriverChatComponent implements OnInit {
 
   msg: any;
+  private subscriptions: Subscription[] = [];
 
   constructor(
     private userService:UserService,
@@ -32,10 +34,18 @@ export class DriverChatComponent implements OnInit {
       type: "RIDE",
       rideId: this.data.ride?.id!
     }
+
     for(let user of this.data.ride?.passengers){
+      this.subscriptions.push(
       this.userService.sendMessage(user.id,message).subscribe(response =>{})
+      )
     }
 
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 
 }

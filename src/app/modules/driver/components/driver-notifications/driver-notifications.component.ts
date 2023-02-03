@@ -24,6 +24,7 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
   timerSubscription!: Subscription;
   dateEnd!:Date;
   endDate!:String;
+  private subscriptions: Subscription[] = [];
   constructor(private dialog:MatDialog,@Inject(MAT_SNACK_BAR_DATA) public data: any,private rideService:RideService,private userService:UserService) {}
 
   ngOnInit(): void {
@@ -43,6 +44,7 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
         email: '',
         profilePicture: ''
       }
+      this.subscriptions.push(
       this.userService.getUserById(passenger.id).subscribe(result=>{
         console.log(result);
         instance.email =result.body!.email
@@ -50,7 +52,7 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
         console.log(instance);
         this.passengerUsernameProfile!.push(instance)
         console.log(this.passengerUsernameProfile)}
-      )
+      ))
     })
   }
   startTimer() {
@@ -62,48 +64,53 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
       }
     });
   }
-
   ngOnDestroy() {
     this.timerSubscription.unsubscribe();
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 
 
+
   onAccept() {
-  this.rideService.acceptRide(this.ride.id).pipe(
-      catchError((error:HttpErrorResponse) => {
-        if(error.status == 400){
-          const dialogRef = this.dialog.open(RideNotificationComponent, {
-            width: '250px',
-            data: {msg:error.error.message}
-          });
+    this.subscriptions.push(
+    this.rideService.acceptRide(this.ride.id).pipe(
+        catchError((error:HttpErrorResponse) => {
+          if(error.status == 400){
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg:error.error.message}
+            });
+            this.data.snackBarRef.dismiss();
+          }
+          if(error.status == 404){
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg:error.error.message}
+            });
+            this.data.snackBarRef.dismiss();
+          }
+          return of(null)
+        }
+        )
+      ).subscribe((res: any) => {
+        if(res != null){
+          if(res.status == "ACCEPTED"){
+            this.rideService.simulateRide(this.ride.id).subscribe(res=>{
+              console.log(res);
+            })
+          }
+          console.log(res);
           this.data.snackBarRef.dismiss();
         }
-        if(error.status == 404){
-          const dialogRef = this.dialog.open(RideNotificationComponent, {
-            width: '250px',
-            data: {msg:error.error.message}
-          });
-          this.data.snackBarRef.dismiss();
-        }
-        return of(null)
-      }
-      )
-    ).subscribe((res: any) => {
-      if(res != null){
-        if(res.status == "ACCEPTED"){
-          this.rideService.simulateRide(this.ride.id).subscribe(res=>{
-            console.log(res);
-          })
-        }
-        console.log(res);
-        this.data.snackBarRef.dismiss();
-      }
-    });
+      }));
   }
   onDecline() {
     let rejectionTextDTO:RejectionTextDTO = {
       reason:"Placeholder"
     }
+    this.subscriptions.push(
     this.rideService.declineRide(this.ride.id, rejectionTextDTO).pipe(
       catchError((error:HttpErrorResponse) => {
         if(error.status == 400){
@@ -127,6 +134,7 @@ export class DriverNotificationsComponent implements OnInit,AfterViewInit {
       if(res != null){
         this.data.snackBarRef.dismiss();
       }
-    });
+    }));
     }
+
 }

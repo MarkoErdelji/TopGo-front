@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
-import { map } from 'rxjs';
+import {map, Subscription} from 'rxjs';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { RideDTO } from 'src/app/modules/DTO/RideDTO';
@@ -24,14 +24,16 @@ export class DriverProfileComponent implements OnInit {
   address?:string
   phone?:string
   dataLoaded:boolean = false;
-  driverData:DriverGraphDTO= <DriverGraphDTO> {fullName:'',data:[]};;
+  driverData:DriverGraphDTO= <DriverGraphDTO> {fullName:'',data:[]};
+  private subscriptions: Subscription[] = [];
 
   constructor(private route: ActivatedRoute,private authService:AuthService,private driverService:DriverService,private dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.driverService.getImageUrl().subscribe(url => this.imageUrl = url)
-    
+    this.subscriptions.push(
+    this.driverService.getImageUrl().subscribe(url => this.imageUrl = url))
 
+    this.subscriptions.push(
     this.driverService.getDriverById(this.driverService.id || 0).pipe(
       map(data => {
         if (data) {
@@ -51,8 +53,8 @@ export class DriverProfileComponent implements OnInit {
         this.driverData.fullName = this.firstName +" "+ this.lastName
         this.dataLoaded = true;
       })
-    })
-  
+    }))
+
   }
 
 
@@ -66,4 +68,9 @@ export class DriverProfileComponent implements OnInit {
   openVehicle(){
     this.dialog.open(DriverVehicleDialogComponent,{ panelClass: 'custom-dialog-container'});
 }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
+  }
 }

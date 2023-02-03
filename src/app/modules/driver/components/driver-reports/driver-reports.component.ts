@@ -14,6 +14,7 @@ declare var require: any;
 
 import * as pdfMake from "pdfmake/build/pdfmake";
 import * as pdfFonts from "pdfmake/build/vfs_fonts";
+import {Subscription} from "rxjs";
 const htmlToPdfmake = require("html-to-pdfmake");
 (pdfMake as any).vfs = pdfFonts.pdfMake.vfs;
 
@@ -34,15 +35,18 @@ export class DriverReportsComponent implements OnInit {
   driverDataForChart:DriverGraphDTO = <DriverGraphDTO> {fullName:'',data:[]};
   dataLoaded:boolean = false;
   chartDataLoaded:boolean = false;
+  private subscriptions: Subscription[] = [];
 
   @ViewChild('printable')
   pdfTable!: ElementRef;
 
   ngOnInit(): void {
+    this.subscriptions.push(
     this.driverService.getDriverById(this.authService.getUserId()).subscribe((res)=>{
       this.driverData.fullName = res.name + " " +res.surname;
       this.driverDataForChart.fullName = res.name+" "+res.surname;
-     })
+     }))
+    this.subscriptions.push(
     this.driverService.getDriverRides(this.authService.getUserId(),0,9000,null,null,null).subscribe(response=>{
       response.body!.results.forEach((element)=>{
           this.driverData.data.push(element);
@@ -52,7 +56,8 @@ export class DriverReportsComponent implements OnInit {
       this.driverDataForChart.data.reverse();
       this.dataLoaded = true;
       this.chartDataLoaded = true;
-    }) }
+    }))
+  }
 
   changeGraphs(){
     this.dataLoaded = false;
@@ -76,6 +81,7 @@ export class DriverReportsComponent implements OnInit {
       utcDateStart = new Date(Date.UTC(this.dateForm.controls.startControl.value.getFullYear(),this.dateForm.controls.startControl.value.getMonth(),this.dateForm.controls.startControl.value.getDate(),this.dateForm.controls.startControl.value.getHours(),this.dateForm.controls.startControl.value.getMinutes(),this.dateForm.controls.startControl.value.getSeconds()));
 
     }
+    this.subscriptions.push(
     this.driverService.getDriverRides(this.authService.getUserId(),0,9000,null,utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
       response.body!.results.forEach((element)=>{
           this.driverData.data.push(element);
@@ -84,7 +90,7 @@ export class DriverReportsComponent implements OnInit {
       this.driverData.data.reverse();
       this.driverDataForChart.data.reverse();
       this.dataLoaded = true;
-    })
+    }))
   }
 
   public downloadAsPDF() {
@@ -96,6 +102,12 @@ export class DriverReportsComponent implements OnInit {
     pdf.addImage(canvas.toDataURL('image/png'), 'PNG', 0, 0, 210, 297);
     pdf.save('report.pdf');
   });
-     
+
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 }
