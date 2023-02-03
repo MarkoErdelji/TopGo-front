@@ -19,7 +19,7 @@ export class PasswordResetService {
 
   constructor(private http: HttpClient,private router:Router) {}
 
-  private headers = { 'content-type': 'application/json'}  
+  private headers = { 'content-type': 'application/json'}
 
 
 

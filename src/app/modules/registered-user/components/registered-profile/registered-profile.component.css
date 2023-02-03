@@ -33,7 +33,13 @@ p
 
 }
 
-
+#change-password
+{
+  margin-top:5%;
+  margin-left: 12%;
+  color: #ff9642;
+  cursor: pointer;
+}
 #edit-profile{
   border:0;
   width:100px;
@@ -63,28 +69,30 @@ p
   align-items: center;
 }
 #report-content{
-  margin:30px;
-  height:80%;
-  width:30%;
+  height:100%;
+  width:500px;
   display:flex;
   flex-direction: column;
+  margin: 100px;
 
 }
 #report-box-end{
-  width:100%;
+  width:400px;
+  height: 400px;
   border-radius:10px;
   flex-basis:45%;
-  margin-top:10%;
   background-color: #F4F4F4;
   justify-self:flex-end;
+  margin: 20px;
 }
 #report-box{
-  width:100%;
+  width:400px;
+  height: 400px;
   border-radius:10px;
-  margin-bottom:10%;
   flex-basis:45%;
   justify-self:flex-start;
   background-color: #F4F4F4;
+  margin: 20px;
 }
 mat-icon:hover{
   cursor:pointer;

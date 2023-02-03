@@ -3,7 +3,7 @@ import {DriverSocketService} from "../../../service/driver-socket.service";
 import {RideDTO} from "../../../DTO/RideDTO";
 import {MapService} from "../../../../components/map/map.service";
 import {DriverService} from "../../../service/driver.service";
-import {first} from "rxjs";
+import {first, Subscription} from "rxjs";
 import {DistanceAndAverageDTO} from "../../../DTO/DistanceAndAverageDTO";
 import {RideService} from "../../../service/ride.service";
 import {AuthService} from "../../../../_service/auth.service";
@@ -23,6 +23,10 @@ import {RejectionTextDTO} from "../../../DTO/RejectionTextDTO";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
 import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
 import {UserRef} from "../../../DTO/UserRef";
+import {
+  ChatDialogComponent
+} from "../../../registered-user/components/registered-route-form/registered-route-form-dialogs/chat-dialog/chat-dialog.component";
+import {DriverChatComponent} from "../../dialogs/driver-chat/driver-chat.component";
 
 @Component({
   selector: 'app-driver-current-ride',
@@ -46,6 +50,8 @@ export class DriverCurrentRideComponent implements OnInit {
   rejectionTextDTO?: RejectionTextDTO;
   profilePicture: string = '';
   passengers: PassengerInfoDTO[] = [];
+  private subscriptions: Subscription[] = [];
+  private currentRide?: RideDTO;
   constructor(private dialog:MatDialog ,private location:Location, private routeFormService:RouteFormService, private driverSocketSerivice:DriverSocketService, private mapService:MapService, private userService:UserService, private rideService:RideService, private authService:AuthService, private driverService:DriverService) { }
 
   ngOnInit(): void {
@@ -85,13 +91,15 @@ export class DriverCurrentRideComponent implements OnInit {
   }
 
   setRideInfo(ride: RideDTO) {
+    this.currentRide = ride;
     this.driverService.updateToggle(false);
     this.hasRides = true;
     this.passengers.splice(0, this.passengers.length);
     for(let item of ride.passengers){
+      this.subscriptions.push(
       this.userService.getUserById(String(item.id)).subscribe(passenger => {
         this.passengers.push(passenger);
-      })
+      }))
     }
 
     this.time = ride.estimatedTimeInMinutes;
@@ -101,7 +109,9 @@ export class DriverCurrentRideComponent implements OnInit {
     this.rideVisible = true;
     if(ride.status == "ACCEPTED"){
       this.isAccepted = true;
+      this.subscriptions.push(
       this.driverService.getDriverById(ride.driver.id).subscribe(driver=>{
+        this.subscriptions.push(
         this.driverService.getDriverVehicle(driver.id).subscribe(vehicle=>{
           let location:LocationDTO = {
             location:vehicle.currentLocation.address,
@@ -109,8 +119,8 @@ export class DriverCurrentRideComponent implements OnInit {
           }
           console.log(location)
           this.routeFormService.setLocation(location);
-        })
-      })
+        }))
+      }))
     }
     else if(ride.status == "ACTIVE"){
       let location:LocationDTO = {
@@ -126,25 +136,29 @@ export class DriverCurrentRideComponent implements OnInit {
   }
 
   haveAcceptedRides(){
+    this.subscriptions.push(
     this.rideService.getDriverAcceptedRide(this.authService.getUserId()).subscribe(rideDTO=>{
       if(rideDTO != null) {
         this.setRideInfo(rideDTO)
       }
-    })
+    }))
   }
 
   haveActiveRides(){
+    this.subscriptions.push(
     this.rideService.getDriverActiveRide(this.authService.getUserId()).subscribe(rideDTO=>{
       if(rideDTO != null) {
         this.setRideInfo(rideDTO)
       }
-    })
+    }))
   }
 
   startRide() {
     if(typeof this.rideId === "undefined"){
+      this.subscriptions.push(
       this.rideService.getDriverAcceptedRide(this.authService.getUserId()).subscribe(rideDTO=>{
         if(rideDTO != null) {
+          this.subscriptions.push(
           this.rideService.startRide(rideDTO.id).subscribe(response=>{
             if(response != null){
               this.rideService.simulateRide(rideDTO.id).subscribe(res=>{
@@ -152,11 +166,12 @@ export class DriverCurrentRideComponent implements OnInit {
               })
               console.log(response)
             }
-          })
+          }))
         }
-      })
+      }))
     }
     else{
+      this.subscriptions.push(
       this.rideService.startRide(this.rideId).subscribe(response=>{
         if(response != null){
           console.log(response)
@@ -164,15 +179,17 @@ export class DriverCurrentRideComponent implements OnInit {
             console.log(res);
           })
         }
-      })
+      }))
     }
 
   }
 
   endRide() {
     if(typeof this.rideId === "undefined"){
+      this.subscriptions.push(
       this.rideService.getDriverActiveRide(this.authService.getUserId()).subscribe(rideDTO=>{
         if(rideDTO != null) {
+          this.subscriptions.push(
           this.rideService.finishRide(rideDTO.id).subscribe(response=>{
             if(response != null){
               const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -180,11 +197,12 @@ export class DriverCurrentRideComponent implements OnInit {
                 data: {msg:"Ride is finished."}
               });
             }
-          })
+          }))
         }
-      })
+      }))
     }
     else{
+      this.subscriptions.push(
       this.rideService.finishRide(this.rideId).subscribe(response=>{
         if(response != null){
           const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -192,7 +210,7 @@ export class DriverCurrentRideComponent implements OnInit {
             data: {msg:"Ride is finished."}
           });
         }
-      })
+      }))
     }
   }
 
@@ -204,21 +222,23 @@ export class DriverCurrentRideComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result=>{
       if(result){
         if(typeof this.rideId === "undefined"){
-
+          this.subscriptions.push(
           this.rideService.getDriverActiveRide(this.authService.getUserId()).subscribe(rideDTO=>{
             if(rideDTO != null) {
+              this.subscriptions.push(
               this.rideService.panicRide(rideDTO.id, result).subscribe(response=>{
                 console.log(response)
                 const dialogRef = this.dialog.open(RideNotificationComponent, {
                   width: '300px',
                   data: {msg:"Ride is canceled cause panic was pressed"}
                 });
-              })
+              }))
             }
-          })
+          }))
 
         }
         else{
+          this.subscriptions.push(
           this.rideService.panicRide(this.rideId, result).subscribe(response=>{
             console.log(response)
             const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -226,7 +246,7 @@ export class DriverCurrentRideComponent implements OnInit {
               data: {msg:"Ride is canceled cause panic was pressed"}
             });
 
-          })
+          }))
         }
       }
     })
@@ -240,9 +260,10 @@ export class DriverCurrentRideComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result=>{
       if(result){
         if(typeof this.rideId === "undefined"){
-
+          this.subscriptions.push(
           this.rideService.getDriverAcceptedRide(this.authService.getUserId()).subscribe(rideDTO=>{
             if(rideDTO != null) {
+              this.subscriptions.push(
               this.rideService.cancelRide(rideDTO.id, result).subscribe(response=>{
                 console.log(response)
                 const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -250,12 +271,13 @@ export class DriverCurrentRideComponent implements OnInit {
                   data: {msg:"Ride is canceled because " + result.reason}
                 });
                 this.goBackHome();
-              })
+              }))
             }
-          })
+          }))
 
         }
         else{
+          this.subscriptions.push(
           this.rideService.cancelRide(this.rideId, result).subscribe(response=>{
             console.log(response)
             const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -264,9 +286,21 @@ export class DriverCurrentRideComponent implements OnInit {
             });
             this.goBackHome();
 
-          })
+          }))
         }
       }
     })
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
+  }
+
+  chat() {
+    const dialogRef = this.dialog.open(DriverChatComponent, {
+      width: '400px',
+      data: {ride: this.currentRide}
+    });
   }
 }

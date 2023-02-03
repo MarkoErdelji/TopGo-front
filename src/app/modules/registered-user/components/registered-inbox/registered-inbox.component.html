@@ -16,7 +16,7 @@
   </div>
 </div>
 <div id= 'chat-box'>
-    <div class  = "h1-message-box" >
+    <div class  = "h1-message-box2" >
       <h1>
         {{chatUser}}
       </h1>
@@ -24,14 +24,14 @@
     </div>
   <div id ='messages-container'>
   <div id="messages"*ngFor="let message of chat">
-    <div>
       <div *ngIf="message.senderId == selectedUser.id" class="sender-bubble shadow">
         {{ message.message }}
+        <p class = "msg-time-sender">{{ message.timeOfSending }} ride: {{message.rideId}}</p>
       </div>
       <div *ngIf="!(message.senderId == selectedUser.id)" class="receiver-bubble shadow">
         {{ message.message }}
+        <p class = "msg-time-reciever">{{ message.timeOfSending }} ride: {{message.rideId}}</p>
       </div>
-    </div>
   </div>
   <div id = "form-div">
     <form [formGroup]="sendForm" (ngSubmit)="sendMessage()">

@@ -21,8 +21,8 @@ export class CreateDriverComponent implements OnInit,OnDestroy {
     firstName: new FormControl("", [Validators.required]),
     lastName: new FormControl("", [Validators.required]),
     password: new FormControl("", [Validators.required]),
-    email: new FormControl("", [Validators.required]),
-    phoneNumber: new FormControl("", [Validators.required]),
+    email: new FormControl("", [Validators.required, Validators.email]),
+    phoneNumber: new FormControl("", [Validators.required, Validators.pattern('^[0-9+].{8,11}$')]),
     adress: new FormControl("", [Validators.required]),
     model: new FormControl("", [Validators.required]),
     licencePlate: new FormControl("", [Validators.required]),
@@ -59,17 +59,7 @@ export class CreateDriverComponent implements OnInit,OnDestroy {
         latitude: location[0].lat,
         longitude: location[0].lon
       }
-      let vehicleDTO: VehicleDTO = {
-        model: this.createDriverForm.controls.model.value!,
-        vehicleType: this.createDriverForm.controls.vehicleType.value!,
-        licenseNumber: this.createDriverForm.controls.licencePlate.value!,
-        currentLocation: currentLocationDTO,
-        passengerSeats: Number(this.createDriverForm.controls.seats.value!),
-        babyTransport: this.createDriverForm.controls.forBabies.value!,
-        petTransport: this.createDriverForm.controls.forAnimals.value!
 
-      }
-      console.log(vehicleDTO.vehicleType)
       this.subscriptions.push(this.adminService.createDriver(driverDTO).subscribe(driverResponse =>{
         if(driverResponse.status == 200){
           const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -94,6 +84,7 @@ export class CreateDriverComponent implements OnInit,OnDestroy {
             width: '250px',
             data: {msg:"Something went wrong"}
           });
+          return
         }
       }))
 
@@ -112,4 +103,5 @@ export class CreateDriverComponent implements OnInit,OnDestroy {
   ngOnDestroy(){
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
 }

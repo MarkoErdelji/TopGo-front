@@ -86,20 +86,23 @@ img{
 }
 #profile-data{
   display: flex;
+  overflow: scroll;
 }
 #valueContainer{
   display: flex;
   flex-direction: column;
   margin-left: 15px;
+
 }
 p{
   font-size: 20px;
   margin-bottom: 20px;
 }
-#profile-content{
-  height: 460px;
+.profile-content{
+  height: 500px;
   border-radius: 10px;
   background: #efeded;
+
 }
 hr{
   width: 80%;

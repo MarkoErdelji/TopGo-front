@@ -26,11 +26,13 @@
       <mat-form-field appearance="outline" class = "other-forms">
         <mat-label>E-mail</mat-label>
         <input matInput name="email" formControlName="email">
+        <mat-error  *ngIf="createDriverForm.controls.email.hasError('email')">Error: Email form is incorrect</mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline"  class = "other-forms">
         <mat-label>Phone Nubmer</mat-label>
         <input matInput name="phoneNumber" formControlName="phoneNumber" required="">
+        <mat-error  *ngIf="createDriverForm.controls.phoneNumber.hasError('pattern')">Error: Phone number is in incorrect format</mat-error>
       </mat-form-field>
       <mat-form-field appearance="outline" class = "other-forms">
         <mat-label>Adress</mat-label>

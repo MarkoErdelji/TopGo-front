@@ -7,6 +7,8 @@ import {
   EditProfileDialogComponent
 } from "./registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component";
 import { Subscription } from 'rxjs';
+import { ChangePasswordDialogComponent } from './registered-profile-dialogs/change-password-dialog/change-password-dialog.component';
+import { AuthService } from 'src/app/_service/auth.service';
 
 @Component({
   selector: 'app-registered-profile',
@@ -23,7 +25,7 @@ export class RegisteredProfileComponent implements OnInit,OnDestroy {
   user?:PassengerInfoDTO;
   private subscriptions: Subscription[] = [];
 
-  constructor(public dialog: MatDialog,private passengerService:RegisteredService) { }
+  constructor(public dialog: MatDialog,private passengerService:RegisteredService,private authService:AuthService) { }
 
   ngOnInit(): void {
     this.subscriptions.push(this.passengerService.getPassengerById(this.passengerService.id || 0).subscribe(passenger =>
@@ -39,7 +41,13 @@ export class RegisteredProfileComponent implements OnInit,OnDestroy {
     }));
 
   }
+  openPasswordDialog() :void
+{
+  const dialogRef = this.dialog.open(ChangePasswordDialogComponent, {
+    data: {}
+  });
 
+}
   openDialog(): void {
     let msg = ''
     const dialogRef = this.dialog.open(EditProfileDialogComponent, {

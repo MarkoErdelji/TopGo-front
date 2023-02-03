@@ -25,7 +25,7 @@ export class RegisteredInboxComponent implements OnInit {
   private subscriptions: Subscription[] = [];
 
   sendForm = new FormGroup({
-    messageLabel: new FormControl(""),
+    messageLabel: new FormControl("",Validators.required),
   });
 
   constructor(private userService:UserService,private passengerService:RegisteredService,private userSocketService:UserSocketService) { }
@@ -111,17 +111,18 @@ export class RegisteredInboxComponent implements OnInit {
   sendMessage() {
     console.log(this.sendForm.get("messageLabel")?.value)
 
-    let messageToSend:SendMessageDTO = {
-      message: this.sendForm.get("messageLabel")?.value || '',
-      type: "RIDE",
-      // @ts-ignore
-      rideId: 1
+    if(this.sendForm.valid) {
+      let messageToSend: SendMessageDTO = {
+        message: this.sendForm.get("messageLabel")?.value || '',
+        type: "RIDE",
+        // @ts-ignore
+        rideId: 1
+      }
+
+      this.userService.sendMessage(this.selectedUser.id, messageToSend!).subscribe(response => {
+        this.sendForm.get("messageLabel")?.setValue("");
+      });
     }
-
-    this.subscriptions.push(this.userService.sendMessage(this.selectedUser.id,messageToSend!).subscribe(response =>
-    {
-
-    }));
 
   }
 

@@ -7,7 +7,12 @@ import {Router} from "@angular/router";
 import {DriverService} from "../../../service/driver.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
+<<<<<<< HEAD
 import { Subscription } from 'rxjs';
+=======
+import {Subscription} from "rxjs";
+
+>>>>>>> ceb28cc0350e9e7cb2419c6bcf65a248a10bc042
 
 @Component({
   selector: 'app-request-notification',
@@ -15,6 +20,7 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./request-notification.component.css']
 })
 export class RequestNotificationComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
   imageUrl?: string;
   profileChangesRequests?: AllProfileChangesRequestsDTO;
 
@@ -36,14 +42,14 @@ export class RequestNotificationComponent implements OnInit {
   oldPhoneNumber?: string;
   oldProfilePicture: any;
 
-  private subscriptions: Subscription[] = [];
 
 
 
   constructor(private dialog: MatDialog,private profileChangesRequestServcice:ProfileChangesRequestService, private router: Router, private driverService:DriverService) { }
 
   getData(){
-    this.subscriptions.push(this.profileChangesRequestServcice.getAllRequests().subscribe(data=>{
+    this.subscriptions.push(
+    this.profileChangesRequestServcice.getAllRequests().subscribe(data=>{
       this.profileChangesRequests = data
       this.lista = data.profileChangeRequestDTOS
 
@@ -91,8 +97,8 @@ export class RequestNotificationComponent implements OnInit {
     this.address = this.lista[i].address
     // @ts-ignore
     this.phone = this.lista[i].phoneNumber
-
-    this.subscriptions.push(this.driverService.getDriverById(this.driverId).subscribe(response=>{
+    this.subscriptions.push(
+    this.driverService.getDriverById(this.driverId).subscribe(response=>{
       this.oldFirstName = response.name;
       this.oldLastName = response.surname;
       this.oldUsername = response.email;
@@ -115,7 +121,8 @@ export class RequestNotificationComponent implements OnInit {
     }
 
     console.log(driverDTO)
-    this.subscriptions.push(this.profileChangesRequestServcice.updateDriver(driverDTO).subscribe(response=>{
+    this.subscriptions.push(
+    this.profileChangesRequestServcice.updateDriver(driverDTO).subscribe(response=>{
       // @ts-ignore
       this.subscriptions.push(this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
       }))
@@ -131,16 +138,22 @@ export class RequestNotificationComponent implements OnInit {
 
   declineChanges() {
     console.log(this.profileChangeDTO);
+    this.subscriptions.push(
     // @ts-ignore
-    this.subscriptions.push(this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
-    }));
-    window.alert("Edit request declined")
+    this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
+    }))
+    const dialogRef = this.dialog.open(RideNotificationComponent, {
+      width: '250px',
+      data: {msg:"Edit request declined!"}
+    });
     this.router.navigate(['admin'])
 
   }
 
-  ngOnDestroy(){
-    this.subscriptions.forEach(subscription => subscription.unsubscribe());
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 
 }

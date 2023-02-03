@@ -16,6 +16,6 @@ export class AppComponent {
 
   ngOnInit(): void {
 
-    this.authService.checkForToken()
+    //this.authService.checkForToken()
   }
 }

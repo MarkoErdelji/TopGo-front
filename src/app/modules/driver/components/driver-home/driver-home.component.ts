@@ -7,7 +7,7 @@ import {DriverActivityDTO} from "../../../DTO/DriverActivityDTO";
 import {StartTimeDTO} from "../../../DTO/StartTimeDTO";
 import {WorkHoursDTO} from "../../../DTO/WorkHoursDTO";
 import {EndTimeDTO} from "../../../DTO/EndTimeDTO";
-import {catchError, throwError} from "rxjs";
+import {catchError, Subscription, throwError} from "rxjs";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
 import {MatDialog} from "@angular/material/dialog";
 import {DriverSocketService} from "../../../service/driver-socket.service";
@@ -25,6 +25,8 @@ export class DriverHomeComponent implements OnInit {
   currentWorkingHours?:WorkHoursDTO;
   isAvailable: boolean = true;
 
+  private subscriptions: Subscription[] = [];
+
 
   constructor(private dialog:MatDialog, private authService: AuthService, private driverService:DriverService, private driverSocketService:DriverSocketService) {
     this.driverService.currentAvailability.subscribe(state => {
@@ -34,6 +36,7 @@ export class DriverHomeComponent implements OnInit {
 
   ngOnInit(): void {
     console.log(this.isAvailable)
+    this.subscriptions.push(
     this.driverService.getDriverById(this.authService.getUserId()).subscribe(driver=>{
       this.driver = driver;
       this.driverService.getDriverWorkingHours(this.driver.id).subscribe(response=>{
@@ -44,7 +47,8 @@ export class DriverHomeComponent implements OnInit {
           }
         }
       })
-    })
+    }))
+
     this.driverSocketService.selectReturnDriver$.subscribe({next:(driver: DriverInfoDTO)=>{
       if(driver != null){
         if(this.isSwitched){
@@ -54,18 +58,20 @@ export class DriverHomeComponent implements OnInit {
           let timeDTO:EndTimeDTO={
             end: utcDateStart.toISOString()
           }
+          this.subscriptions.push(
           this.driverService.updateWorkingHour(this.currentWorkingHours!.id, timeDTO).subscribe(response=>{
             let driverActivity:DriverActivityDTO={
               isActive: false
             }
+            this.subscriptions.push(
             this.driverService.updateDriverActivity(driverActivity, driver.id).subscribe(res=>{
               const dialogRef = this.dialog.open(RideNotificationComponent, {
                 width: '250px',
                 data: {msg:"You exceeded 8 hours of work!\nYou cannot accept any rides for today."}
               });
-            })
+            }))
 
-          })
+          }))
         }
 
 
@@ -82,6 +88,7 @@ export class DriverHomeComponent implements OnInit {
       let timeDTO:StartTimeDTO={
         start: utcDateStart.toISOString()
       }
+      this.subscriptions.push(
       this.driverService.addWorkingHour(this.driver.id, timeDTO)
         .pipe(catchError(error=>{
           console.log(error.error.message);
@@ -94,15 +101,17 @@ export class DriverHomeComponent implements OnInit {
         }))
         .subscribe(response=>{
           let updatedDriverDTO:DriverActivityDTO={isActive: true}
+          this.subscriptions.push(
           this.driverService.updateDriverActivity(updatedDriverDTO, this.driver.id).subscribe(response=> {
-          })
+          }))
           this.currentWorkingHours = response.body!;
-        })
+        }))
 
 
     }
     else{
       let updatedDriverDTO:DriverActivityDTO={isActive: false}
+      this.subscriptions.push(
       this.driverService.updateDriverActivity(updatedDriverDTO, this.driver.id)
         .subscribe(response=> {
           let nowTime = new Date()
@@ -113,7 +122,13 @@ export class DriverHomeComponent implements OnInit {
         this.driverService.updateWorkingHour(this.currentWorkingHours!.id, timeDTO).subscribe(response=>{
           console.log(response.body)
         })
-      })
+      }))
     }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 }

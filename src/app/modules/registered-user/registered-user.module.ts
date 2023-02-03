@@ -27,6 +27,7 @@ import { RideDayGraphComponent } from './components/graphs/ride-day-graph/ride-d
 import { KmPerDayGraphComponent } from './components/graphs/km-per-day-graph/km-per-day-graph.component';
 import { MoneySpentGraphComponent } from './components/graphs/money-spent-graph/money-spent-graph.component';
 import { ReviewDialogComponent } from './components/registered-route-form/registered-route-form-dialogs/review-dialog/review-dialog.component';
+import { ChangePasswordDialogComponent } from './components/registered-profile/registered-profile-dialogs/change-password-dialog/change-password-dialog.component';
 
 
 
@@ -55,7 +56,8 @@ import { ReviewDialogComponent } from './components/registered-route-form/regist
         RideDayGraphComponent,
         KmPerDayGraphComponent,
         MoneySpentGraphComponent,
-        ReviewDialogComponent
+        ReviewDialogComponent,
+        ChangePasswordDialogComponent
 
     ],
 
