@@ -150,7 +150,11 @@ export class AuthService {
     const helper = new JwtHelperService();
     const decodedToken = helper.decodeToken(token);
 
+    if(decodedToken != null){
+
     return decodedToken.role;
+    }
+    return null;
   }
   changeUserPassword(userId,newPassword,oldPassword){
     let passwordObject = {newPassword:newPassword,oldPassword:oldPassword}

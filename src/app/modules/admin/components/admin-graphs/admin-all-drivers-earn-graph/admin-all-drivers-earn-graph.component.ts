@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { DriverGraphDTO } from 'src/app/modules/DTO/DriverGraphDTO';
 import { LineGraphDTO, NameValueInstance } from 'src/app/modules/DTO/LineGraphDTO';
 
@@ -11,7 +12,6 @@ export class AdminAllDriversEarnGraphComponent implements OnInit {
 
   constructor() { }
 
-  
   ngOnInit(): void {
     this.averageLine = {name:"Average",series:[]}
     this.driverData.forEach((driverGraph)=>{

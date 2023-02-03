@@ -7,8 +7,12 @@ import {Router} from "@angular/router";
 import {DriverService} from "../../../service/driver.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
+<<<<<<< HEAD
+import { Subscription } from 'rxjs';
+=======
 import {Subscription} from "rxjs";
 
+>>>>>>> ceb28cc0350e9e7cb2419c6bcf65a248a10bc042
 
 @Component({
   selector: 'app-request-notification',
@@ -36,6 +40,9 @@ export class RequestNotificationComponent implements OnInit {
   oldUsername?: string;
   oldAddress?: string;
   oldPhoneNumber?: string;
+  oldProfilePicture: any;
+
+
 
 
   constructor(private dialog: MatDialog,private profileChangesRequestServcice:ProfileChangesRequestService, private router: Router, private driverService:DriverService) { }
@@ -45,9 +52,6 @@ export class RequestNotificationComponent implements OnInit {
     this.profileChangesRequestServcice.getAllRequests().subscribe(data=>{
       this.profileChangesRequests = data
       this.lista = data.profileChangeRequestDTOS
-      for(let item of this.lista){
-        this.imageUrl = item.profilePicture
-      }
 
       console.log(this.profileChangesRequests.profileChangeRequestDTOS)
     }))
@@ -99,6 +103,7 @@ export class RequestNotificationComponent implements OnInit {
       this.oldLastName = response.surname;
       this.oldUsername = response.email;
       this.oldAddress = response.address;
+      this.oldProfilePicture = response.profilePicture;
       this.oldPhoneNumber = response.telephoneNumber;
     }))
 
@@ -119,8 +124,8 @@ export class RequestNotificationComponent implements OnInit {
     this.subscriptions.push(
     this.profileChangesRequestServcice.updateDriver(driverDTO).subscribe(response=>{
       // @ts-ignore
-      this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
-      })
+      this.subscriptions.push(this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
+      }))
       const dialogRef = this.dialog.open(RideNotificationComponent, {
         width: '250px',
         data: {msg:"Driver updated succesfully!"}

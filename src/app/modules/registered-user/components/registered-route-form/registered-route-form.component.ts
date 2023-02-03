@@ -388,6 +388,7 @@ export class RegisteredRouteFormComponent implements OnInit {
 
   }
   rideAccepted(ride: RideDTO) {
+    this.allInvitedFriends.splice(0,this.allInvitedFriends.length);
     this.acceptedBtn = false;
     this.activeBtn = true;
     // @ts-ignore
@@ -780,14 +781,14 @@ export class RegisteredRouteFormComponent implements OnInit {
     this.subscriptions.push(this.userService.getUserByEmail(email).subscribe(result =>
     {
       this.goForm.get("friendEmail")?.setValue("")
-      this.passengerService.getPassengerById(result.body.id).subscribe(pass =>
+      this.subscriptions.push(this.passengerService.getPassengerById(result.body.id).subscribe(pass =>
       {
         if (!this.friends.find(friend => friend.id === pass.id)) {
           document.getElementById("test")!.style.top = "53%"
           if(this.friends.length<=3)
             if(pass.id! != this.authService.getUserId()) {
               console.log(pass.id)
-              this.passengerService.invite(pass.id).subscribe(response =>
+              this.subscriptions.push(this.passengerService.invite(pass.id).subscribe(response =>
               {
                 let invUserRef:UserRef =
                   {
@@ -798,13 +799,13 @@ export class RegisteredRouteFormComponent implements OnInit {
                 this.friends.push(pass);
                 this.friendInvites.set(pass.id,"PENDING");
 
-              })
+              }))
 
 
             }
         }
 
-      })
+      }))
 
     }))
 
