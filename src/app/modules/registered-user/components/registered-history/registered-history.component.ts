@@ -21,7 +21,7 @@ import {FavouriteRideDTO} from "../../../DTO/FavouriteRideDTO";
 import {RouteForCreateRideDTO} from "../../../DTO/RouteForCreateRideDTO";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {catchError} from "rxjs/operators";
-import {EMPTY, of} from "rxjs";
+import {EMPTY, of, Subscription} from "rxjs";
 import {RouteFormService} from "../../../service/route-form.service";
 import {
   ReviewDialogComponent
@@ -58,6 +58,7 @@ export class RegisteredHistoryComponent implements OnInit {
   sortParams: (string | SortParameters)[] | undefined;
   addedToFav:boolean = false;
   canRate: boolean = true;
+  private subscriptions: Subscription[] = [];
 
   constructor(private routeFormService: RouteFormService, private router: Router,private dialog:MatDialog, private route:ActivatedRoute, private userService:UserService, private rideService:RideService, private authService: AuthService, private passengerService:RegisteredService, private reviewService:ReviewService) {
     this.sortParams = Object.keys(SortParameters).filter(key => !isNaN(Number(SortParameters[key])));
@@ -68,14 +69,14 @@ export class RegisteredHistoryComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.userid = params['id'];
     });
-
+    this.subscriptions.push(
     this.passengerService.getPassengerRides(this.authService.getUserId(), 0, 100000, null, null).subscribe(response => {
       for(let ride of response.body!.results){
         if(ride.status == "FINISHED"){
           this.lista.push(ride)
         }
       }
-    })
+    }))
   }
 
   historyItemClick(i: number) {
@@ -109,17 +110,21 @@ export class RegisteredHistoryComponent implements OnInit {
     let dateEnd = new Date( this.selectedRide.endTime)
     this.endDate = dateEnd.toLocaleString()
     for(let passenger of this.selectedRide.passengers){
+      this.subscriptions.push(
       this.passengerService.getPassengerById(passenger.id).subscribe(passenger=>{
         this.passengerInfo.push(passenger)
-      })
+      }))
     }
+    this.subscriptions.push(
     this.userService.getUserById(String(this.selectedRide.driver.id)).subscribe(driver=>{
       this.driver = driver
-    })
+    }))
     this.driverReviews.splice(0, this.driverReviews.length)
     this.vehicleReviews.splice(0, this.vehicleReviews.length)
+    this.subscriptions.push(
     this.reviewService.getRideReviews(this.selectedRide.id).subscribe((review)=>{
       review.forEach(element => {
+        this.subscriptions.push(
         this.userService.getUserById(element.passenger.id).subscribe(passengerInfo=>{
           if(element.type == "DRIVER"){
             this.driverReviews.push({passenger:passengerInfo,review:element})
@@ -127,25 +132,26 @@ export class RegisteredHistoryComponent implements OnInit {
           else if(element.type == "VEHICLE"){
             this.vehicleReviews.push({passenger:passengerInfo,review:element})
           }
-        })
+        }))
 
       });
       this.itemLoaded = true;
 
-    })
+    }))
 
 
   }
 
   checkIfCanRate(ride:RideDTO){
-  this.reviewService.getRideReviews(ride.id).subscribe(response=>{
-    for(let review of response){
-      if(review.passenger.id == this.authService.getUserId()){
-        this.canRate = false;
-        return
+    this.subscriptions.push(
+    this.reviewService.getRideReviews(ride.id).subscribe(response=>{
+      for(let review of response){
+        if(review.passenger.id == this.authService.getUserId()){
+          this.canRate = false;
+          return
+        }
       }
-    }
-  })
+    }))
 
     let dateStart= new Date(ride.startTime)
     let compareDate = new Date(dateStart.setDate(dateStart.getDate() + 3))
@@ -163,6 +169,7 @@ export class RegisteredHistoryComponent implements OnInit {
   }
 
   checkIfFavourite(ride:RideDTO){
+    this.subscriptions.push(
     this.rideService.getFavouriteRide().subscribe(favouriteRides=>{
       for(let favouriteRide of favouriteRides){
         if(favouriteRide.locations[0].departure.address == ride.locations[0].departure.address && favouriteRide.locations[0].destination.address == ride.locations[0].destination.address){
@@ -173,7 +180,7 @@ export class RegisteredHistoryComponent implements OnInit {
           this.addedToFav = false;
         }
       }
-    })
+    }))
 
   }
 
@@ -200,12 +207,13 @@ export class RegisteredHistoryComponent implements OnInit {
     console.log(utcDateEnd)
     console.log(utcDateStart)
     this.rideDtos = [];
+    this.subscriptions.push(
     this.passengerService.getPassengerRidesPaginated(this.authService.getUserId(),0,9000,this.selectedSortParam.toLowerCase(),utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
       console.log(response)
       response.body!.results.forEach((element)=>{
         this.rideDtos.push(element);
       })
-    })
+    }))
     this.lista = this.rideDtos;
   }
 
@@ -252,7 +260,7 @@ export class RegisteredHistoryComponent implements OnInit {
         babyTransport: this.selectedRide!.babyTransport,
         petTransport: this.selectedRide!.petTransport
       };
-
+    this.subscriptions.push(
     this.rideService.favouriteRide(favRide).pipe(
       catchError((error) => {
         if (error.status === 400) {
@@ -268,7 +276,7 @@ export class RegisteredHistoryComponent implements OnInit {
     {
       this.addedToFav = true;
       console.log(response)
-    })
+    }))
 
   }
 
@@ -292,5 +300,10 @@ export class RegisteredHistoryComponent implements OnInit {
         });
       }
     });
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 }
