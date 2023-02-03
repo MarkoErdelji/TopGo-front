@@ -25,7 +25,7 @@ export class PasswordResetService {
 
   resetPassword(token:string,userId,newPassword:string){
     let body = {code:token,
-          new_password:newPassword};
+          newPassword:newPassword};
     return this.http.put<any>('http://localhost:8000/api/user/' +userId+'/resetPassword',body,{
 
     observe: 'response',

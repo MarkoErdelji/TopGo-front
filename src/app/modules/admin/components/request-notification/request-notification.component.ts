@@ -7,6 +7,7 @@ import {Router} from "@angular/router";
 import {DriverService} from "../../../service/driver.service";
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-request-notification',
@@ -33,20 +34,21 @@ export class RequestNotificationComponent implements OnInit {
   oldUsername?: string;
   oldAddress?: string;
   oldPhoneNumber?: string;
+  oldProfilePicture: any;
+
+  private subscriptions: Subscription[] = [];
+
 
 
   constructor(private dialog: MatDialog,private profileChangesRequestServcice:ProfileChangesRequestService, private router: Router, private driverService:DriverService) { }
 
   getData(){
-    this.profileChangesRequestServcice.getAllRequests().subscribe(data=>{
+    this.subscriptions.push(this.profileChangesRequestServcice.getAllRequests().subscribe(data=>{
       this.profileChangesRequests = data
       this.lista = data.profileChangeRequestDTOS
-      for(let item of this.lista){
-        this.imageUrl = item.profilePicture
-      }
 
       console.log(this.profileChangesRequests.profileChangeRequestDTOS)
-    })
+    }))
   }
   ngOnInit(): void {
     this.getData()
@@ -90,13 +92,14 @@ export class RequestNotificationComponent implements OnInit {
     // @ts-ignore
     this.phone = this.lista[i].phoneNumber
 
-    this.driverService.getDriverById(this.driverId).subscribe(response=>{
+    this.subscriptions.push(this.driverService.getDriverById(this.driverId).subscribe(response=>{
       this.oldFirstName = response.name;
       this.oldLastName = response.surname;
       this.oldUsername = response.email;
       this.oldAddress = response.address;
+      this.oldProfilePicture = response.profilePicture;
       this.oldPhoneNumber = response.telephoneNumber;
-    })
+    }))
 
   }
 
@@ -112,28 +115,32 @@ export class RequestNotificationComponent implements OnInit {
     }
 
     console.log(driverDTO)
-    this.profileChangesRequestServcice.updateDriver(driverDTO).subscribe(response=>{
+    this.subscriptions.push(this.profileChangesRequestServcice.updateDriver(driverDTO).subscribe(response=>{
       // @ts-ignore
-      this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
-      })
+      this.subscriptions.push(this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
+      }))
       const dialogRef = this.dialog.open(RideNotificationComponent, {
         width: '250px',
         data: {msg:"Driver updated succesfully!"}
       });
       this.router.navigate(['admin'])
 
-    })
+    }))
 
   }
 
   declineChanges() {
     console.log(this.profileChangeDTO);
     // @ts-ignore
-    this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
-    })
+    this.subscriptions.push(this.profileChangesRequestServcice.deleteRequest(this.profileChangeDTO.id).subscribe(res=>{
+    }));
     window.alert("Edit request declined")
     this.router.navigate(['admin'])
 
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
 }

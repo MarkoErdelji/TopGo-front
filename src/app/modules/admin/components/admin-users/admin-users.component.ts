@@ -4,7 +4,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
-import { catchError, of } from 'rxjs';
+import { catchError, of, Subscription } from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { UserListDTO } from 'src/app/modules/DTO/UserListDTO';
 import { UserService } from 'src/app/_service/user.service';
@@ -24,6 +24,7 @@ export class AdminUsersComponent implements OnInit {
   displayedColumns: string[] = ['id', 'name', 'surname','email', 'telephoneNumber','address', 'actions'];
   users:any = [];
   dataSource = new MatTableDataSource<UserListDTO>(this.users);
+  private subscriptions: Subscription[] = [];
   page = 0;
   size = 10;
   totalCount = 0;
@@ -44,7 +45,7 @@ export class AdminUsersComponent implements OnInit {
       this.size = event.pageSize;
       this.page = event.pageIndex;
     }
-    this.userService.getUsers(this.page, this.size).subscribe((response) => {
+    this.subscriptions.push(this.userService.getUsers(this.page, this.size).subscribe((response) => {
       if(response.status == 200){
         this.users = response.body!.results;
         console.log(this.users)
@@ -57,11 +58,11 @@ export class AdminUsersComponent implements OnInit {
           data: {msg:response.statusText}
         });
       }
-    });
+    }));
   }
 
   block(userId) {
-    this.userService.blockUser(userId).pipe(
+    this.subscriptions.push(this.userService.blockUser(userId).pipe(
       catchError((error:HttpErrorResponse) => {
         if(error.status!=204){
           const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -82,12 +83,12 @@ export class AdminUsersComponent implements OnInit {
         });
 
       }
-    })
+    }))
   }
 
 
   unblock(userId) {
-    this.userService.unblockUser(userId).pipe(
+    this.subscriptions.push(this.userService.unblockUser(userId).pipe(
       catchError((error:HttpErrorResponse) => {
         if(error.status!=204){
           const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -107,7 +108,7 @@ export class AdminUsersComponent implements OnInit {
           data: {msg:"User successfuly unblocked!"}
         });
       }
-    })
+    }))
   }
   
   viewNotes(userId){

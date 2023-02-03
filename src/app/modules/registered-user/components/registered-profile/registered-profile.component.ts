@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {RegisteredService} from "../../../service/registered.service";
 import {DistanceAndAverageDTO} from "../../../DTO/DistanceAndAverageDTO";
 import {PassengerInfoDTO} from "../../../DTO/PassengerInfoDTO";
@@ -6,13 +6,14 @@ import {MatDialog} from "@angular/material/dialog";
 import {
   EditProfileDialogComponent
 } from "./registered-profile-dialogs/edit-profile-dialog/edit-profile-dialog.component";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registered-profile',
   templateUrl: './registered-profile.component.html',
   styleUrls: ['./registered-profile.component.css']
 })
-export class RegisteredProfileComponent implements OnInit {
+export class RegisteredProfileComponent implements OnInit,OnDestroy {
   firstName: any;
   lastName: any;
   username: any;
@@ -20,11 +21,12 @@ export class RegisteredProfileComponent implements OnInit {
   phone: any;
   pfp: any;
   user?:PassengerInfoDTO;
+  private subscriptions: Subscription[] = [];
 
   constructor(public dialog: MatDialog,private passengerService:RegisteredService) { }
 
   ngOnInit(): void {
-    this.passengerService.getPassengerById(this.passengerService.id || 0).subscribe(passenger =>
+    this.subscriptions.push(this.passengerService.getPassengerById(this.passengerService.id || 0).subscribe(passenger =>
     {
       console.log(passenger)
       this.user = passenger;
@@ -34,7 +36,7 @@ export class RegisteredProfileComponent implements OnInit {
       this.address = passenger.address;
       this.pfp = passenger.profilePicture;
       this.phone = passenger.telephoneNumber;
-    });
+    }));
 
   }
 
@@ -44,10 +46,10 @@ export class RegisteredProfileComponent implements OnInit {
       data: {passenger: this.user}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log(result)
-        this.passengerService.editProfile(this.user?.id,result).subscribe(res=>
+        this.subscriptions.push(this.passengerService.editProfile(this.user?.id,result).subscribe(res=>
         {
           this.user = res.body!;
           this.firstName =res.body!.name!;
@@ -56,9 +58,13 @@ export class RegisteredProfileComponent implements OnInit {
           this.address = res.body!.address;
           this.pfp = res.body!.profilePicture;
           this.phone = res.body!.telephoneNumber;
-        })
+        }))
       }
-    });
+    }));
 
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(subscription=>subscription.unsubscribe());
   }
 }

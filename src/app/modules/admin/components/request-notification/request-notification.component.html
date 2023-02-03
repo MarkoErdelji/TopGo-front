@@ -11,7 +11,7 @@
         <div class="reques-containter shadow"(click)="onRequestiClick(i)">
           <div id="person">
             <div id="img">
-              <img [src]="imageUrl" id="profile-image">
+              <img [src]="item.profilePicture" id="profile-image">
             </div>
             <div id="first-name-last-name">
               <p>{{item.firstName}}</p>
@@ -66,7 +66,7 @@
         <div class="shadow" id="profile-content">
           <p class="old-new">Old</p>
           <div id="profile-img-container">
-            <img [src]="mainImageUrl" id="main-image">
+            <img [src]="oldProfilePicture" id="main-image">
             <div class="vertical-line"></div>
           </div>
           <hr>

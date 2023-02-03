@@ -7,6 +7,7 @@ import {UserMessagesListDTO} from "../../../DTO/UserMessagesListDTO";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {SendMessageDTO} from "../../../DTO/SendMessageDTO";
 import {UserSocketService} from "../../../service/user-socket.service";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registered-inbox',
@@ -21,6 +22,7 @@ export class RegisteredInboxComponent implements OnInit {
   selectedUser!:DriverInfoDTO;
   chatUser:string = "";
   chat:UserMessagesDTO[] =[]
+  private subscriptions: Subscription[] = [];
 
   sendForm = new FormGroup({
     messageLabel: new FormControl(""),
@@ -32,7 +34,7 @@ export class RegisteredInboxComponent implements OnInit {
 
   ngOnInit(): void {
 
-    this.userSocketService.selectReturnMessage$.subscribe(msg =>
+    this.subscriptions.push(this.userSocketService.selectReturnMessage$.subscribe(msg =>
     {
       if(this.selectedUser.id == msg.receiverId)
       {
@@ -42,7 +44,7 @@ export class RegisteredInboxComponent implements OnInit {
       {
         this.chat.push(msg);
       }
-    })
+    }))
 
     function loadChats() {
 
@@ -50,7 +52,7 @@ export class RegisteredInboxComponent implements OnInit {
 
     loadChats()
     {
-      this.userService.getUserMessages(this.passengerService.id!).subscribe(messages =>
+      this.subscriptions.push(this.userService.getUserMessages(this.passengerService.id!).subscribe(messages =>
       {
         console.log(messages.results)
         for (let msg of messages.results) {
@@ -75,7 +77,7 @@ export class RegisteredInboxComponent implements OnInit {
 
 
         });
-      })
+      }))
 
     }
   }
@@ -96,11 +98,11 @@ export class RegisteredInboxComponent implements OnInit {
 
     showMessages()
     {
-      this.userService.getMessagesBetweenUsers(this.selectedUser.id).subscribe(response =>
+      this.subscriptions.push(this.userService.getMessagesBetweenUsers(this.selectedUser.id).subscribe(response =>
       {
         this.chat = response.results;
         console.log(this.chat)
-      })
+      }))
 
     }
 
@@ -116,10 +118,15 @@ export class RegisteredInboxComponent implements OnInit {
       rideId: 1
     }
 
-    this.userService.sendMessage(this.selectedUser.id,messageToSend!).subscribe(response =>
+    this.subscriptions.push(this.userService.sendMessage(this.selectedUser.id,messageToSend!).subscribe(response =>
     {
 
-    });
+    }));
 
+  }
+
+  ngOnDestroy(){
+    this.userSocketService.initializeWebSocketConnection(this.selectedUser.id);
+    this.subscriptions.forEach(subscription=>subscription.unsubscribe())
   }
 }

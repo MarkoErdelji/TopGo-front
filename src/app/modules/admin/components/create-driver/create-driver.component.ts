@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AdminService} from "../../../service/admin.service";
 import {MapService} from "../../../../components/map/map.service";
@@ -7,16 +7,16 @@ import {VehicleDTO} from "../../../DTO/VehicleDTO";
 import {GeoLocationDTO} from "../../../DTO/GeoLocationDTO";
 import {elementSelectors} from "@angular/material/schematics/ng-update/data";
 import {VehicleInfoDTO} from "../../../DTO/VehicleInfoDTO";
-import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
-import {MatDialog, MatDialogRef} from "@angular/material/dialog";
-import {Router} from "@angular/router";
+import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
+import { MatDialog } from '@angular/material/dialog';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-driver',
   templateUrl: './create-driver.component.html',
   styleUrls: ['./create-driver.component.css']
 })
-export class CreateDriverComponent implements OnInit {
+export class CreateDriverComponent implements OnInit,OnDestroy {
   createDriverForm = new FormGroup({
     firstName: new FormControl("", [Validators.required]),
     lastName: new FormControl("", [Validators.required]),
@@ -35,8 +35,9 @@ export class CreateDriverComponent implements OnInit {
   })
   selectedVehicleType: any;
 
+  private subscriptions: Subscription[] = [];
 
-  constructor(private adminService: AdminService, private mapService:MapService, private dialog:MatDialog, private router: Router) {}
+  constructor(private dialog:MatDialog,private adminService: AdminService, private mapService:MapService) {}
 
   ngOnInit(): void {
   }
@@ -52,7 +53,7 @@ export class CreateDriverComponent implements OnInit {
       password:this.createDriverForm.controls.password.value!
     }
 
-    this.mapService.search(this.createDriverForm.controls.vehicleLocation.value!).subscribe(location =>{
+    this.subscriptions.push(this.mapService.search(this.createDriverForm.controls.vehicleLocation.value!).subscribe(location =>{
       let currentLocationDTO: GeoLocationDTO = {
         address: this.createDriverForm.controls.vehicleLocation.value!,
         latitude: location[0].lat,
@@ -69,36 +70,46 @@ export class CreateDriverComponent implements OnInit {
 
       }
       console.log(vehicleDTO.vehicleType)
-      this.adminService.createDriver(driverDTO).subscribe(driverResponse =>{
+      this.subscriptions.push(this.adminService.createDriver(driverDTO).subscribe(driverResponse =>{
         if(driverResponse.status == 200){
-          this.adminService.getDriverByEmail(driverDTO.email).subscribe(driverInfoResponse =>{
+          const dialogRef = this.dialog.open(RideNotificationComponent, {
+            width: '250px',
+            data: {msg:"Driver Created"}
+          });
+          this.subscriptions.push(this.adminService.getDriverByEmail(driverDTO.email).subscribe(driverInfoResponse =>{
             console.log(driverInfoResponse.id)
-            this.adminService.createVehicle(vehicleDTO, driverInfoResponse.id).subscribe(vehicleResponse =>{
+            this.subscriptions.push(this.adminService.createVehicle(vehicleDTO, driverInfoResponse.id).subscribe(vehicleResponse =>{
               if(vehicleResponse.status == 200){
                 const dialogRef = this.dialog.open(RideNotificationComponent, {
                   width: '250px',
-                  data: {msg:"Driver created."}
+                  data: {msg:"Vehicle Created"}
                 });
-                this.router.navigate(['admin'])
               }
-            })
-          })
+            }))
+          }))
 
         }
         else{
           const dialogRef = this.dialog.open(RideNotificationComponent, {
             width: '250px',
-            data: {msg:"Something went wrong."}
+            data: {msg:"Something went wrong"}
           });
         }
-      })
+      }))
 
-    })
+    }))
 
 
   }
 
   openDocuments() {
-    window.alert("Vozaceva dokumenta")
+    const dialogRef = this.dialog.open(RideNotificationComponent, {
+      width: '250px',
+      data: {msg:"Vozaceva dokumenta"}
+    });
+  }
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 }
