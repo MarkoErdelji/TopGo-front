@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { catchError, first, map, of } from 'rxjs';
+import {catchError, first, map, of, Subscription} from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
 import { DriverService } from 'src/app/modules/service/driver.service';
@@ -18,6 +18,7 @@ import { DriverChangePasswordDialogComponent } from '../driver-profile-dialogs/d
   styleUrls: ['./driver-profile-edit.component.css']
 })
 export class DriverProfileEditComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
 
   editForm = new FormGroup({
     firstName: new FormControl("",[Validators.required,Validators.pattern(/^\p{Lu}[\p{L}]*/u)]),
@@ -33,7 +34,7 @@ export class DriverProfileEditComponent implements OnInit {
   constructor(private driverService:DriverService,private dialog:MatDialog,private profileRequestService:ProfileChangesRequestService,private router:Router,private authService:AuthService) { }
 
   ngOnInit(): void {
-
+    this.subscriptions.push(
     this.driverService.getDriverById(this.driverService.id!).pipe(
       map(data => {
         if (data) {
@@ -50,7 +51,7 @@ export class DriverProfileEditComponent implements OnInit {
           phoneNumber:response!.telephoneNumber,
           adress:response!.address
         })
-    })
+    }))
   }
 
 
@@ -61,7 +62,7 @@ export class DriverProfileEditComponent implements OnInit {
   sendEditRequest(){
     if(this.editForm.valid){
 
-    
+
     let data:DriverInfoDTO={
       id: this.driverService.id!,
       name: this.editForm.controls.firstName.value!,
@@ -71,7 +72,7 @@ export class DriverProfileEditComponent implements OnInit {
       profilePicture: this.imageUrl!,
       address: this.editForm.controls.adress.value!
     }
-    
+    this.subscriptions.push(
     this.profileRequestService.postChangeRequest(data).pipe(
       catchError((error:HttpErrorResponse) => {
         return of(error);
@@ -93,7 +94,7 @@ export class DriverProfileEditComponent implements OnInit {
           this.router.navigate(['driver/profile'])
         }
       }
-    )
+    ))
   }}
 
   updateImage(imageUrl: string) {
@@ -107,6 +108,11 @@ export class DriverProfileEditComponent implements OnInit {
         this.updateImage(result);
       }
     })
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 
 }

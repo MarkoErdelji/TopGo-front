@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { catchError, of } from 'rxjs';
+import {catchError, of, Subscription} from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { AuthService } from 'src/app/_service/auth.service';
@@ -18,7 +18,7 @@ export class DriverChangePasswordDialogComponent implements OnInit {
     oldPasswordControl: new FormControl(""),
     newPasswordControl: new FormControl("",[Validators.required,Validators.minLength(6)])
   });
-  
+  private subscriptions: Subscription[] = [];
   constructor(private dialog:MatDialog,private driverService:DriverService,private dialogRef: MatDialogRef<DriverChangePasswordDialogComponent>,private authService:AuthService) { }
 
   ngOnInit(): void {
@@ -27,6 +27,7 @@ export class DriverChangePasswordDialogComponent implements OnInit {
 
   changeDriverPassword(){
       if(this.changePassForm.valid){
+        this.subscriptions.push(
         this.authService.changeUserPassword(this.driverService.id,this.changePassForm.controls.newPasswordControl.value,this.changePassForm.controls.oldPasswordControl.value)
         .pipe(
           catchError((error:HttpErrorResponse) => {
@@ -55,8 +56,13 @@ export class DriverChangePasswordDialogComponent implements OnInit {
               });
             }
           }
-        )
+        ))
       }
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 
 

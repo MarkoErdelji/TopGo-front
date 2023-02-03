@@ -7,6 +7,7 @@ import {RegisteredService} from "../../../service/registered.service";
 import {UserSocketService} from "../../../service/user-socket.service";
 import {SendMessageDTO} from "../../../DTO/SendMessageDTO";
 import {AuthService} from "../../../../_service/auth.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-driver-inbox',
@@ -22,6 +23,7 @@ export class DriverInboxComponent implements OnInit {
   selectedUser!:DriverInfoDTO;
   chatUser:string = "";
   chat:UserMessagesDTO[] =[]
+  private subscriptions: Subscription[] = [];
 
   sendForm = new FormGroup({
     messageLabel: new FormControl("",Validators.required),
@@ -33,6 +35,7 @@ export class DriverInboxComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.subscriptions.push(
     this.userSocketService.selectReturnMessage$.subscribe(msg =>
     {
       if(this.selectedUser.id == msg.receiverId)
@@ -43,7 +46,7 @@ export class DriverInboxComponent implements OnInit {
       {
         this.chat.push(msg);
       }
-    })
+    }))
 
     function loadChats() {
 
@@ -51,11 +54,13 @@ export class DriverInboxComponent implements OnInit {
 
     loadChats()
     {
+      this.subscriptions.push(
       this.userService.getUserMessages(this.authService.getUserId()).subscribe(messages =>
       {
         console.log(messages.results)
         for (let msg of messages.results) {
           let id = "";
+
           if (msg.senderId !== this.authService.getUserId()) {
             id = msg.senderId.toString();
           }
@@ -69,14 +74,14 @@ export class DriverInboxComponent implements OnInit {
         }
         console.log(this.messages)
         this.ids.forEach(id => {
+          this.subscriptions.push(
           this.userService.getUserById(id).subscribe(user =>
           {
             this.users.push(user);
-          })
-
+          }))
 
         });
-      })
+      }))
 
     }
   }
@@ -97,11 +102,12 @@ export class DriverInboxComponent implements OnInit {
 
     showMessages()
     {
+      this.subscriptions.push(
       this.userService.getMessagesBetweenUsers(this.selectedUser.id).subscribe(response =>
       {
         this.chat = response.results;
         console.log(this.chat)
-      })
+      }))
 
     }
 
@@ -130,11 +136,12 @@ export class DriverInboxComponent implements OnInit {
 
     showMessages()
     {
+      this.subscriptions.push(
       this.userService.getMessagesBetweenUsers(this.selectedUser.id).subscribe(response =>
       {
         this.chat = response.results;
         console.log(this.chat)
-      })
+      }))
 
     }
 
@@ -150,11 +157,16 @@ export class DriverInboxComponent implements OnInit {
         // @ts-ignore
         rideId: 1
       }
-
+      this.subscriptions.push(
       this.userService.sendMessage(this.selectedUser.id, messageToSend!).subscribe(response => {
         this.sendForm.get("messageLabel")?.setValue("");
-      });
+      }));
     }
+  }
+  ngOnDestroy() {
+    this.subscriptions.forEach(subscription => {
+      console.log(subscription)
+      subscription.unsubscribe()});
   }
 }
 
