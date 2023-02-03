@@ -19,13 +19,13 @@ export class PasswordResetService {
 
   constructor(private http: HttpClient,private router:Router) {}
 
-  private headers = { 'content-type': 'application/json'}  
+  private headers = { 'content-type': 'application/json'}
 
 
 
   resetPassword(token:string,userId,newPassword:string){
     let body = {code:token,
-          new_password:newPassword};
+          newPassword:newPassword};
     return this.http.put<any>('http://localhost:8000/api/user/' +userId+'/resetPassword',body,{
 
     observe: 'response',
