@@ -22,6 +22,7 @@ import { AdminAllDriversKilometersGraphComponent } from './components/admin-grap
 import { AdminSeperateUsersGraphComponent } from './components/admin-graphs/admin-seperate-users-graph/admin-seperate-users-graph.component';
 import { AdminSeperateUsersEarnedGraphComponent } from './components/admin-graphs/admin-seperate-users-earned-graph/admin-seperate-users-earned-graph.component';
 import { AdminSeperateUsersNumOfRidesGraphComponent } from './components/admin-graphs/admin-seperate-users-num-of-rides-graph/admin-seperate-users-num-of-rides-graph.component';
+import { AddImageDialogComponent } from './components/create-driver/add-image-dialog/add-image-dialog.component';
 
 
 
@@ -29,7 +30,7 @@ import { AdminSeperateUsersNumOfRidesGraphComponent } from './components/admin-g
 
 @NgModule({
 
-  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent, AdminReportsComponent, AdminAllDriversEarnGraphComponent, AdminAllDriversRidesGraphComponent, AdminAllDriversKilometersGraphComponent, AdminSeperateUsersGraphComponent, AdminSeperateUsersEarnedGraphComponent, AdminSeperateUsersNumOfRidesGraphComponent],
+  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent, AdminReportsComponent, AdminAllDriversEarnGraphComponent, AdminAllDriversRidesGraphComponent, AdminAllDriversKilometersGraphComponent, AdminSeperateUsersGraphComponent, AdminSeperateUsersEarnedGraphComponent, AdminSeperateUsersNumOfRidesGraphComponent, AddImageDialogComponent],
   imports: [
     AppRoutingModule,
     MaterialModule,

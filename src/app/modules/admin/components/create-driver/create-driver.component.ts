@@ -11,6 +11,7 @@ import {RideNotificationComponent} from "../../../../components/dialogs/ride-not
 import {MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Router} from "@angular/router";
 import {catchError, Subscription, throwError} from "rxjs";
+import {AddImageDialogComponent} from "./add-image-dialog/add-image-dialog.component";
 
 @Component({
   selector: 'app-create-driver',
@@ -114,11 +115,17 @@ export class CreateDriverComponent implements OnInit,OnDestroy {
                     }))
                     .subscribe(vehicleResponse =>{
                     if(vehicleResponse.status == 200){
+
+                      const dialogRef1 = this.dialog.open(AddImageDialogComponent, {
+                        width: '550px',
+                        data: driverInfoResponse
+                      });
+
                       const dialogRef = this.dialog.open(RideNotificationComponent, {
                         width: '250px',
-                        data: {msg:"Driver created."}
+                        data: {msg:"Driver created succesfully!"}
                       });
-                      this.router.navigate(['admin'])
+                      // this.router.navigate(['admin'])
                     }
                   }))
                 }))
@@ -141,12 +148,7 @@ export class CreateDriverComponent implements OnInit,OnDestroy {
 
   }
 
-  openDocuments() {
-    const dialogRef = this.dialog.open(RideNotificationComponent, {
-      width: '250px',
-      data: {msg:"Vozaceva dokumenta"}
-    });
-  }
+
 
   ngOnDestroy(){
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
