@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {AdminService} from "../../../service/admin.service";
 import {MapService} from "../../../../components/map/map.service";
@@ -18,8 +18,7 @@ import {AddImageDialogComponent} from "./add-image-dialog/add-image-dialog.compo
   templateUrl: './create-driver.component.html',
   styleUrls: ['./create-driver.component.css']
 })
-export class CreateDriverComponent implements OnInit {
-  private subscriptions: Subscription[] = [];
+export class CreateDriverComponent implements OnInit,OnDestroy {
   createDriverForm = new FormGroup({
     firstName: new FormControl("", [Validators.required]),
     lastName: new FormControl("", [Validators.required]),
@@ -38,8 +37,9 @@ export class CreateDriverComponent implements OnInit {
   })
   selectedVehicleType: any;
 
+  private subscriptions: Subscription[] = [];
 
-  constructor(private adminService: AdminService, private mapService:MapService, private dialog:MatDialog, private router: Router) {}
+  constructor(private dialog:MatDialog,private adminService: AdminService, private mapService:MapService,private router:Router) {}
 
   ngOnInit(): void {
   }
@@ -148,17 +148,11 @@ export class CreateDriverComponent implements OnInit {
 
   }
 
-  openDocuments() {
-    const dialogRef = this.dialog.open(AddImageDialogComponent, {
-      width: '550px',
-      data: {msg:"Something went wrong."}
-    });
 
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(subscription => {
-      console.log(subscription)
-      subscription.unsubscribe()});
-  }
+
 }

@@ -1,6 +1,6 @@
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import {catchError, map, of} from "rxjs";
+import {catchError, map, of, Subscription} from "rxjs";
 import {DriverInfoDTO} from "../DTO/DriverInfoDTO";
 import {DriverService} from "../service/driver.service";
 import {UserService} from "../../_service/user.service";
@@ -19,17 +19,19 @@ import { NotificationDialogComponent } from './components/registered-dialogs/not
 })
 export class RegisteredUserComponent implements OnInit,OnDestroy {
   private passengerInfo? :PassengerInfoDTO;
+  private subscriptions: Subscription[] = [];
 
   constructor(private dialog:MatDialog,private userService:UserService,private passengerService:RegisteredService,private authService:AuthService,private passengerSocketService:PassengerSocketService) { }
   ngOnDestroy(): void {
     this.passengerSocketService.stompClient.disconnect();
+    this.subscriptions.forEach(subscription=>subscription.unsubscribe());
   }
 
   ngOnInit(): void {
-    this.userService.getUserByEmail(this.authService.getEmail()).subscribe(
+    this.subscriptions.push(this.userService.getUserByEmail(this.authService.getEmail()).subscribe(
       response=>{
         if(response.status == 200){
-          this.passengerService.getPassengerById(response.body.id).pipe(
+          this.subscriptions.push(this.passengerService.getPassengerById(response.body.id).pipe(
             catchError((error:HttpErrorResponse) => {
                 return of(error);
               }
@@ -58,7 +60,7 @@ export class RegisteredUserComponent implements OnInit,OnDestroy {
             this.passengerService.id = passengerResponse?.id;
 
             console.log(passengerResponse);
-          })
+          }))
         }
         else{
           const dialogRef = this.dialog.open(RideNotificationComponent, {
@@ -67,7 +69,7 @@ export class RegisteredUserComponent implements OnInit,OnDestroy {
           });
         }
       }
-    )
+    ))
 
   }
 

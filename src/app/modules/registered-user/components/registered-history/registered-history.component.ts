@@ -41,6 +41,7 @@ export class RegisteredHistoryComponent implements OnInit {
   selectedRide?: RideDTO;
   itemLoaded: boolean = false;
   rideDtos:RideDTO[] = []
+  private subscriptions: Subscription[] = [];
 
   passengerInfo:PassengerInfoDTO[] = [];
   vehicleReviews: DisplayReviewDTO[] = [];
@@ -58,7 +59,6 @@ export class RegisteredHistoryComponent implements OnInit {
   sortParams: (string | SortParameters)[] | undefined;
   addedToFav:boolean = false;
   canRate: boolean = true;
-  private subscriptions: Subscription[] = [];
 
   constructor(private routeFormService: RouteFormService, private router: Router,private dialog:MatDialog, private route:ActivatedRoute, private userService:UserService, private rideService:RideService, private authService: AuthService, private passengerService:RegisteredService, private reviewService:ReviewService) {
     this.sortParams = Object.keys(SortParameters).filter(key => !isNaN(Number(SortParameters[key])));
@@ -66,9 +66,9 @@ export class RegisteredHistoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.subscriptions.push(this.route.params.subscribe(params => {
       this.userid = params['id'];
-    });
+    }));
     this.subscriptions.push(
     this.passengerService.getPassengerRides(this.authService.getUserId(), 0, 100000, null, null).subscribe(response => {
       for(let ride of response.body!.results){
@@ -229,11 +229,11 @@ export class RegisteredHistoryComponent implements OnInit {
       data: {}
     });
 
-    dialogRef.afterClosed().subscribe(result => {
+    this.subscriptions.push(dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.favouriteRide(result);
       }
-    });
+    }));
   }
 
   private favouriteRide(name:string) {

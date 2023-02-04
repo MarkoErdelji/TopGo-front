@@ -1,4 +1,4 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MatDialog} from "@angular/material/dialog";
 import {RideNotificationComponent} from "../../../../components/dialogs/ride-notification/ride-notification.component";
@@ -10,13 +10,14 @@ import {KmPerDayGraphComponent} from "../graphs/km-per-day-graph/km-per-day-grap
 import {MoneySpentGraphComponent} from "../graphs/money-spent-graph/money-spent-graph.component";
 import jsPDF from 'jspdf';
 import html2canvas from "html2canvas";
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-registered-reports',
   templateUrl: './registered-reports.component.html',
   styleUrls: ['./registered-reports.component.css']
 })
-export class RegisteredReportsComponent implements OnInit {
+export class RegisteredReportsComponent implements OnInit,OnDestroy {
   rides:RideDTO[] =[];
   @ViewChild(RideDayGraphComponent) rideGraph!: RideDayGraphComponent;
   @ViewChild(KmPerDayGraphComponent) kmGraph!: KmPerDayGraphComponent;
@@ -25,6 +26,7 @@ export class RegisteredReportsComponent implements OnInit {
   @ViewChild('rideGraph', {static: true}) rideGraphPrint!: ElementRef;
   @ViewChild('kmGraph', {static: true}) kmGraphPrint!: ElementRef;
 
+  private subscriptions: Subscription[] = [];
 
   constructor(private dialog:MatDialog,private passengerService:RegisteredService,private authService:AuthService) {
   }
@@ -57,7 +59,7 @@ export class RegisteredReportsComponent implements OnInit {
       utcDateStart = new Date(Date.UTC(this.dateForm.controls.startControl.value.getFullYear(),this.dateForm.controls.startControl.value.getMonth(),this.dateForm.controls.startControl.value.getDate(),this.dateForm.controls.startControl.value.getHours(),this.dateForm.controls.startControl.value.getMinutes(),this.dateForm.controls.startControl.value.getSeconds()));
 
     }
-    this.passengerService.getPassengerRides(this.authService.getUserId(),0,9000,utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
+    this.subscriptions.push(this.passengerService.getPassengerRides(this.authService.getUserId(),0,9000,utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
       console.log(response)
       this.rides = [];
       response.body!.results.forEach((element)=>{
@@ -65,7 +67,7 @@ export class RegisteredReportsComponent implements OnInit {
         //console.log(element);
       })
 
-    })
+    }))
 
 
 
@@ -101,5 +103,10 @@ export class RegisteredReportsComponent implements OnInit {
     // download the pdf with all charts
     doc.save('Allcharts' + Date.now() + '.pdf');
     console.log(doc.path)
+  }
+
+
+  ngOnDestroy(){
+    this.subscriptions.forEach(subscription=> subscription.unsubscribe());
   }
 }

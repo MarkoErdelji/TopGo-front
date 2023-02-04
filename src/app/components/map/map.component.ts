@@ -179,6 +179,10 @@ export class MapComponent implements AfterViewInit {
       this.registerOnClick();
 
     }
+    else {
+      console.log("ALO MAJMUNEEEE")
+      this.registerOnClick();
+    }
 
 
   }

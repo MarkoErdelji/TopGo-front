@@ -1,0 +1,28 @@
+
+.icon{
+    height: 2em;
+    width: 2em;
+    margin-right:8px;
+}
+
+#wrapperDiv{
+    display:flex;
+    flex-direction:column;
+    justify-content: center;
+    align-items: center;
+}
+#costDiv{
+    display:flex;
+    justify-content: center;
+}
+
+#timeDiv{
+    margin-bottom:5px;
+    display:flex;
+    justify-content: center;
+}
+
+#button-div{
+    display:flex;
+    justify-content: center;
+}
