@@ -148,13 +148,6 @@ export class CreateDriverComponent implements OnInit {
 
   }
 
-  openDocuments() {
-    const dialogRef = this.dialog.open(AddImageDialogComponent, {
-      width: '550px',
-      data: {msg:"Something went wrong."}
-    });
-
-  }
 
   ngOnDestroy() {
     this.subscriptions.forEach(subscription => {
