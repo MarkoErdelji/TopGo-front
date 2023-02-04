@@ -147,12 +147,12 @@ export class CreateDriverComponent implements OnInit,OnDestroy {
 
 
   }
-
-
+  
 
   ngOnDestroy(){
     this.subscriptions.forEach(subscription => subscription.unsubscribe());
   }
+
 
 
 }
