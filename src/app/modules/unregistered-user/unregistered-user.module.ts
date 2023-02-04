@@ -11,17 +11,19 @@ import { AppModule } from 'src/app/app.module';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { MapModule } from 'src/app/components/map/map.module';
 import { RouteFormComponent } from './components/route-form/route-form.component';
+import { AssumptionDialogComponent } from './components/assumption-dialog/assumption-dialog.component';
 
 
 @NgModule({
-  declarations: [UnregisteredUserComponent, RouteFormComponent ],
+  declarations: [UnregisteredUserComponent, RouteFormComponent, AssumptionDialogComponent ],
   imports: [
     AppRoutingModule,
     MaterialModule,
     FormsModule,
     ReactiveFormsModule,
     NavbarModule,
-    MapModule
+    MapModule,
+    CommonModule
 
   ],
   exports:[

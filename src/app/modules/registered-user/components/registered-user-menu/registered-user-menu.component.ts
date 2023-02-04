@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PassengerSocketService } from 'src/app/modules/service/passenger-socket.service';
 import { AuthService } from 'src/app/_service/auth.service';
 import {RegisteredService} from "../../../service/registered.service";
 
@@ -10,7 +11,7 @@ import {RegisteredService} from "../../../service/registered.service";
 export class RegisteredUserMenuComponent implements OnInit {
   pfp?: string;
 
-  constructor(private passengerService:RegisteredService,private authService:AuthService) { }
+  constructor(private passengerSocketService:PassengerSocketService,private passengerService:RegisteredService,private authService:AuthService) { }
 
   ngOnInit(): void {
     this.passengerService.getPassengerById(this.authService.getUserId()).subscribe(response =>
@@ -20,6 +21,7 @@ export class RegisteredUserMenuComponent implements OnInit {
   }
 
   logout(){
+    this.passengerSocketService.stompClient.disconnect()
     AuthService.doLogout();
   }
 }

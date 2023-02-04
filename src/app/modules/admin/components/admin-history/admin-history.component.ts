@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DisplayReviewDTO } from 'src/app/modules/DTO/DisplayReviewDTO';
 import { DriverInfoDTO } from 'src/app/modules/DTO/DriverInfoDTO';
@@ -19,6 +20,7 @@ import { UserService } from 'src/app/_service/user.service';
   styleUrls: ['./admin-history.component.css']
 })
 export class AdminHistoryComponent implements OnInit {
+  private subscriptions: Subscription[] = [];
 
   rideDtos:RideDTO[] = []
   userid;
@@ -52,11 +54,11 @@ export class AdminHistoryComponent implements OnInit {
     this.selectedSortParam = SortParameters[0]; }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
+    this.subscriptions.push(this.route.params.subscribe(params => {
       this.userid = params['id'];
-      });
+      }));
       console.log(this.userid);
-    this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase(),null,null).subscribe(response=>{
+      this.subscriptions.push(this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase(),null,null).subscribe(response=>{
       console.log(response)
       response.body!.results.forEach((element)=>{
         if(element.status == "FINISHED"){
@@ -64,7 +66,7 @@ export class AdminHistoryComponent implements OnInit {
         }
       })
       this.ridesLoaded = true;
-    })
+    }))
   }
 
 
@@ -92,13 +94,13 @@ export class AdminHistoryComponent implements OnInit {
     console.log(utcDateStart)
     this.ridesLoaded = false;
     this.rideDtos = [];
-    this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase(),utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
+    this.subscriptions.push(this.userService.getUsersRides(this.userid,0,9000,this.selectedSortParam.toLowerCase(),utcDateStart?.toISOString(),utcDateEnd?.toISOString()).subscribe(response=>{
       console.log(response)
       response.body!.results.forEach((element)=>{
           this.rideDtos.push(element);
       })
       this.ridesLoaded = true;
-    })
+    }))
   }
   selectRide(rideDto:RideDTO){
     if(rideDto.id == this.selectedRide?.id){
@@ -119,30 +121,32 @@ export class AdminHistoryComponent implements OnInit {
     this.passengerInfo = [];
     this.selectedRide = rideDto;
     this.selectedRide.passengers.forEach((passenger)=>{
-      this.userService.getUserById(passenger.id).subscribe((response)=>
+      this.subscriptions.push(this.userService.getUserById(passenger.id).subscribe((response)=>
       {
         this.passengerInfo.push(response.body!);
-      })
+      }))
     })
-    this.reviewService.getRideReviews(this.selectedRide.id).subscribe((review)=>{
+    this.subscriptions.push(this.reviewService.getRideReviews(this.selectedRide.id).subscribe((review)=>{
       review.forEach(element => {
-        this.userService.getUserById(element.passenger.id).subscribe(passengerInfo=>{
+        this.subscriptions.push(this.userService.getUserById(element.passenger.id).subscribe(passengerInfo=>{
           if(element.type == "DRIVER"){
             this.driverReviews.push({passenger:passengerInfo.body!,review:element})
           }
           else if(element.type == "VEHICLE"){
             this.vehicleReviews.push({passenger:passengerInfo.body!,review:element})
           }
-        })
+        }))
 
       });
       this.itemLoaded=true;
-    })
-    this.driverService.getDriverById(this.selectedRide.driver.id).subscribe((driver)=>{
+    }))
+    this.subscriptions.push(this.driverService.getDriverById(this.selectedRide.driver.id).subscribe((driver)=>{
       this.driver = driver;
-    })
+    }))
   }
 
-
+ngOnDestroy(){
+  this.subscriptions.forEach(subsciption=>{subsciption.unsubscribe()})
+}
 
 }

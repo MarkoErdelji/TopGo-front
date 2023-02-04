@@ -23,6 +23,7 @@ export class FriendInviteDialogComponent implements OnInit,AfterViewInit {
   timerSubscription!: Subscription;
   user!:PassengerInfoDTO;
   pfp!:string;
+  private subscriptions: Subscription[] = [];
 
   userName!:string;
 
@@ -32,12 +33,12 @@ export class FriendInviteDialogComponent implements OnInit,AfterViewInit {
     this.inv = this.data.inv;
     this.secondsLeft = this.data.duration /1000;
     this.startTimer();
-    this.passengerService.getPassengerById(this.inv.userId).subscribe(response =>
+    this.subscriptions.push(this.passengerService.getPassengerById(this.inv.userId).subscribe(response =>
     {
       this.user = response;
       this.pfp = this.user.profilePicture;
       this.userName = this.user.name + " " + this.user.surname
-    })
+    }))
   }
 
   ngAfterViewInit(): void {
@@ -62,20 +63,20 @@ export class FriendInviteDialogComponent implements OnInit,AfterViewInit {
     this.inv.status = "ACCEPTED"
 
 
-    this.passengerService.inviteRespond(this.inv).subscribe(res=>
+    this.subscriptions.push(this.passengerService.inviteRespond(this.inv).subscribe(res=>
     {
       console.log(res)
-    })
+    }))
     this.data.snackBarRef.dismiss();
   }
   onDecline() {
     this.inv.status = "REJECTED"
 
 
-    this.passengerService.inviteRespond(this.inv).subscribe(res=>
+    this.subscriptions.push(this.passengerService.inviteRespond(this.inv).subscribe(res=>
     {
       console.log(res)
-    })
+    }))
     this.data.snackBarRef.dismiss();
 
   }
