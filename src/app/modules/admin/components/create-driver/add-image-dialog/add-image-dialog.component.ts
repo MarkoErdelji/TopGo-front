@@ -1,10 +1,13 @@
 import {Component, Inject, OnInit} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {DriverInfoDTO} from "../../../../DTO/DriverInfoDTO";
 import {DriverService} from "../../../../service/driver.service";
 import {CreateDocumentDTO} from "../../../../DTO/CreateDocumentDTO";
 import {Router} from "@angular/router";
+import {
+  RideNotificationComponent
+} from "../../../../../components/dialogs/ride-notification/ride-notification.component";
 
 @Component({
   selector: 'app-add-image-dialog',
@@ -18,7 +21,7 @@ export class AddImageDialogComponent implements OnInit {
 
   })
 
-  constructor(private router: Router,private driverService: DriverService, private dialogRef: MatDialogRef<AddImageDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: DriverInfoDTO) { }
+  constructor(private router: Router,private driverService: DriverService, private dialogRef: MatDialogRef<AddImageDialogComponent>,private dialog:MatDialog,@Inject(MAT_DIALOG_DATA) public data: DriverInfoDTO) { }
 
   ngOnInit(): void {
   }
@@ -31,7 +34,10 @@ export class AddImageDialogComponent implements OnInit {
       }
       console.log(this.file)
       this.driverService.addDriverDocument(this.data.id, createDriverDocumentDTO).subscribe((response)=>{
-        window.alert("Driver document added")
+        const dialogRef = this.dialog.open(RideNotificationComponent, {
+          width: '250px',
+          data: {msg:"Driver document added."}
+        });
       })
 
     }
