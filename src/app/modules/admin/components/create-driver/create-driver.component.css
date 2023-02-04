@@ -28,6 +28,17 @@ mat-form-field{
   font-size: 13px;
 }
 
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #FF9642;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #FF9642;
+}
+
+::ng-deep .mat-focused .mat-form-field-required-marker {
+  color: #FF9642
+}
+
 mat-icon{
   font-family: 'Material Icons' !important;
 }

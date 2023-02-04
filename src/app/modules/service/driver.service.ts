@@ -15,6 +15,7 @@ import {StartTimeDTO} from "../DTO/StartTimeDTO";
 import {EndTimeDTO} from "../DTO/EndTimeDTO";
 import {WorkHoursDTO} from "../DTO/WorkHoursDTO";
 import {DriverWorkHoursDTO} from "../DTO/DriverWorkHoursDTO";
+import {DocumentInfoDTO} from "../DTO/DocumentInfoDTO";
 
 
 @Injectable({
@@ -137,6 +138,11 @@ export class DriverService {
 
   getDriverWorkingHours(driverId:number): Observable<DriverWorkHoursDTO> {
     return this.http.get<DriverWorkHoursDTO>(this.endpoint +"/"+ driverId +"/working-hour");
+  }
+
+  addDriverDocument(driverId:number, createDocumentDTO: any){
+    return this.http.post<DocumentInfoDTO>(this.endpoint+"/"+driverId+"/documents", JSON.stringify(createDocumentDTO),{'headers':this.headers,observe: 'response',
+      responseType: 'json'});
   }
 
 }
