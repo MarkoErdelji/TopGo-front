@@ -40,6 +40,7 @@ import {
   RegisteredReportsComponent
 } from "./modules/registered-user/components/registered-reports/registered-reports.component";
 import { AdminReportsComponent } from './modules/admin/components/admin-reports/admin-reports.component';
+import {AdminHomeComponent} from "./modules/admin/components/admin-home/admin-home.component";
 
 
 const routes: Routes = [ {path: 'register', component: RegisterComponent},
@@ -78,8 +79,10 @@ const routes: Routes = [ {path: 'register', component: RegisterComponent},
                             {path: 'createDriver', component: CreateDriverComponent},
                             {path: 'history/:id', component: AdminHistoryComponent},
                             {path: 'inbox', component: AdminInboxComponent},
+                            {path: 'home', component: AdminHomeComponent},
                             {path: 'requests', component: RequestNotificationComponent},
-                            {path: 'reports',component: AdminReportsComponent}],
+                            {path: 'reports',component: AdminReportsComponent},
+                            { path: '', redirectTo: 'home', pathMatch: 'full' }],
                           canActivate: [AdminGuard]}];
 
 @NgModule({

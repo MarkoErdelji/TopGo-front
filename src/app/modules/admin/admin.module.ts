@@ -23,6 +23,8 @@ import { AdminSeperateUsersGraphComponent } from './components/admin-graphs/admi
 import { AdminSeperateUsersEarnedGraphComponent } from './components/admin-graphs/admin-seperate-users-earned-graph/admin-seperate-users-earned-graph.component';
 import { AdminSeperateUsersNumOfRidesGraphComponent } from './components/admin-graphs/admin-seperate-users-num-of-rides-graph/admin-seperate-users-num-of-rides-graph.component';
 import { AddImageDialogComponent } from './components/create-driver/add-image-dialog/add-image-dialog.component';
+import {MapModule} from "../../components/map/map.module";
+import { AdminHomeComponent } from './components/admin-home/admin-home.component';
 
 
 
@@ -30,17 +32,18 @@ import { AddImageDialogComponent } from './components/create-driver/add-image-di
 
 @NgModule({
 
-  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent, AdminReportsComponent, AdminAllDriversEarnGraphComponent, AdminAllDriversRidesGraphComponent, AdminAllDriversKilometersGraphComponent, AdminSeperateUsersGraphComponent, AdminSeperateUsersEarnedGraphComponent, AdminSeperateUsersNumOfRidesGraphComponent, AddImageDialogComponent],
-  imports: [
-    AppRoutingModule,
-    MaterialModule,
-    FormsModule,
-    ReactiveFormsModule,
-    NgxChartsModule,
-    NavbarModule,
-    HistoryInstanceModule,
-    CommonModule
-  ],
+  declarations: [AdminComponent, AdminMenuComponent, CreateDriverComponent, AdminHistoryComponent, AdminInboxComponent, RequestNotificationComponent, AdminUsersComponent, AdminNoteDialogComponent, AdminCreateNoteDialogComponent, AdminReportsComponent, AdminAllDriversEarnGraphComponent, AdminAllDriversRidesGraphComponent, AdminAllDriversKilometersGraphComponent, AdminSeperateUsersGraphComponent, AdminSeperateUsersEarnedGraphComponent, AdminSeperateUsersNumOfRidesGraphComponent, AddImageDialogComponent, AdminHomeComponent],
+    imports: [
+        AppRoutingModule,
+        MaterialModule,
+        FormsModule,
+        ReactiveFormsModule,
+        NgxChartsModule,
+        NavbarModule,
+        HistoryInstanceModule,
+        CommonModule,
+        MapModule
+    ],
   exports: [AdminComponent]
 })
 export class AdminModule { }
