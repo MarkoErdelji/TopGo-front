@@ -1,0 +1,8 @@
+<app-map></app-map>
+<app-driver-current-ride></app-driver-current-ride>
+
+<mat-slide-toggle [(ngModel)]="isSwitched" (change)="onToggleChange()" class="custom-toggle big-toggle" id="toggle" *ngIf="isAvailable" >
+  <div  class="text-inside" *ngIf="isSwitched">ACTIVE</div>
+  <div class="text-inside" *ngIf="!isSwitched">OFFLINE</div>
+</mat-slide-toggle>
+

@@ -1,0 +1,12 @@
+<mat-dialog-content>
+  <mat-form-field appearance="outline" class="route-form-field" id="location">
+    <mat-label>Enter Favourite Route Name</mat-label>
+    <input matInput name="favouriteName"  [(ngModel)]="favName">
+  </mat-form-field>
+</mat-dialog-content>
+<div id = "button-div">
+  <mat-dialog-actions>
+    <button id = "cancel-btn" mat-button (click)="onNoClick()">Cancel</button>
+    <button id = "send-btn"mat-button (click)="onSendClick()" [mat-dialog-close]="favName" cdkFocusInitial>ADD</button>
+  </mat-dialog-actions>
+</div>

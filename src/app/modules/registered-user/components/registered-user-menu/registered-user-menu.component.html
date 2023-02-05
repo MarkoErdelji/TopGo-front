@@ -1,12 +1,13 @@
 <div id="menu-buttons">
-    <img src="../../../../../assets/images/tate.png" id="profile-img">
-    <button mat-raised-button shadow id="inbox">Inbox</button>
-    <button mat-raised-button shadow id="history">History</button>
-    <button mat-raised-button shadow id="routes">Routes</button>
-    <button mat-raised-button shadow id="reports">Reports</button>
+    <img [src]='pfp' id="profile-img"  [routerLink]="['/registered/profile']">
+    <button mat-raised-button shadow id="home" [routerLink]="['/registered/home']">Home</button>
+    <button mat-raised-button shadow id="inbox"[routerLink]="['/registered/inbox']">Inbox</button>
+    <button mat-raised-button shadow id="history"[routerLink]="['/registered/history']">History</button>
+    <button mat-raised-button shadow id="reports" [routerLink]="['/registered/reports']">Reports</button>
+
 </div>
 
 <div id="logout-container">
-    <button mat-raised-button (click) = "logout()" [routerLink]="['']"shadow id="logout">Logout</button>
+    <button mat-raised-button shadow (click) = "logout()" id="logout" [routerLink]="['']">Logout</button>
 </div>
 

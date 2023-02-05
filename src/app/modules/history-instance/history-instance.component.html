@@ -1,0 +1,21 @@
+<div id="round-wrapper">
+    <div id="content-holder">
+        <div id="title-container">
+            <p id="date-value">{{date}}</p>
+        </div>
+        <div class="value-container" id="departure-container">
+            <div class="title-img-container">
+                <img src="assets/images/departure-marker.png" class="icon">
+                <p id="departure-title">Departure:</p>
+            </div>
+            <p id="departure-value" class="text-value">{{rideDTO.locations[0].departure.address}}</p>
+        </div>
+        <div class="value-container" id="destination-container">
+            <div class="title-img-container">
+                <img src="assets/images/destination-marker.png" class="destination-icon">
+                <p id="destination-title">Destination:</p>
+            </div> 
+            <p id="destination-value" class="text-value">{{rideDTO.locations[0].destination.address}}</p>
+        </div>
+    </div>
+</div>

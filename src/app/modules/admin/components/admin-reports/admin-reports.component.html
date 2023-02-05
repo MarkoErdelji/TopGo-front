@@ -1,0 +1,64 @@
+<div id="report-content" #printable>
+
+
+    <div class="graph-holder shadow">
+        <app-admin-seperate-users-earned-graph *ngIf="dataLoaded" [driverData]="seperateDriverData" [view]="[970,570]"></app-admin-seperate-users-earned-graph>
+    </div>
+    
+    <div class="graph-holder shadow">
+        <app-admin-seperate-users-num-of-rides-graph *ngIf="dataLoaded" [driverData]="seperateDriverData" [view]="[970,570]"></app-admin-seperate-users-num-of-rides-graph>
+    </div>
+    <div class="graph-holder shadow">
+        <app-admin-seperate-users-graph *ngIf="dataLoaded" [driverData]="seperateDriverData" [view]="[970,570]"></app-admin-seperate-users-graph>
+    </div>
+    <mat-form-field appearance="fill" id="selector">
+        <mat-label>Select user</mat-label>
+        <mat-select formControlName = "userSelect" [(value)]="selectedValue" (selectionChange)="onSelect($event.value)">
+          <mat-option *ngFor="let user of userData" [value]="user.id">{{user.id}} {{user.name}} {{user.surname}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    <div class="graph-holder shadow">
+
+        <app-admin-all-drivers-earn-graph *ngIf="dataLoaded" [driverData]="allData" [view]="[970,570]"></app-admin-all-drivers-earn-graph>
+    </div>
+    <div class="graph-holder shadow">
+        <app-admin-all-drivers-rides-graph *ngIf="dataLoaded" [driverData]="allData" [view]="[970,570]"></app-admin-all-drivers-rides-graph>
+    </div>
+    <div class="graph-holder shadow">
+        <app-admin-all-drivers-kilometers-graph *ngIf="dataLoaded" [driverData]="allData" [view]="[970,570]"></app-admin-all-drivers-kilometers-graph>
+    </div>
+
+</div>
+
+
+<div class="button-holder">
+    <div class="gray-background shadow">
+        <form [formGroup]="dateForm" (ngSubmit)="changeGraphs()">
+            <div id="date-change-div">
+                    <mat-form-field class="date-input-field">
+                        <input matInput id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Start date" formControlName="startControl" >
+                        <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker [disabled]=false #picker [showSpinners]="true" [showSeconds]="true"
+                        [stepHour]="1" [stepMinute]="1"
+                        [touchUi]="true"  [enableMeridian]="false"
+                        [hideTime]="false">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                    <mat-form-field class="date-input-field">
+                    <input matInput  id="date-input"[ngxMatDatetimePicker]="picker2" [disabled] = true placeholder="End date" formControlName="endControl" >
+                    <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker 
+                        [disabled]=false #picker2 [showSpinners]="true" [showSeconds]="true"
+                        [stepHour]="1" [stepMinute]="1"
+                        [touchUi]="true"  [enableMeridian]="false"
+                        [hideTime]="false">
+                    </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                    <button mat-raised-button id="submit-button">Submit changes</button>
+            </div>
+        </form>
+        <div id="actions-div">
+            <button mat-raised-button id="download-button" (click)="downloadAsPDF()">Download</button>
+        </div>
+    </div>
+</div>

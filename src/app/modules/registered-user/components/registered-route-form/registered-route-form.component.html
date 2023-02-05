@@ -1,33 +1,167 @@
+
+<div id = "driver-div" #popupContent>
+
+</div>
+
+<div id = "fav-route-select-back" [hidden]="favVisible" >
+  <form [formGroup]="favForm" (ngSubmit)="favouriteEntered()">
+  <div id = "fav-route-select">
+    <mat-form-field appearance="fill">
+      <mat-label>Favourite Routes</mat-label>
+      <mat-select formControlName = "favRouteSelect">
+        <mat-option *ngFor="let ride of favouriteRides" [value]="ride">{{ride.favoriteName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button  id="enter-fav-button" type="submit" mat-button >Enter</button>
+  </div>
+  </form>
+</div>
+
 <div id="test" #formDiv >
   <form [formGroup]="goForm" (ngSubmit)="go($event.submitter.id)">
+    <div id = "route-div">
     <mat-form-field appearance="outline" class="route-form-field" id="location">
       <mat-label>Location</mat-label>
-      <input matInput name="location" formControlName="location">
+      <input matInput name="location" formControlName="location" (focus)="departureInFocus()">
     </mat-form-field>
     <mat-form-field appearance="outline" id = "destination-field" class="route-form-field" id="destination">
       <mat-label>Destination</mat-label>
-      <input matInput name="destination" formControlName="destination">
+      <input matInput name="destination" formControlName="destination" (focus)="destinaionInFocus()">
     </mat-form-field>
+
     <button  id="go-button" type="submit" mat-raised-button>Go</button>
+    </div>
     <div id ="moreOptions">
       <mat-form-field appearance="fill">
         <mat-label>Car type</mat-label>
-        <mat-select>
-          <mat-option value="one">Standard</mat-option>
-          <mat-option value="two">Luxury</mat-option>
+        <mat-select formControlName="carType">
+          <mat-option value="1" >Standard</mat-option>
+          <mat-option value="2">Luxury</mat-option>
+          <mat-option value="3">Van</mat-option>
         </mat-select>
       </mat-form-field>
 
-      <mat-checkbox >For Babies</mat-checkbox>
-        <mat-checkbox >For Pets</mat-checkbox>
+      <mat-checkbox  formControlName="forBabies">For Babies</mat-checkbox>
+        <mat-checkbox  formControlName="forPets">For Pets</mat-checkbox>
+      <mat-form-field id = 'number-input-field'>
+        <input matInput id = "number-input" type="number" min="2" max="10" step="2" value = "4" placeholder="Seats">
+      </mat-form-field>
+    <div>
+        <mat-form-field id="date-input-field">
+          <input matInput id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Choose a date" [formControl]="dateControl" >
+          <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+          <ngx-mat-datetime-picker [disabled]=false #picker [showSpinners]="true" [showSeconds]="false"
+             [stepHour]="1" [stepMinute]="1"
+             [touchUi]="true"  [enableMeridian]="false"
+             [hideTime]="false">
+          </ngx-mat-datetime-picker>
+       </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field id="referal-field">
+          <mat-label>Enter Friend Email</mat-label>
+          <input matInput name="friendEmail" formControlName="friendEmail" >
+        </mat-form-field>
+        <button  id="invite-button" type="button" (click)="inviteFriend('')" mat-raised-button >Invite</button>
+      </div>
+      <div id ='invited-friends' >
+        <div class = "friend-div" *ngFor="let friend of friends">
+        <img  class ="friend-img" [src]="friend.profilePicture">
+          <img class = "loading-img" src = "assets/images/loadingGif.gif" [hidden]="friendInvites.get(friend.id) !='PENDING'"  >
+          <img class = "loading-img" src = "assets/images/x-icon.png" [hidden]="friendInvites.get(friend.id) !='REJECTED'"  >
+          <img class = "loading-img" src = "assets/images/check-icon.png" [hidden]="friendInvites.get(friend.id) !='ACCEPTED'"  >
+        </div>
+
+
+      </div>
       <div id = "button-div">
+
       <button  id="order-button" type="submit" mat-raised-button>Order</button>
-        <button  id="cancel-button" type="submit" mat-raised-button>Cancle</button>
+        <button  id="cancel-button" type="submit" mat-raised-button >Cancel</button>
+        <button  id="favourite-button" type="submit" [disabled]="addedToFav" [ngClass]="{'yellow': addedToFav}"><img class = "center"id = "star-icon" src ="assets/images/star_icon.png"></button>
+
       </div>
 
 
 
     </div>
   </form>
+
+</div>
+<div id = 'confirm-ride' #confirmRide>
+  <div id = 'confirm-ride-info' class = 'center' >
+    <div class = 'route-div'>
+      <img src="assets/images/carIcon.png" id = "departure-image">
+      <hr id = "orange-line">
+      <img src="assets/images/destination-marker.png" id = "destination-image">
+    </div>
+    <div class = 'route-div'>
+      <p id = 'departure-text' >{{destinationP}}</p>
+      <p id = 'destination-text' >{{departureP}}</p>
+    </div>
+    <div id = 'driver-info-ride' #confirmRideInfo >
+      <div id ='driver-info-border'>
+      <img src="{{driverImage}}" id = "driver-image-ride">
+      <div id = driver-info-ride-text>
+      <p id ="driver-name-ride" >{{driverNameRide}}</p>
+      <p id ="driver-phone-ride" >{{driverPhoneRide}}</p>
+      <p id ="driver-email-ride" >{{driverEmailRide}}</p>
+      </div>
+      </div>
+      <div id = vehicle-info-ride-text>
+        <div id = 'ride-only-vehicle-info'>
+        <div class="icon-text">
+          <img src="assets/images/modelIcon.png" class="icon" />
+          {{vehicleNameRide}}
+        </div>
+        <div class="icon-text">
+          <img src="assets/images/modelIcon.png" class="icon" />
+          {{vehicleTypeRide}}
+        </div>
+        <div class="icon-text">
+          <img src="assets/images/petIcon.png" class="icon" />
+          {{forAnimals}}
+        </div>
+        <div class="icon-text">
+          <img src="assets/images/babyIcon.png" class="icon" />
+          {{forBabies}}
+          </div>
+          </div>
+        <div id = 'payment-ride-info'>
+          <div class="icon-text">
+            <img src="assets/images/distanceIcon.png" class="icon" />
+            {{distance}} Km
+          </div>
+          <div class="icon-text">
+            <img src="assets/images/timeIcon.png" class="icon" />
+            {{average}} Min
+          </div>
+          <div class="icon-text">
+            <img src="assets/images/moneyIcon.png" class="icon" />
+            {{ridePrice}} RSD
+          </div>
+          <div class="icon-text">
+            <img src="assets/images/status-icon-png-2.jpg" class="icon" />
+            {{rideStatus}}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id = 'ride-button-div'>
+      <button id = 'close-button'  [hidden]="!isVisible" (click)="closeOrder()" >Close</button>
+    <img [hidden]="isVisible" id = 'loading-gif'src="assets/images/loadingGif.gif">
+    </div>
+  </div>
+</div>
+<div [hidden]="acceptedBtn" id="accept-ride-div">
+  <div class ='white-bck'>
+<button  id="withdraw-button" (click)='withdrawRide()' class ='shadow'  type="button" mat-raised-button>WITHDRAW</button>
+  <button  id="chat-button" (click)='openDialog()' class ='shadow'  type="button" mat-raised-button>CHAT</button>
+  </div>
 </div>
 
+<div [hidden]="activeBtn" id="active-ride-div">
+  <div class = 'white-bck'>
+  <button  id="panic-button" class ='shadow' (click)='openDialogPanic()' type="button" mat-raised-button>PANIC</button>
+  </div>
+</div>

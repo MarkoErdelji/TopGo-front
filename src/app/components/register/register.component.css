@@ -14,8 +14,12 @@ mat-form-field  {margin: 5px;}
     max-width: 400px;
     margin-top: 1%;
     cursor: pointer;
-           
+
 }
+mat-form-field >>> .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
 #Name{
     display: inline-block;
     overflow: hidden;
@@ -51,17 +55,28 @@ mat-form-field  {margin: 5px;}
     text-align: center;
     display:table;
     width:100%;
-    
+
 }
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #FF9642;
+  }
+  ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #FF9642;
+  }
+  
+  ::ng-deep .mat-focused .mat-form-field-required-marker {
+    color: #FF9642
+  }
 #register-header-h1
 {
     color: white;
     display:table-cell;
     vertical-align: middle;
     font-size: 30px;
-    
+
 }
-#register-form-div 
+#register-form-div
 {
     margin: 0;
     width: 30%;
@@ -71,7 +86,7 @@ mat-form-field  {margin: 5px;}
     text-align: center;
     min-height: 400px;
     min-width: 250px;
-    
+
 }
 
 #create-accout
@@ -87,10 +102,9 @@ mat-form-field  {margin: 5px;}
     flex-direction: column;
     align-items: flex-start;
     align-items: center;
-    
-    
-  }
 
+
+  }
 
 
 #other-forms{
@@ -111,13 +125,13 @@ mat-form-field  {margin: 5px;}
         position: relative;
         width: 95%;
     }
-    
+
     #last-name-form{
         float: left;
         position: relative;
         width: 95%;
     }
-    
+
     #usnm-pass{
         display: block;
         overflow: hidden;
@@ -127,7 +141,7 @@ mat-form-field  {margin: 5px;}
         float: left;
         width: 95%;
     }
-    
+
     #password-form{
         float: left;
         width: 95%;

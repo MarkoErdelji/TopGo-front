@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, throwError } from 'rxjs';
+import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { Md5 } from 'ts-md5';
 import { RegisterData } from '../components/register/RegisterDTO';
+import {DriverInfoDTO} from "../modules/DTO/DriverInfoDTO";
+import { RideNotificationComponent } from '../components/dialogs/ride-notification/ride-notification.component';
+import { MatDialog } from '@angular/material/dialog';
 @Injectable({
   providedIn: 'root',
 })
@@ -18,35 +21,49 @@ export class AuthService {
   endpoint: string = 'http://localhost:8000/api';
   headers = new HttpHeaders().set('Content-Type', 'application/json');
   currentUser = {};
-  constructor(private http: HttpClient, public router: Router) {}
+
+
+  constructor(private http: HttpClient, public router: Router,private dialog:MatDialog) {}
   // Sign-in
+
   async signIn(username:string|null,password:string|null) {
     const email = username;
-    if(password!=null){
-      password = this.hashData(password)
-    }
-    const headers = { 'content-type': 'application/json'}  
+    const headers = { 'content-type': 'application/json'}
     const res = await this.http
-      .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers})
-      .subscribe((res: any) => {
-        localStorage.setItem('access_token', res.accessToken);
-        localStorage.setItem('refresh_token',res.refreshToken);
-        this.checkForToken();
+      .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers,observe: 'response',
+      responseType: 'json'}).pipe(
+        catchError((error:HttpErrorResponse) => {
+          if(error.status == 400){
+            console.log(error)
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '250px',
+              data: {msg:error.error.message
+              }
+            });
+  
+          }
+          return of(error);
+        }
+        )
+      ).subscribe((res: any) => {
+        if(res.status == 200){
+          localStorage.setItem('access_token', res.body.accessToken);
+          localStorage.setItem('refresh_token',res.body.refreshToken);
+          this.checkForToken();
+        }
       });
     return res;
-    
-    
+
+
   }
   getToken() {
     return localStorage.getItem('access_token');
   }
 
   async register(regData:RegisterData){
-    if(regData.password!=null){
-      regData.password = this.hashData(regData.password)
-    }
-    return this.http
-      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers })
+    this.http
+      .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers,observe: 'response',
+      responseType: 'json'})
       .pipe(
         catchError((error:HttpErrorResponse) => {
           return of(error);
@@ -55,9 +72,16 @@ export class AuthService {
       ).subscribe(
         response =>{
           if(response.status == 409){
-            window.alert("Error: email already exists!");
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '300px',
+              data: {msg: "Error: email already exists!"}
+            });
           }
           else{
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '400px',
+              data: {msg: "An activation email has been sent for your account!"}
+            });
             this.router.navigate(['login']);
           }
           return response;
@@ -65,23 +89,19 @@ export class AuthService {
       )
 
   }
-  
-  hashData(data:string){
-    return  Md5.hashStr(data)
-    
-  }
-  
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
     return authToken !== null ? true : false;
   }
+
+
   static doLogout() {
-    let removeToken = localStorage.removeItem('access_token');
-    let removeRefresh = localStorage.removeItem('refresh_token')
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('refresh_token');
   }
   checkForToken(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
-    
+
    if (JWTtoken == ''){
     return;
    }
@@ -94,6 +114,11 @@ export class AuthService {
    const isExpired = helper.isTokenExpired(JWTtoken);
 
    if (isExpired){
+    const dialogRef = this.dialog.open(RideNotificationComponent, {
+      width: '300px',
+      data: {msg: "Your token has expired,please log in again"}
+    });
+    this.router.navigate(['login'])
     return;
    }
 
@@ -110,7 +135,42 @@ export class AuthService {
       break;
    }
   }
+  getUserId()
+  {
+    let token:string=localStorage.getItem('access_token')!;
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
 
+    return decodedToken.id;
+  }
+
+  getUserRole()
+  {
+    let token:string=localStorage.getItem('access_token')!;
+    const helper = new JwtHelperService();
+    const decodedToken = helper.decodeToken(token);
+
+    if(decodedToken != null){
+
+    return decodedToken.role;
+    }
+    return null;
+  }
+  changeUserPassword(userId,newPassword,oldPassword){
+    let passwordObject = {newPassword:newPassword,oldPassword:oldPassword}
+    return this.http
+      .put<any>(`http://localhost:8000/api/user/`+userId+'/changePassword', JSON.stringify(passwordObject), { 'headers': this.headers,
+      observe: 'response',
+      responseType: 'json'})
+  }
+
+  getEmail(){
+    const JWTtoken: string = localStorage.getItem("access_token") || '';
+    const helper = new JwtHelperService();
+
+    const decodedToken = helper.decodeToken(JWTtoken);
+    return decodedToken.sub;
+  }
   logout(){
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');

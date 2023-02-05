@@ -1,0 +1,37 @@
+#dialog-content{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#buttons{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+button{
+  border: 0 !important;
+  border-radius: 5px;
+  margin: 10px;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+  color: #FF9642;
+}
+::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+  color: #FF9642;
+}
+
+::ng-deep .mat-focused .mat-form-field-required-marker {
+  color: #FF9642
+}
+
+#confirm-button{
+  background-color: #FF9642;
+  color: white;
+}
+#cancel-button{
+  background-color: gray;
+  color: white;
+}
+

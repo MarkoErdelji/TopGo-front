@@ -1,7 +1,7 @@
 <mat-sidenav-container class="navigation">
     <mat-sidenav id="navbar-side" mode="side" role="navigation" opened>
         <div id="navbar-header">
-            <img id = "login-logo" src = "assets/images/topgologo.png" [routerLink]="['']">
+            <img id = "login-logo" src = "assets/images/topgologo.png">
         </div>
         <hr id = "navbar-line-break">
         <div id="navbar-menu">
@@ -9,9 +9,7 @@
         </div>
     </mat-sidenav>
     <mat-sidenav-content id="navbar-main-content">
-        <div id="navbar-main-content">
-            <ng-content select="[main-content]"></ng-content>
-        </div>
+            <ng-content  select="[main-content]"></ng-content>
     </mat-sidenav-content>
 </mat-sidenav-container>
 

@@ -1,0 +1,19 @@
+<div id="dialog-content">
+  <h1>Add driver documents</h1>
+  <form id = "createDriverForm" [formGroup] = "addDocumentFormGroup" (ngSubmit)="addDocument()">
+    <div id="info-container">
+      <mat-form-field appearance="outline" id = "document-name">
+        <mat-label>Document name</mat-label>
+        <input matInput name="documentName" formControlName="documentName">
+      </mat-form-field>
+      <div id="drop-image-div">
+        <input type="file" accept="image/jpeg" (change)="uploadImage($event)" title="">
+        <p>Drop files here</p>
+      </div>
+    </div>
+    <div id="buttons-container">
+      <button  id="create-button" type="submit" mat-raised-button>Add</button>
+      <button  id="finish-button" type="button" mat-raised-button (click)="finish()">Finish</button>
+    </div>
+  </form>
+</div>

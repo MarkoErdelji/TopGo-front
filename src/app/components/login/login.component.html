@@ -14,7 +14,7 @@
           <mat-form-field appearance="outline" id = "password-field">
             <mat-label>Password</mat-label>
             <input matInput name="password" formControlName="password" type = "password">
-            <p id = "forgot-password">Forgot Password?</p>
+            <p id = "forgot-password" [routerLink]="['forgotPassword']">Forgot Password?</p>
           </mat-form-field>
           <button  id="login-button" type="submit" mat-raised-button>Login</button>
         </form>

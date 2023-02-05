@@ -1,27 +1,49 @@
 #route-form{
-    background-color: rgba(0,0,0, 0.7);
-    width: 35%;
-    height: 7%;
+    background-color: rgba(0,0,0, 0.459);
+    width: fit-content;
+    height: fit-content;
     position: fixed;
     bottom: 0;
     right: 0;
     margin-bottom: 5%;
+    z-index: 1;
 
 }
 
 #go-button {
     background-color: #FF9642;
     color: white;
-    width: 100px
+    width: 80px;
+    margin-top: 10px;
+    height: 38px;
+    margin-right: 5px;
+    font-size: 20px;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+mat-form-field >>> .mat-form-field-outline {
   background-color: white;
   border-radius: 5px;
   margin: 7px;
 }
-#form-container{
-
-
+mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
+  background-color: white;
+  border-radius: 5px;
 }
+
+mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
+  background-color: white;
+  border-radius: 5px;
+}
+
+#form-container{
+  display: flex;
+  background: white;
+  margin: 15px;
+  border-radius: 5px;
+  justify-content: center;
+  padding-right: 12px;
+  padding-left: 12px;
+  padding-top: 12px;
+}
+
 

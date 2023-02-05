@@ -1,0 +1,20 @@
+<div id = "content-div">
+    <mat-dialog-content>
+        <div id="wrapperDiv">
+            <div id="timeDiv">
+                <img class="icon" src="assets/images/timeIcon.png">
+                <p class="time">Estimated time: {{outputData.estimatedTimeInMinutes}} MIN</p>
+            </div>
+            <div id="costDiv">
+                <img class="icon" src="assets/images/moneyIcon.png">
+                <p class="cost">Estimated cost: {{outputData.estimatedCost}} RSD</p>
+            </div>
+        </div>
+    </mat-dialog-content>
+    </div>
+    <div id = "button-div">
+      <mat-dialog-actions>
+        <button id = "cancel-btn" mat-button (click)="onNoClick()">Close</button>
+      </mat-dialog-actions>
+    </div>
+    

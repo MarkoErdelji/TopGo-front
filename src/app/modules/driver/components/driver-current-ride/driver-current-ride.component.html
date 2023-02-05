@@ -1,0 +1,55 @@
+<div id="ride-container" *ngIf="rideVisible">
+  <div id="ride-info">
+    <div id = "all-passengers">
+      <div [ngClass]="'passengers-container'">
+        <ng-template  ngFor let-item [ngForOf]="passengers" let-i="index">
+          <div class="passenger-info shadow">
+            <img [src]="item.profilePicture" id="passenger-profile-picture">
+            <div id="passenger-identity">
+              <div id="passenger-name">
+                <p>{{item.name +' '+ item.surname}}</p>
+              </div>
+              <div id="passenger-mail">
+                <p>{{item.email}}</p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <hr id="orange-line">
+    <div id="rest-ride-info">
+      <div id="ride-details">
+        <div id="row1">
+          <div id="distance" class="details">
+            <img src="assets/images/distanceIcon.png" id="distance-img">
+            <p>{{distance}} Km</p>
+          </div>
+          <div id="estimated-time" class="details">
+            <img src="assets/images/timeIcon.png" id="time-img">
+            <p>{{time}} Min</p>
+          </div>
+        </div>
+        <div id="row2">
+          <div id="price" class="details">
+            <img src="assets/images/moneyIcon.png" id="money-img">
+            <p>{{money}} RSD</p>
+          </div>
+          <div id="status" class="details">
+            <img src="assets/images/status-icon-png-2.jpg" id="status-img">
+            <p>{{status}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="buttons" *ngIf="hasRides">
+  <div id="buttons-background">
+    <button mat-raised-button (click)="startRide()"  id="start-btn" *ngIf="isAccepted">Start</button>
+    <button mat-raised-button (click)="endRide()"  id="end-btn" *ngIf="isStarted">End</button>
+    <button mat-raised-button id="chat-btn" (click)="chat()">Chat</button>
+    <button mat-raised-button (click) = "onPanicClick()" id="panic-btn" *ngIf="isStarted">PANIC</button>
+    <button mat-raised-button id="cancel-btn" (click)="cancelRide()" *ngIf="isAccepted">cancel</button>
+  </div>
+</div>

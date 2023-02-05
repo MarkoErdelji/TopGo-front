@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {DriverInfoDTO} from "../../modules/DTO/DriverInfoDTO";
+import {DistanceAndAverageDTO} from "../../modules/DTO/DistanceAndAverageDTO";
 
 @Injectable({
   providedIn: 'root',
@@ -20,10 +21,22 @@ export class MapService {
       `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&<params>`
     );
   }
-  private Location$ = new BehaviorSubject<any>({});
-  selectLocation$ = this.Location$.asObservable();
+  private Driver$ = new BehaviorSubject<any>({});
+  selectDriver$ = this.Driver$.asObservable();
   setDriver(Location: DriverInfoDTO) {
-    this.Location$.next(Location);
+    this.Driver$.next(Location);
+  }
+
+  private DistanceAndAverage$ = new BehaviorSubject<any>({});
+  selectDistanceAndAverage$ = this.DistanceAndAverage$.asObservable();
+  setDistanceAndAverage(DaA: DistanceAndAverageDTO) {
+    this.DistanceAndAverage$.next(DaA);
+  }
+
+  private MapClick$ = new BehaviorSubject<any>({});
+  selectMapClick$ = this.MapClick$.asObservable();
+  setMapClick(address: string) {
+    this.MapClick$.next(address);
   }
 
 }

@@ -10,23 +10,119 @@
 
 
 }
-mat-form-field{
-  margin-bottom: 0px !important;
-  margin-top: 10px !important;
+#fav-route-select-back
+{
+  width: fit-content;
+  height: fit-content;
+  background-color: rgba(0, 0, 0, 0.459);
+  position :fixed;
+  top: 60%;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+}
+#fav-route-select
+{
+  width: fit-content;
+  height: fit-content;
+  background-color: white;
+  border-radius: 5px;
+  margin: 10px;
+  display: flex;
+  align-content: center;
+  padding: 20px 5px 5px 15px;
+}
+#enter-fav-button
+{
+  height: 100%;
+  margin: 10px;
+  background-color: #FF9642;
+  color: white;
 }
 #location,#destination
 {
-  margin: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+::ng-deep .mat-datepicker-content{
+  display:inline !important;
+  font-family: 'Material Icons' !important;
+
+
+}
+
+::ng-deep .mat-calendar-body-selected{
+  background-color: #FF9642 !important;
+}
+
+::ng-deep .mat-calendar-body-cell:hover{
+  background-color: white !important;
+}
+::ng-deep .mat-calendar-body-cell-content:hover{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
+::ng-deep .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content{
+  background-color: rgba(255, 150, 66, 0.4) !important;
+}
+mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
   background-color: white;
   border-radius: 5px;
 }
 
-::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline  {
+mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
   background-color: white;
   border-radius: 5px;
+}
+#date-input-field{
+  float: left;
+  margin-left: 5px;
+}
+#referal-field
+{
+  margin: 0px 10px 0px 20px;
+}
+#invited-friends
+{width: 100%;
+  text-align: center;
+}
+.friend-div
+{
+  height: fit-content;
+  width: fit-content;
+  display: inline-block;
+  margin: 5px;
+  position: relative;
+  height: 51px;
+  width: 51px;
+}
+
+.friend-img
+{
+  border: 1px solid black;
+}
+#invited-friends>.friend-div>img
+{
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+
+}
+.loading-img
+{
+  position: absolute;
+  left: 0;
+  top:0;
+  height: 40px;
+  width: 40px;
+
+}
+#route-div {
+  background-color: white;
+  width: fit-content;
+  height: fit-content;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 20px 5px 5px;
 }
 
 #moreOptions
@@ -38,7 +134,7 @@ mat-form-field{
   height: fit-content;
   display: none;
 }
-#order-button ,#cancel-button {
+#order-button  {
   margin :10px;
   margin-top: 0;
   margin-bottom: 30px;
@@ -47,6 +143,10 @@ mat-form-field{
   margin: 10px;
   font-size: large;
 
+}
+#confirm-button:disabled
+{
+  background-color: gray;
 }
 #button-div
 {
@@ -65,3 +165,284 @@ mat-checkbox
   margin: 10px;
   font-size: x-large;
 }
+#driver-div {
+  background-color: rgba(0, 0, 0, 0.459);
+  position: fixed;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+  top: 5%;
+  height: fit-content;
+  width: fit-content;
+  padding: 0px 10px 0px 10px
+
+
+}
+#driver-image,#driver-image-ride
+{
+
+  border-radius: 100px;
+  width: 100px;
+  height: 100px;
+  stroke: black;
+  margin: 10px;
+  display:inline-block;
+  border: 2px solid black;
+}
+
+
+#info{
+  display: inline-block;
+  margin: 15px;
+  vertical-align: top;
+  font-size: large;
+}
+#driver-info
+{
+  border-radius: 5px;
+  background-color: white;
+  margin :10px;
+}
+
+#confirm-ride
+{
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.459);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: none;
+
+
+}
+
+#confirm-ride-info
+{
+  width: 30%;
+  min-width: 500px;
+  height: fit-content;
+  min-height: 400px;
+  background-color: white;
+  border-radius: 10px;
+
+
+}
+
+
+#orange-line
+{
+  width: 50%;
+  border-radius: 20px;
+  height: 10px;
+  background-color: orange;
+  position: fixed;
+  left: 30%;
+  top: 10%;
+}
+.route-div{
+  width: 100%;
+  margin: 30px 30px 0px 10px;
+  position: relative;
+  height: 50px;
+}
+
+#departure-image
+{
+
+  width: 100px;
+  display: inline-block;
+  position: fixed;
+  left : 5%;
+
+}
+
+#destination-image
+{
+
+  position: fixed;
+  right: 5%;
+  height: 60px;
+  display: inline-block;
+  text-align: left;
+}
+::-webkit-scrollbar {
+  width: 0.2em;
+  background-color: #F5F5F5;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #000000;
+}
+
+#destination-text
+{
+  background-color: #f4f4f4;
+  padding: 5px;
+  width: 150px;
+  height: 50px;
+  position: fixed;
+  left : 5%;
+  overflow-x: scroll;
+  text-align: justify;
+  border-radius: 5px;
+
+}
+
+#departure-text
+{
+  border-radius: 5px;
+  background-color: #f4f4f4;
+  padding: 5px;
+  height: 50px;
+  width: 150px;
+  position: fixed;
+  right: 5%;
+  overflow-x: scroll;
+  text-align: justify;
+
+}
+.icon-text {
+  margin :5px;
+  display: flex;
+  align-items: center;
+}
+
+.icon {
+  width: 1em;
+  height: 1em;
+  margin-right: 0.5em;
+}
+
+#driver-info-ride
+{
+  width: 100%;
+  border-radius: 5px;
+
+
+}
+#driver-info-border
+{
+  margin: 10px;
+  padding: 10px;
+  border-bottom: 2px solid orange;
+
+}
+#driver-info-ride-text
+{
+  display: inline-block;
+  vertical-align: top;
+  font-size: large;
+  margin: 15px 5px 15px 15px;
+
+}
+#vehicle-info-ride-text
+{
+  font-size: large;
+  margin: 15px;
+}
+
+#close-button
+{
+  background-color: #FF9642;
+  color: white;
+  margin: 10px;
+  font-size: x-large;
+
+}
+#cancer-order-button
+{
+  background-color: gray !important;
+}
+#number-input ,#number-input-field
+{
+  width: 70px;
+  margin-left: 10px;
+}
+#ride-button-div
+{
+  width: 100%;
+  text-align: center;
+}
+#payment-ride-info
+{
+  float: right;
+}
+
+#ride-only-vehicle-info,#payment-ride-info
+{
+  display: inline-block;
+}
+#loading-gif
+{
+  height: 70px;
+  width: 70px;
+}
+
+#withdraw-button,#chat-button,#panic-button
+{
+  border-radius: 10%;
+  width: 100px;
+  height: 70px;
+  color: white;
+  margin: 30px;
+
+
+}
+#withdraw-button,#panic-button
+{
+  background-color: darkred;
+}
+#chat-button
+{
+  background-color: #FF9642;
+}
+#accept-ride-div
+{
+
+
+}
+#active-ride-div,#accept-ride-div
+{
+  background-color: rgba(0, 0, 0, 0.459);
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  border-radius: 5px 0px 0px 5px;
+  padding: 10px 10px 10px 10px;
+  margin-bottom: 100px;
+}
+.white-bck {
+  background-color: white;
+  border-radius: 5px;
+}
+#favourite-button
+{
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  opacity: 100%;
+  right: 0;
+  background-color: white;
+  margin: 15px;
+  border: none;
+  border-radius: 50%;
+
+}
+#favourite-button:hover
+{
+  background-color: yellow;
+}
+.yellow{
+  background-color: yellow !important;
+}
+#star-icon
+{
+  width: 50px;
+  height: 50px;
+}
+#active-ride-div
+{
+
+
+}
+

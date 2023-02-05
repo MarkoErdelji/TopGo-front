@@ -1,0 +1,52 @@
+
+<div id = "message-box">
+  <div class = "h1-message-box">
+    <h1>
+      Inbox
+    </h1>
+
+  </div>
+  <div id="message-container">
+    <div class="user-message-box" (click)="handleClickSupport()">
+      <img class="user-profile-picture" src = 'assets/images/admin_icon.jpg'>
+      <div class='user-info'>
+        Support
+      </div>
+    </div>
+    <div class="user-message-box" *ngFor="let user of users" (click)="handleClick(user)">
+      <img class="user-profile-picture" [src]="user.profilePicture">
+      <div class='user-info'>
+        {{ user.name + " " + user.surname}}
+      </div>
+    </div>
+  </div>
+</div>
+<div id= 'chat-box'>
+  <div class  = "h1-message-box" >
+    <h1>
+      {{chatUser}}
+    </h1>
+
+  </div>
+  <div id ='messages-container'>
+    <div id="messages"*ngFor="let message of chat">
+      <div *ngIf="message.senderId == selectedUser.id" class="sender-bubble shadow">
+        {{ message.message }}
+        <p class = "msg-time-sender">{{ message.timeOfSending }} ride: {{message.rideId}}</p>
+      </div>
+      <div *ngIf="!(message.senderId == selectedUser.id)" class="receiver-bubble shadow">
+        {{ message.message }}
+        <p class = "msg-time-reciever">{{ message.timeOfSending }} ride: {{message.rideId}}</p>
+      </div>
+    </div>
+    <div id = "form-div">
+      <form [formGroup]="sendForm" (ngSubmit)="sendMessage()">
+        <mat-form-field appearance="outline" class="route-form-field" id="message-label">
+          <input matInput name="messageLabel" formControlName="messageLabel">
+        </mat-form-field>
+        <button  id="send-button" type="submit" mat-raised-button>send</button>
+
+      </form>
+    </div>
+  </div>
+</div>

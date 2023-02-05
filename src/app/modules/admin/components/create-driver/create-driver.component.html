@@ -1,0 +1,89 @@
+<div class = "main-backgroud shadow">
+
+  <form id = "createDriverForm" [formGroup] = "createDriverForm" (ngSubmit)="create()" >
+    <div id="other-forms">
+      <div class ="separators">
+        <p>Personal information</p>
+        <hr>
+      </div>
+      <div class="Name">
+        <mat-form-field appearance="outline" id = "first-name-form">
+          <mat-label>First name</mat-label>
+          <input matInput name="firstName" formControlName="firstName">
+        </mat-form-field>
+        <mat-form-field appearance="outline" id = "last-name-form">
+          <mat-label>Last name</mat-label>
+          <input matInput name="lastName" formControlName="lastName">
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" id = "password-form" class = "other-forms">
+        <mat-label>Password</mat-label>
+        <input matInput name="password" formControlName="password" type = "password">
+      </mat-form-field>
+
+
+      <mat-form-field appearance="outline" class = "other-forms">
+        <mat-label>E-mail</mat-label>
+        <input matInput name="email" formControlName="email">
+        <mat-error  *ngIf="createDriverForm.controls.email.hasError('email')">Error: Email form is incorrect</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline"  class = "other-forms">
+        <mat-label>Phone Nubmer</mat-label>
+        <input matInput name="phoneNumber" formControlName="phoneNumber" required="">
+        <mat-error  *ngIf="createDriverForm.controls.phoneNumber.hasError('pattern')">Error: Phone number is in incorrect format</mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="outline" class = "other-forms">
+        <mat-label>Adress</mat-label>
+        <input matInput name="adress" formControlName="adress">
+      </mat-form-field>
+
+      <div class ="separators">
+        <p>Car details</p>
+        <hr>
+      </div>
+
+      <div class = "Name">
+        <mat-form-field appearance="outline" class = "other-forms">
+          <mat-label>Model</mat-label>
+          <input matInput name="model" formControlName="model">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class = "other-forms">
+          <mat-label>Licence Plate</mat-label>
+          <input matInput name="licencePlate" formControlName="licencePlate">
+        </mat-form-field>
+      </div>
+
+      <div id="vehicleInfo">
+        <mat-form-field appearance="outline" id = "seats-form">
+          <mat-label>Seats</mat-label>
+          <input matInput name="seats" formControlName="seats" type="number">
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" id = "vehicle-type">
+          <mat-label >Vehicle type</mat-label>
+          <mat-select formControlName="vehicleType">
+            <mat-option value = "STANDARD">Standard</mat-option>
+            <mat-option value = "LUXURY">Luxury</mat-option>
+            <mat-option value = "VAN">Van</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </div>
+      <mat-form-field appearance="outline" id = "current-location-form">
+        <mat-label>Vehicle location address</mat-label>
+        <input matInput name="vehicleLocation" formControlName="vehicleLocation">
+      </mat-form-field>
+      <div id = "checkboxes">
+        <mat-checkbox formControlName = "forBabies">Babies</mat-checkbox>
+        <mat-checkbox formControlName = "forAnimals">Animals</mat-checkbox>
+      </div>
+      <button  id="create-button" type="submit" mat-raised-button>Create</button>
+
+    </div>
+
+
+  </form>
+</div>

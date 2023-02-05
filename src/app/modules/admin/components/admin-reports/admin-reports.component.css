@@ -1,0 +1,149 @@
+
+
+
+.report-content{
+    width: 100%;
+    height:100%;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.horizontal-flex{
+    display:flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.graph-holder{
+    margin: 20px;
+    margin-bottom:60px;
+    border-radius:15px;
+    background-color: #F4F4F4;
+    width: 1000px;
+    height: 600px;
+}
+
+::ng-deep .mat-select {
+    color: #FF9642; /* or any other color of your choice */
+  }
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+color: #FF9642;
+}
+    ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #FF9642;
+    }
+
+    ::ng-deep .mat-focused .mat-form-field-required-marker {
+    color: #FF9642 !important;
+    }
+    ::ng-deep .mat-form-field.mat-focused .mat-form-field-ripple{
+        background-color: #FF9642 !important;
+    }
+    ::ng-deep .mat-focused .mat-select-arrow {
+        color: #FF9642 !important;
+    }
+
+ ::ng-deep .mat-select-arrow-wrapper{
+    color: #FF9642 !important;
+    }
+ 
+ ::ng-deep .mat-focused .mat-select-underline {
+    color: #FF9642 !important;
+ }
+
+ ::ng-deep .mat-primary .mat-option.mat-selected:not(.mat-option-disabled){
+    color: #FF9642 !important;
+ }
+ .mat-form-field.mat-focused.mat-primary .mat-select-arrow {
+    color: #FF9642 !important;
+}
+.button-holder{
+    display:flex;
+    bottom:0;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    align-items: center;
+    width: 100%;
+    justify-content: center;
+}
+#report-content{
+    overflow: auto;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+#date-change-div{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-right:20px;
+}
+
+#print-button{
+    background-color:#D2D2D2;
+    color:black;
+    border-radius: 10px;
+}
+
+#download-button{
+    background-color:#FF9642;
+    color:white;
+    border-radius: 10px;
+}
+.graph-holder:last-child {
+    margin-bottom: 250px;
+}
+#submit-button{
+    background-color:#FF9642;
+    color:white;
+    border-radius: 10px;
+}
+
+::ng-deep .mat-calendar-body-selected{
+    background-color: #FF9642 !important;
+  }
+  
+  ::ng-deep .mat-calendar-body-cell:hover{
+    background-color: white !important;
+  }
+  ::ng-deep .mat-calendar-body-cell-content:hover{
+    background-color: rgba(255, 150, 66, 0.4) !important;
+  }
+  ::ng-deep .mat-calendar-body-cell:hover > .mat-calendar-body-cell-content{
+    background-color: rgba(255, 150, 66, 0.4) !important;
+  }
+  mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+  
+  mat-form-field >>> .mat-form-field-appearance-outline .mat-form-field-outline  {
+    background-color: white;
+    border-radius: 5px;
+  }
+
+
+  #selector{
+    margin-bottom:20px;
+  }
+
+#actions-div{
+    display:flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+.gray-background{
+    padding: 20px;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 10px 10px 0px 0px;
+    background-color: #F2F2F2;
+}

@@ -18,15 +18,24 @@ import { RegisterComponent } from './components/register/register.component';
 import { MapComponent } from './components/map/map.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AuthInterceptor } from './_service/authconfig.interceptor';
+import { ForgotPasswordComponent } from './components/login/password-reset/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/login/password-reset/reset-password/reset-password.component';
+import { FontAwesomeModule,FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import {faStar,faStarHalf} from'@fortawesome/free-solid-svg-icons';
+import {PanicDialogComponent} from "./modules/driver/dialogs/panic-dialog/panic-dialog.component";
+import { RideNotificationComponent } from './components/dialogs/ride-notification/ride-notification.component';
 
 
 
 
 @NgModule({
   declarations: [
+    RideNotificationComponent,
     AppComponent,
     LoginComponent,
     RegisterComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     AppRoutingModule,
@@ -38,7 +47,8 @@ import { AuthInterceptor } from './_service/authconfig.interceptor';
     UnregisteredUserModule,
     RegisteredUserModule,
     DriverModule,
-    HttpClientModule
+    HttpClientModule,
+    FontAwesomeModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
@@ -47,4 +57,9 @@ import { AuthInterceptor } from './_service/authconfig.interceptor';
   }],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(library: FaIconLibrary) {
+    library.addIcons(faStar);
+    library.addIcons(faStarHalf);
+  }
+ }

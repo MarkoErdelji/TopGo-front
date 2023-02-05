@@ -1,0 +1,38 @@
+<div id="full-content">
+  <div class="shadow" id="profile-content">
+    <div id="profile-img-container">
+      <img [src]='pfp' id="profile-image">
+
+    </div>
+    <div id="profile-data">
+      <div id="labelContainer">
+        <div class="first-last-name-container">
+          <p>First Name:</p>
+          <p>Last Name:</p>
+        </div>
+        <p>Username:</p>
+        <p>Address:</p>
+        <p>Phone:</p>
+      </div>
+      <div id="valueContainer">
+        <div class="first-last-name-container">
+          <p>{{firstName}}</p>
+          <p>{{lastName}}</p>
+        </div>
+        <p>{{username}}</p>
+        <p>{{address}}</p>
+        <p>{{phone}}</p>
+      </div>
+    </div>
+    <button mat-raised-button shadow id="edit-profile" (click)="openDialog()">Edit profile</button>
+    <p id = "change-password" (click)="openPasswordDialog()" >Change Password</p>
+  </div>
+  <div id="report-content">
+    <div class="shadow" id="report-box">
+      <app-km-per-day-graph *ngIf="rides && rides.length > 0" [rides]="rides"></app-km-per-day-graph>
+    </div>
+    <div class="shadow" id="report-box-end">
+      <app-ride-day-graph *ngIf="rides && rides.length > 0" [rides]="rides"></app-ride-day-graph>
+    </div>
+    <div>
+    </div>

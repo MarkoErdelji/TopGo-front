@@ -1,0 +1,68 @@
+#document-content{
+    border-radius: 10px;
+    background-color: #F4F4F4;
+    height: 40vh;
+    width: 30vw;
+    padding-left:10%;
+    padding:0px;
+    display:flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+
+mat-form-field >>> .mat-form-field-outline {
+    background-color: white;
+    border-radius: 5px;
+  }
+
+#reset-text{
+    display:flex;
+    margin:10px;
+    margin-top:50px;
+    text-align: left;
+    font-size:large;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
+::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #FF9642;
+  }
+  ::ng-deep .mat-form-field.mat-focused .mat-form-field-label {
+    color: #FF9642;
+  }
+  
+  ::ng-deep .mat-focused .mat-form-field-required-marker {
+    color: #FF9642
+  }
+
+#submit-button {
+    background-color:#FF9642;
+    color:white;
+    margin-left:2%;
+    margin-top: 40px;
+    border-radius: 10px;
+}
+
+mat-form-field {
+    white-space: pre-wrap;
+    width: 60%;
+    height: 60%;
+}
+
+
+form>div{
+    color: #f44336 !important;
+}
+#createNoteForm {
+    margin-top: 30px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-items: center;
+
+  }

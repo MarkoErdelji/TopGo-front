@@ -1,0 +1,48 @@
+<div id="report-content" #printable>
+    <div class="graph-holder shadow">
+        <app-driver-price-date-graph *ngIf="dataLoaded" [driverData]="driverData" [view]="[970,570]"></app-driver-price-date-graph>
+    </div>
+    <div class="graph-holder shadow">
+        <app-driver-km-date-graph *ngIf="dataLoaded" [driverData]="driverData" [view]="[970,570]"></app-driver-km-date-graph> 
+    </div>
+    <div class="graph-holder shadow">
+        <app-driver-num-of-rides-date-graph *ngIf="dataLoaded" [driverData]="driverData" [view]="[970,570]"></app-driver-num-of-rides-date-graph>
+
+    </div>
+    <div class="graph-holder shadow">
+        <app-driver-earned-per-month-graph *ngIf="chartDataLoaded" [driverData]="driverDataForChart" [view]="[970,600]"></app-driver-earned-per-month-graph>
+    </div>
+</div>
+
+
+<div class="button-holder">
+    <div class="gray-background shadow">
+        <form [formGroup]="dateForm" (ngSubmit)="changeGraphs()">
+            <div id="date-change-div">
+                    <mat-form-field class="date-input-field">
+                        <input matInput id="date-input"[ngxMatDatetimePicker]="picker" [disabled] = true placeholder="Start date" formControlName="startControl" >
+                        <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker)"></mat-datepicker-toggle>
+                        <ngx-mat-datetime-picker [disabled]=false #picker [showSpinners]="true" [showSeconds]="true"
+                        [stepHour]="1" [stepMinute]="1"
+                        [touchUi]="true"  [enableMeridian]="false"
+                        [hideTime]="false">
+                        </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                    <mat-form-field class="date-input-field">
+                    <input matInput  id="date-input"[ngxMatDatetimePicker]="picker2" [disabled] = true placeholder="End date" formControlName="endControl" >
+                    <mat-datepicker-toggle [disabled]="false" matSuffix [for]="$any(picker2)"></mat-datepicker-toggle>
+                    <ngx-mat-datetime-picker 
+                        [disabled]=false #picker2 [showSpinners]="true" [showSeconds]="true"
+                        [stepHour]="1" [stepMinute]="1"
+                        [touchUi]="true"  [enableMeridian]="false"
+                        [hideTime]="false">
+                    </ngx-mat-datetime-picker>
+                    </mat-form-field>
+                    <button mat-raised-button id="submit-button">Submit changes</button>
+            </div>
+        </form>
+        <div id="actions-div">
+            <button mat-raised-button id="download-button" (click)="downloadAsPDF()">Download</button>
+        </div>
+    </div>
+</div>
