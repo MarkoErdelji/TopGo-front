@@ -1,0 +1,26 @@
+
+  <div id ="panic-container">
+    <div class = "panic-element" *ngFor="let panic of allPanic">
+      <div class="icon-text">
+        <img src="assets/images/modelIcon.png" class="icon" />
+        {{panic.vehicle.model}}
+      </div>
+      <div class="icon-text">
+        <img src="assets/images/licensePlateIcon.png" class="icon" />
+        {{panic.vehicle.licenseNumber}}
+      </div>
+      <div class="icon-text">
+        <img src="assets/images/personIcon.png" class="icon" />
+        {{panic.panic.user.name + " " + panic.panic.user.surname}}
+      </div>
+      <hr class ='hr-class'>
+      <div class="reason">
+        <b>Reason</b>
+        <p>{{panic.panic.reason}}</p>
+
+      </div>
+
+    </div>
+
+  </div>
+  <app-map></app-map>

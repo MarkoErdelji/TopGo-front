@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import {MapService} from "../../components/map/map.service";
+import {DriverService} from "../service/driver.service";
+import {PanicDTO} from "../DTO/PanicDTO";
+import {PanicService} from "../service/panic.service";
 
 @Component({
   selector: 'app-admin',
@@ -7,9 +11,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
-  constructor() { }
+  constructor() {
+
+  }
 
   ngOnInit(): void {
   }
+
+
+
 
 }

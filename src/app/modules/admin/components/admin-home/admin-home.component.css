@@ -1,0 +1,49 @@
+.main-content{
+  height:100%;
+}
+.content-holder{
+  overflow: auto;
+  overflow-y: scroll;
+}
+#panic-container
+{
+  width: fit-content;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.459);
+  z-index: 2;
+  position: fixed;
+  right: 0;
+  overflow-y: scroll ;
+}
+.panic-element
+{
+  background-color: white;
+  margin: 10px;
+  width: 250px;
+  height: fit-content;
+  border-radius: 5px;
+}
+.icon-text {
+  margin :5px;
+  display: flex;
+  align-items: center;
+}
+.icon {
+  width: 3em;
+  height: 3em;
+  margin-right: 0.5em;
+}
+.reason
+{
+  text-align: center;
+}
+.hr-class
+{
+
+  margin: 3px 10px;
+
+}
+p
+{
+  padding: 5px;
+}

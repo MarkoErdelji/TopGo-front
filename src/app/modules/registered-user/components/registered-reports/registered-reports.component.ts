@@ -66,6 +66,7 @@ export class RegisteredReportsComponent implements OnInit,OnDestroy {
         this.rides.push(element);
         //console.log(element);
       })
+      this.rides.reverse();
 
     }))
 

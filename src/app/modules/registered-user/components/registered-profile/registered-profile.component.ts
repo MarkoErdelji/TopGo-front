@@ -38,6 +38,7 @@ export class RegisteredProfileComponent implements OnInit {
     this.subscriptions.push(this.passengerService.getPassengerRides(this.authService.getUserId(),0,9000,null,null).subscribe(res =>
       {
         this.rides = res.body?.results!
+        this.rides.reverse();
         console.log(this.rides)
 
       }))
