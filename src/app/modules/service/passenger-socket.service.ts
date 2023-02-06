@@ -192,6 +192,7 @@ export class PassengerSocketService {
       return
     }
     const dialogRef = this.dialog.open(RideNotificationComponent, {
+      id : ride.status,
       width: '250px',
       data: {msg: msg}
     });
