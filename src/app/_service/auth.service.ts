@@ -36,6 +36,7 @@ export class AuthService {
           if(error.status == 400){
             console.log(error)
             const dialogRef = this.dialog.open(RideNotificationComponent, {
+              id:'validation-error-dialog',
               width: '250px',
               data: {msg:error.error.message
               }
