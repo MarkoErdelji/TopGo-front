@@ -6,6 +6,7 @@ import {catchError, of, Subscription} from 'rxjs';
 import { RideNotificationComponent } from 'src/app/components/dialogs/ride-notification/ride-notification.component';
 import { DriverService } from 'src/app/modules/service/driver.service';
 import { AuthService } from 'src/app/_service/auth.service';
+import { UserService } from 'src/app/_service/user.service';
 
 @Component({
   selector: 'app-driver-change-password-dialog',
@@ -19,7 +20,7 @@ export class DriverChangePasswordDialogComponent implements OnInit {
     newPasswordControl: new FormControl("",[Validators.required,Validators.minLength(6)])
   });
   private subscriptions: Subscription[] = [];
-  constructor(private dialog:MatDialog,private driverService:DriverService,private dialogRef: MatDialogRef<DriverChangePasswordDialogComponent>,private authService:AuthService) { }
+  constructor(private dialog:MatDialog,private driverService:DriverService,private dialogRef: MatDialogRef<DriverChangePasswordDialogComponent>,private userService:UserService) { }
 
   ngOnInit(): void {
   }
@@ -28,7 +29,7 @@ export class DriverChangePasswordDialogComponent implements OnInit {
   changeDriverPassword(){
       if(this.changePassForm.valid){
         this.subscriptions.push(
-        this.authService.changeUserPassword(this.driverService.id,this.changePassForm.controls.newPasswordControl.value,this.changePassForm.controls.oldPasswordControl.value)
+        this.userService.changeUserPassword(this.driverService.id,this.changePassForm.controls.newPasswordControl.value,this.changePassForm.controls.oldPasswordControl.value)
         .pipe(
           catchError((error:HttpErrorResponse) => {
             return of(error);
