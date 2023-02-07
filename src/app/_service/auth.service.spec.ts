@@ -12,15 +12,22 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 describe('AuthService', () => {
   let service: AuthService;
   let httpTestingController: HttpTestingController;
-
+  let router: Router;
+  let dialog: MatDialog;
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [AuthService],
+      providers: [
+        AuthService,
+        Router,
+        MatDialog,
+        JwtHelperService,
+      ],
     });
-
     service = TestBed.inject(AuthService);
     httpTestingController = TestBed.inject(HttpTestingController);
+    router = TestBed.inject(Router);
+    dialog = TestBed.inject(MatDialog);
   });
 
   afterEach(() => {
