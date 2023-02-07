@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, NotFoundError, Observable, of, throwError} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -94,7 +94,14 @@ export class AuthService {
   {
     let token:string=localStorage.getItem('access_token')!;
     const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
+    let decodedToken;
+    try {
+      decodedToken = helper.decodeToken(token);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
 
     return decodedToken.id;
   }
@@ -103,7 +110,15 @@ export class AuthService {
   {
     let token:string=localStorage.getItem('access_token')!;
     const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
+    let decodedToken;
+    try
+    {
+      decodedToken = helper.decodeToken(token);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
 
     if(decodedToken != null){
 
@@ -123,7 +138,15 @@ export class AuthService {
     const JWTtoken: string = localStorage.getItem("access_token") || '';
     const helper = new JwtHelperService();
 
-    const decodedToken = helper.decodeToken(JWTtoken);
+    let decodedToken;
+    try
+    {
+      decodedToken = helper.decodeToken(JWTtoken);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
     return decodedToken.sub;
   }
   logout(){
