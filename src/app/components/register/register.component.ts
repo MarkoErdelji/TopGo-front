@@ -4,6 +4,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RegisterData } from './RegisterDTO';
 import { registerLocaleData } from '@angular/common';
 import { AuthService } from 'src/app/_service/auth.service';
+import { catchError, of, Subscription } from 'rxjs';
+import { HttpErrorResponse } from '@angular/common/http';
+import { RideNotificationComponent } from '../dialogs/ride-notification/ride-notification.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-register',
@@ -17,10 +21,10 @@ export class RegisterComponent implements OnInit {
     email: new FormControl("",[Validators.required,Validators.email]),
     password: new FormControl("",[Validators.required,Validators.minLength(6)]),
     phoneNumber: new FormControl("",[Validators.required,Validators.pattern('^[0-9+].{8,11}$')]),
-    adress: new FormControl("",[Validators.required,Validators.pattern(/[\p{L}\p{N} ,]*/gu)])
+    adress: new FormControl("",[Validators.required,Validators.pattern(/^[\p{L}\p{N},\s]+$/u)])
   });
 
-  constructor(private router: Router,private authService:AuthService) { }
+  constructor(private router: Router,private authService:AuthService,private dialog:MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -36,6 +40,28 @@ export class RegisterComponent implements OnInit {
           telephoneNumber:this.registerForm.controls.phoneNumber.value,
           address:this.registerForm.controls.adress.value,
           password:this.registerForm.controls.password.value
+        }
+      ).pipe(
+        catchError((error:HttpErrorResponse) => {
+          return of(error);
+        }
+        )
+      ).subscribe(
+        response =>{
+          if(response.status == 409){
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '300px',
+              data: {msg: "Error: email already exists!"}
+            });
+          }
+          else{
+            const dialogRef = this.dialog.open(RideNotificationComponent, {
+              width: '400px',
+              data: {msg: "An activation email has been sent for your account!"}
+            });
+            this.router.navigate(['login']);
+          }
+          return response;
         }
       );
     }

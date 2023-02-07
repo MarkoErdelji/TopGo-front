@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, NotFoundError, Observable, of, throwError} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -13,9 +13,11 @@ import { RegisterData } from '../components/register/RegisterDTO';
 import {DriverInfoDTO} from "../modules/DTO/DriverInfoDTO";
 import { RideNotificationComponent } from '../components/dialogs/ride-notification/ride-notification.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Dialog } from '@angular/cdk/dialog';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
   errorMsg: string | undefined;
   endpoint: string = 'http://localhost:8000/api';
@@ -26,68 +28,22 @@ export class AuthService {
   constructor(private http: HttpClient, public router: Router,private dialog:MatDialog) {}
   // Sign-in
 
-  async signIn(username:string|null,password:string|null) {
+  signIn(username:string|null,password:string|null) {
     const email = username;
     const headers = { 'content-type': 'application/json'}
-    const res = await this.http
+    return this.http
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers,observe: 'response',
-      responseType: 'json'}).pipe(
-        catchError((error:HttpErrorResponse) => {
-          if(error.status == 400){
-            console.log(error)
-            const dialogRef = this.dialog.open(RideNotificationComponent, {
-              width: '250px',
-              data: {msg:error.error.message
-              }
-            });
-  
-          }
-          return of(error);
-        }
-        )
-      ).subscribe((res: any) => {
-        if(res.status == 200){
-          localStorage.setItem('access_token', res.body.accessToken);
-          localStorage.setItem('refresh_token',res.body.refreshToken);
-          this.checkForToken();
-        }
-      });
-    return res;
-
-
+      responseType: 'json'})
   }
+
   getToken() {
     return localStorage.getItem('access_token');
   }
 
-  async register(regData:RegisterData){
-    this.http
+  register(regData:RegisterData){
+    return this.http
       .post<any>(`http://localhost:8000/api/passenger`, JSON.stringify(regData), { 'headers': this.headers,observe: 'response',
       responseType: 'json'})
-      .pipe(
-        catchError((error:HttpErrorResponse) => {
-          return of(error);
-        }
-        )
-      ).subscribe(
-        response =>{
-          if(response.status == 409){
-            const dialogRef = this.dialog.open(RideNotificationComponent, {
-              width: '300px',
-              data: {msg: "Error: email already exists!"}
-            });
-          }
-          else{
-            const dialogRef = this.dialog.open(RideNotificationComponent, {
-              width: '400px',
-              data: {msg: "An activation email has been sent for your account!"}
-            });
-            this.router.navigate(['login']);
-          }
-          return response;
-        }
-      )
-
   }
   get isLoggedIn(): boolean {
     let authToken = localStorage.getItem('access_token');
@@ -95,9 +51,9 @@ export class AuthService {
   }
 
 
-  static doLogout() {
+  doLogout() {
     localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('refresh_token'); 
   }
   checkForToken(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
@@ -107,9 +63,13 @@ export class AuthService {
    }
 
    const helper = new JwtHelperService();
-
-   const decodedToken = helper.decodeToken(JWTtoken);
-
+   let decodedToken;
+   try{
+    decodedToken = helper.decodeToken(JWTtoken);
+   }
+    catch(exception){
+    return;
+  }
    const expirationDate = helper.getTokenExpirationDate(JWTtoken);
    const isExpired = helper.isTokenExpired(JWTtoken);
 
@@ -139,7 +99,14 @@ export class AuthService {
   {
     let token:string=localStorage.getItem('access_token')!;
     const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
+    let decodedToken;
+    try {
+      decodedToken = helper.decodeToken(token);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
 
     return decodedToken.id;
   }
@@ -148,7 +115,15 @@ export class AuthService {
   {
     let token:string=localStorage.getItem('access_token')!;
     const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
+    let decodedToken;
+    try
+    {
+      decodedToken = helper.decodeToken(token);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
 
     if(decodedToken != null){
 
@@ -156,24 +131,21 @@ export class AuthService {
     }
     return null;
   }
-  changeUserPassword(userId,newPassword,oldPassword){
-    let passwordObject = {newPassword:newPassword,oldPassword:oldPassword}
-    return this.http
-      .put<any>(`http://localhost:8000/api/user/`+userId+'/changePassword', JSON.stringify(passwordObject), { 'headers': this.headers,
-      observe: 'response',
-      responseType: 'json'})
-  }
 
   getEmail(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
     const helper = new JwtHelperService();
 
-    const decodedToken = helper.decodeToken(JWTtoken);
+    let decodedToken;
+    try
+    {
+      decodedToken = helper.decodeToken(JWTtoken);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
     return decodedToken.sub;
   }
-  logout(){
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-}
 
 }
