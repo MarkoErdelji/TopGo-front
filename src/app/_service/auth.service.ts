@@ -17,6 +17,7 @@ import { Dialog } from '@angular/cdk/dialog';
 @Injectable({
   providedIn: 'root',
 })
+
 export class AuthService {
   errorMsg: string | undefined;
   endpoint: string = 'http://localhost:8000/api';
@@ -24,7 +25,7 @@ export class AuthService {
   currentUser = {};
 
 
-  constructor(private http: HttpClient, public router: Router,private dialog:Dialog) {}
+  constructor(private http: HttpClient, public router: Router,private dialog:MatDialog) {}
   // Sign-in
 
   signIn(username:string|null,password:string|null) {
@@ -49,7 +50,7 @@ export class AuthService {
   }
 
 
-  static doLogout() {
+  doLogout() {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
   }

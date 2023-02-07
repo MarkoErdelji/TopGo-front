@@ -22,6 +22,6 @@ export class RegisteredUserMenuComponent implements OnInit {
 
   logout(){
     this.passengerSocketService.stompClient.disconnect()
-    AuthService.doLogout();
+    this.authService.doLogout();
   }
 }

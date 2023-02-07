@@ -8,13 +8,13 @@ import { AuthService } from 'src/app/_service/auth.service';
 })
 export class AdminMenuComponent implements OnInit {
 
-  constructor() { }
+  constructor(private authService:AuthService) { }
 
   ngOnInit(): void {
   }
 
   logout(){
-    AuthService.doLogout();
+    this.authService.doLogout();
   }
 
 }

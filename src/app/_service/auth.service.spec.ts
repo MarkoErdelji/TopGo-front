@@ -8,6 +8,26 @@ import { AuthService } from './auth.service';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { of } from 'rxjs';
+class MockRouter {
+  navigate() {}
+}
+
+class MockMatDialogRef<T, R = any> {
+  close() {
+    return of({});
+  }
+
+  afterClosed() {
+    return of({});
+  }
+}
+
+class MockMatDialog {
+  open() {
+    return new MockMatDialogRef<any>();
+  }
+}
 
 describe('AuthService', () => {
   let service: AuthService;
@@ -19,8 +39,8 @@ describe('AuthService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         AuthService,
-        Router,
-        MatDialog,
+        { provide: Router, useClass: MockRouter },
+        {provide:MatDialog, useClass:MockMatDialog},
         JwtHelperService,
       ],
     });
@@ -47,11 +67,26 @@ describe('AuthService', () => {
     };
 
     service.signIn(username, password).subscribe((response) => {
-      expect(response).toEqual(expectedResponse);
+      expect(response.body).toEqual(expectedResponse);
     });
 
     const req = httpTestingController.expectOne(`${service.endpoint}/user/login`);
     expect(req.request.method).toEqual('POST');
     req.flush(expectedResponse);
+  });
+
+
+  it('should fail to sign in the user with wrong credentials', () => {
+    const username = 'test@test.com';
+    const password = 'testpassword';
+  
+    service.signIn(username, password).subscribe((response) => {
+      expect(response.body.status).toEqual(400);
+      expect(response.body.message).toEqual("Wrong username or password!");
+    });
+  
+    const req = httpTestingController.expectOne(`${service.endpoint}/user/login`);
+    expect(req.request.method).toEqual('POST');
+    req.flush({ status: 400, message: "Wrong username or password!" });
   });
 });
