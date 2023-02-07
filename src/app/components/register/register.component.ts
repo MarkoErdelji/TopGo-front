@@ -21,7 +21,7 @@ export class RegisterComponent implements OnInit {
     email: new FormControl("",[Validators.required,Validators.email]),
     password: new FormControl("",[Validators.required,Validators.minLength(6)]),
     phoneNumber: new FormControl("",[Validators.required,Validators.pattern('^[0-9+].{8,11}$')]),
-    adress: new FormControl("",[Validators.required,Validators.pattern(/[\p{L}\p{N} ,]*/gu)])
+    adress: new FormControl("",[Validators.required,Validators.pattern(/^[\p{L}\p{N},\s]+$/u)])
   });
 
   constructor(private router: Router,private authService:AuthService,private dialog:MatDialog) { }

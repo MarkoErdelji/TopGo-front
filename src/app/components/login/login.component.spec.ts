@@ -4,16 +4,18 @@ import { LoginComponent } from './login.component';
 import {AuthService} from "../../_service/auth.service";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {RouterTestingModule} from "@angular/router/testing";
 import {of, throwError} from "rxjs";
 import {RideNotificationComponent} from "../dialogs/ride-notification/ride-notification.component";
+import { HttpResponse } from '@angular/common/http';
+import { By } from '@angular/platform-browser';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
   let authService: AuthService;
-  let dialog: MatDialog
+  let matDialog: MatDialog;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
@@ -25,14 +27,16 @@ describe('LoginComponent', () => {
         MatDialogModule
       ],
       declarations: [LoginComponent],
-      providers: [AuthService]
+      providers: [{ provide: AuthService },
+        { provide: MatDialog }]
     }).compileComponents();
   });
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
-    authService = TestBed.get(AuthService);
+    authService = TestBed.inject(AuthService);
+    matDialog = TestBed.inject(MatDialog);
   });
 
   it('should create', () => {
@@ -70,6 +74,28 @@ describe('LoginComponent', () => {
     component.loginForm.controls['password'].setValue("test");
     expect(component.loginForm.valid).toBeTruthy();
   });
+
+  it('should call create function and call signIn method', () => {
+    const spy = spyOn(authService, 'signIn').and.returnValue(of(new HttpResponse<{}>({})));
+
+    component.loginForm = new FormGroup({
+      username: new FormControl("",[Validators.required]),
+      password: new FormControl("",[Validators.required])
+    });
+
+    component.loginForm.controls.username.setValue("erdeljimarko@gmail.com")
+    component.loginForm.controls.password.setValue("test")
+    fixture.detectChanges();
+
+    const submitButton = fixture.debugElement.query(By.css('#login-button')).nativeElement;
+    submitButton.click();
+
+    expect(spy).toHaveBeenCalledWith(
+      component.loginForm.controls.username.value,
+      component.loginForm.controls.password.value
+    );
+  });
+
 
 
 }
