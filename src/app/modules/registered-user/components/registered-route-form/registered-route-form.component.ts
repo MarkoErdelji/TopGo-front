@@ -566,6 +566,7 @@ export class RegisteredRouteFormComponent implements OnInit {
         if(error == "No drivers left!"){
           this.closeOrder();
           const dialogRef = this.dialog.open(RideNotificationComponent, {
+            id : "no-drivers",
             width: '250px',
             data: {msg:"No more drivers are left for your ride!"}
           });
