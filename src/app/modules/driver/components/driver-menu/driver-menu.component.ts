@@ -42,7 +42,7 @@ export class DriverMenuComponent implements OnInit {
         }
       }
     }))
-    AuthService.doLogout();
+    this.authService.doLogout();
 
   }
 

@@ -7,7 +7,7 @@
         </div>
 
         <form [formGroup]="loginForm" (ngSubmit)="create()" id = "loginForm">
-        <mat-form-field appearance="outline">
+        <mat-form-field appearance="outline" id = "email-field">
             <mat-label>Username</mat-label>
             <input matInput name="username" formControlName="username">
           </mat-form-field>
