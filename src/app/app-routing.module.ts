@@ -43,7 +43,7 @@ import { AdminReportsComponent } from './modules/admin/components/admin-reports/
 import {AdminHomeComponent} from "./modules/admin/components/admin-home/admin-home.component";
 
 
-const routes: Routes = [ {path: 'register', component: RegisterComponent},
+export const routes: Routes = [ {path: 'register', component: RegisterComponent},
                         { path: 'login', component: LoginComponent },
                         { path: 'login/forgotPassword', component:ForgotPasswordComponent},
                         { path: 'login/resetPassword',component:ResetPasswordComponent},

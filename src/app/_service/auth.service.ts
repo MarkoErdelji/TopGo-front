@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, of, throwError} from 'rxjs';
+import {BehaviorSubject, NotFoundError, Observable, of, throwError} from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import {
   HttpClient,
@@ -35,6 +35,7 @@ export class AuthService {
       .post<any>(`${this.endpoint}/user/login`, JSON.stringify({email,password}),{'headers':headers,observe: 'response',
       responseType: 'json'})
   }
+
   getToken() {
     return localStorage.getItem('access_token');
   }
@@ -52,7 +53,7 @@ export class AuthService {
 
   doLogout() {
     localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
+    localStorage.removeItem('refresh_token'); 
   }
   checkForToken(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
@@ -62,9 +63,13 @@ export class AuthService {
    }
 
    const helper = new JwtHelperService();
-
-   const decodedToken = helper.decodeToken(JWTtoken);
-
+   let decodedToken;
+   try{
+    decodedToken = helper.decodeToken(JWTtoken);
+   }
+    catch(exception){
+    return;
+  }
    const expirationDate = helper.getTokenExpirationDate(JWTtoken);
    const isExpired = helper.isTokenExpired(JWTtoken);
 
@@ -94,7 +99,14 @@ export class AuthService {
   {
     let token:string=localStorage.getItem('access_token')!;
     const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
+    let decodedToken;
+    try {
+      decodedToken = helper.decodeToken(token);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
 
     return decodedToken.id;
   }
@@ -103,7 +115,15 @@ export class AuthService {
   {
     let token:string=localStorage.getItem('access_token')!;
     const helper = new JwtHelperService();
-    const decodedToken = helper.decodeToken(token);
+    let decodedToken;
+    try
+    {
+      decodedToken = helper.decodeToken(token);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
 
     if(decodedToken != null){
 
@@ -111,24 +131,21 @@ export class AuthService {
     }
     return null;
   }
-  changeUserPassword(userId,newPassword,oldPassword){
-    let passwordObject = {newPassword:newPassword,oldPassword:oldPassword}
-    return this.http
-      .put<any>(`http://localhost:8000/api/user/`+userId+'/changePassword', JSON.stringify(passwordObject), { 'headers': this.headers,
-      observe: 'response',
-      responseType: 'json'})
-  }
 
   getEmail(){
     const JWTtoken: string = localStorage.getItem("access_token") || '';
     const helper = new JwtHelperService();
 
-    const decodedToken = helper.decodeToken(JWTtoken);
+    let decodedToken;
+    try
+    {
+      decodedToken = helper.decodeToken(JWTtoken);
+    }
+    catch (exeption)
+    {
+      return null;
+    }
     return decodedToken.sub;
   }
-  logout(){
-    localStorage.removeItem('access_token');
-    localStorage.removeItem('refresh_token');
-}
 
 }

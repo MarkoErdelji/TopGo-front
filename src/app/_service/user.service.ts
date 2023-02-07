@@ -53,6 +53,16 @@ export class UserService {
     return this.http.get<UserListBlockedDTO>('http://localhost:8000/api/user', { params: { page: page, size: size },   observe: 'response',
     responseType: 'json' },)
   }
+
+  changeUserPassword(userId,newPassword,oldPassword){
+    const headers = { 'content-type': 'application/json'}
+
+    let passwordObject = {newPassword:newPassword,oldPassword:oldPassword}
+    return this.http
+      .put<any>(`http://localhost:8000/api/user/`+userId+'/changePassword', JSON.stringify(passwordObject), { 'headers': headers,
+      observe: 'response',
+      responseType: 'json'})
+  }
   getUsersNotes(userId,page,size){
     return this.http.get<UserNoteListDTO>('http://localhost:8000/api/user/'+userId+"/note", { params: { page: page, size: size },   observe: 'response',
     responseType: 'json' },)
