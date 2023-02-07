@@ -211,6 +211,7 @@ export class PassengerSocketService {
 
   openDialogReview(id: number) {
     const dialogRef = this.dialog.open(ReviewDialogComponent, {
+      id:'dialog-review',
       width: '400px',
       data: {}
     });
