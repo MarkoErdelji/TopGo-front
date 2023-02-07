@@ -42,11 +42,11 @@ import { RideNotificationComponent } from './components/dialogs/ride-notificatio
     BrowserAnimationsModule,
     MaterialModule,
     FormsModule,
+    DriverModule,
     ReactiveFormsModule,
     AdminModule,
     UnregisteredUserModule,
     RegisteredUserModule,
-    DriverModule,
     HttpClientModule,
     FontAwesomeModule
   ],
